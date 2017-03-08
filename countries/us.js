@@ -101,13 +101,19 @@ var phodays = {
 	};
 
 function processForYear(year){
-	//for set days (example: christmas is always on 25.12.
-	phodays = basiccalc.getSetDays(phodays, year);
-	
-	//calculate for type 2
-	phodays = basiccalc.getIndexDays(phodays, year);
+for(var i = 0; i < phodays.num; i++){
+		
+		//this switch has to be alltered in every calculation
+		switch(phodays.holidays[i].type){ 
+		case 0:
+			basiccalc.getSetDays(phodays.holidays[i], year);
+			break;
+		case 2:
+			basiccalc.getIndexDays(phodays.holidays[i], year);
+			break;
 
-	
+		}
+	}
 	console.log(JSON.stringify(phodays));
 	
 }

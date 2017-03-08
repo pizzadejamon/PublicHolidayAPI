@@ -1,29 +1,72 @@
 //does basic, non country specific calculations.
 //type 1 calculation is declared country specific and processed in xx.js
 
-function calculateSetDays(holiOBJ, year){ //only sets the date of type 0 holidays according to the year
-	
-	var i = holiOBJ.num;
-	
-	for(let j = 0; j < i; j++){
-		if(holiOBJ.holidays[j].type == 0){
-			holiOBJ.holidays[j].date = year.toString() + '-' + holiOBJ.holidays[j].day;
-			delete holiOBJ.holidays[j].type;
-			delete holiOBJ.holidays[j].day;
-		}
-	}
-	return holiOBJ;
-}
-
+//type 0
 function calculateSetDays(obj, year){ //only sets the date of type 0 holidays according to the year
 
 			obj.date = year.toString() + '-' + obj.day;
 			delete obj.type;
-			delete holiOBJ.holidays[j].day;
-			return holiOBJ;
+			delete obj.day;
+			return obj;
 }
 
 
+
+
+//type 2
+//calculating first of or index
+function calculateFirstOfOffset(obj, year){
+
+	
+			//get day of first day of month
+			var d = new Date(year.toString() + '-' + padout(obj.month) + '-01');
+			let dayi = d.getDay();
+
+			var offset;
+			//calculate days until next day
+			if(dayi <= obj.day){
+				offset = obj.day - dayi; //<= 0
+			}else{
+				offset = 8 - dayi;
+			}
+
+			var dj = 1 + offset + obj.offset * 7;
+
+			
+			obj.date = year.toString() + '-' + obj.month + '-' + dj.toString();
+			
+			delete obj.type;
+			delete obj.day;
+			delete obj.month;
+			delete obj.offset;
+		
+	return obj;
+}
+
+//function calculateLastOffset
+
+
+
+module.exports = {
+	getSetDays: function (obj, year){
+		return calculateSetDays(obj, year);
+	},
+	getEasterDay: function(year){
+		return calculateEaster(year);
+	},
+	getIndexDays: function (obj, year){
+		return calculateFirstOfOffset(obj, year);
+	}
+};
+
+
+
+
+
+
+
+
+//misc calcs
 //easter calculation with Gauß Easter Formula
 function padout(number) { return (number < 10) ? '0' + number : number; }
 function calculateEaster(year){
@@ -43,54 +86,15 @@ function calculateEaster(year){
 }
 
 
-//calculating first of or index
-function calculateFirstOfOffset(holiOBJ, year){
-var i = holiOBJ.num;
-	
-	for(let j = 0; j < i; j++){
-		if(holiOBJ.holidays[j].type == 2){
-			
-			//get day of first day of month
-			var d = new Date(year.toString() + '-' + padout(holiOBJ.holidays[j].month) + '-01');
-			let dayi = d.getDay();
-
-			var offset;
-			//calculate days until next day
-			if(dayi <= holiOBJ.holidays[j].day){
-				offset = holiOBJ.holidays[j].day - dayi; //<= 0
-			}else{
-				offset = 8 - dayi;
-			}
-
-			var dj = 1 + offset + holiOBJ.holidays[j].offset * 7;
-
-			
-			holiOBJ.holidays[j].date = year.toString() + '-' + holiOBJ.holidays[j].month + '-' + dj.toString();
-			
-			delete holiOBJ.holidays[j].type;
-			delete holiOBJ.holidays[j].day;
-			delete holiOBJ.holidays[j].month;
-			delete holiOBJ.holidays[j].offset;
-		}
-	}
-	return holiOBJ;
-}
-
-function calculateLastOffset
 
 
 
-module.exports = {
-	getSetDays: function (holiOBJ, year){
-		return calculateSetDays(holiOBJ, year);
-	},
-	getEasterDay: function(year){
-		return calculateEaster(year);
-	},
-	getIndexDays: function (holiOBJ, year){
-		return calculateFirstOfOffset(holiOBJ, year);
-	}
-};
+
+
+
+
+
+
 
 
 

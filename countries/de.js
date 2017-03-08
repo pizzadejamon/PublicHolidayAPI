@@ -114,7 +114,7 @@ var phodays = {
 				"name": "Buß- und Bettag",
 				"region": "Sachsen",
 				"date": "",
-				"type": -1
+				"type": 5
 			},
 			{
 				"name": "Erster Weihnachtsfeiertag",
@@ -134,21 +134,35 @@ var phodays = {
 			
 	};
 
+
+//main function of de.js, itterates through all holidays, applies calculation
 function processForYear(year){
-	//for set days (example: christmas is always on 25.12.
-	phodays = basiccalc.getSetDays(phodays, year);
-	
-	//germany specific: holidays depending on easter
-	processEasterHolidays(year);
-	
-	//germany specific: holiday Buß und Bettag
-	processBettag(year);
-	
-	//console.log(JSON.stringify(phodays));
-	
+	for(var i = 0; i < phodays.num; i++){
+		
+		//this switch has to be alltered in every calculation
+		switch(phodays.holidays[i].type){ 
+		case 0:
+			basiccalc.getSetDays(phodays.holidays[i], year);
+			break;
+		case 1:
+			processEasterHolidays(year);
+			break;
+		case 5:
+			processBettag(phodays.holidays[i], year);
+			break;
+		}
+	}
+	console.log(JSON.stringify(phodays));
 }
 
-//germany specific calculations
+processForYear(2017);
+
+
+
+
+
+
+//germany specific calculation
 function processEasterHolidays(year){
 	var easterday = new Date(year.toString() + '-' + basiccalc.getEasterDay(year));
 	
@@ -165,8 +179,8 @@ function processEasterHolidays(year){
 		}
 	}
 }
-
-function processBettag(year){
+//germany specific calculation
+function processBettag(obj, year){
 	//get 23.11.year
 	let n = year.toString() + '-' + "11-23";
 	let d = new Date(n);
@@ -179,10 +193,13 @@ function processBettag(year){
 	}
 
 	d.setTime(d.getTime() + offset * 86400000);
-
+	obj.date = d.toISOString().substring(0, 10);
+	delete obj.type;
 }
 
 
+
+//used in mains.js when requesting calender for country
 module.exports = {
 		getHolidays: function (year){
 			processForYear(2017);
