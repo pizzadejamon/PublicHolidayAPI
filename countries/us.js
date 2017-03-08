@@ -14,35 +14,35 @@ var phodays = {
 		"holidays":[
 			{
 				"name": "New Years Day",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 0,
 				"day": "01-01"
 			},
 			{
 				"name": "Independence Day",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 0,
 				"day": "07-04"
 			},
 			{
 				"name": "Veterans Day",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 0,
 				"day": "11-11"
 			},
 			{
 				"name": "Christmas",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
 			},
 			{
 				"name": "Martin Luther King Day",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 2,
 				"day": 1,
@@ -51,7 +51,7 @@ var phodays = {
 			},
 			{
 				"name": "Washingtons Birthday",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 2,
 				"day": 1,
@@ -60,7 +60,7 @@ var phodays = {
 			},
 			{
 				"name": "Memorial Day",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 3,
 				"day": 1,
@@ -68,7 +68,7 @@ var phodays = {
 			},
 			{
 				"name": "Labor Day",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 2,
 				"day": 1,
@@ -77,7 +77,7 @@ var phodays = {
 			},
 			{
 				"name": "Columbus Day",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 2,
 				"day": 1,
@@ -86,7 +86,7 @@ var phodays = {
 			},
 			{
 				"name": "Thanksgiving Day",
-				"region": "Federal",
+				"region": "US: Federal",
 				"date": "",
 				"type": 2,
 				"day": 4,
@@ -113,17 +113,13 @@ for(var i = 0; i < phodays.num; i++){
 			break;
 		}
 	}
-	//console.log(JSON.stringify(phodays));
-	
 }
-
-//processForYear(2017);
 
 
 
 module.exports = {
 		getHolidays: function (year){
-			processForYear(2017);
+			processForYear(year);
 			return phodays;
 		}
 }
