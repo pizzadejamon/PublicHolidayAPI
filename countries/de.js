@@ -1,6 +1,6 @@
 //public holiday calculation for germany
 //returns JSON object
-var basiccalc = require('./basiccalc.js');
+var basiccalc = require('./../basiccalc.js');
 
 
 
@@ -114,7 +114,7 @@ var phodays = {
 				"name": "Buß- und Bettag",
 				"region": "Sachsen",
 				"date": "",
-				"type": 2
+				"type": -1
 			},
 			{
 				"name": "Erster Weihnachtsfeiertag",
