@@ -108,7 +108,9 @@ for(var i = 0; i < phodays.num; i++){
 		case 2:
 			basiccalc.getIndexDays(phodays.holidays[i], year);
 			break;
-
+		case 3:
+			basiccalc.getLastDays(phodays.holidays[i], year);
+			break;
 		}
 	}
 	console.log(JSON.stringify(phodays));

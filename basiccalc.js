@@ -1,6 +1,7 @@
 //does basic, non country specific calculations.
 //type 1 calculation is declared country specific and processed in xx.js
 
+
 //type 0
 function calculateSetDays(obj, year){ //only sets the date of type 0 holidays according to the year
 
@@ -11,39 +12,47 @@ function calculateSetDays(obj, year){ //only sets the date of type 0 holidays ac
 }
 
 
-
-
 //type 2
 //calculating first of or index
 function calculateFirstOfOffset(obj, year){
+	//get day of first day of month
+	var d = new Date(year.toString() + '-' + padout(obj.month) + '-01');
+	let dayi = d.getDay(); //something like: 01.03 is Monday
 
-	
-			//get day of first day of month
-			var d = new Date(year.toString() + '-' + padout(obj.month) + '-01');
-			let dayi = d.getDay();
-
-			var offset;
-			//calculate days until next day
-			if(dayi <= obj.day){
+	var offset;
+	//calculate days until next weekday occurs
+	if(dayi <= obj.day){
 				offset = obj.day - dayi; //<= 0
-			}else{
-				offset = 8 - dayi;
-			}
-
-			var dj = 1 + offset + obj.offset * 7;
+	}else{
+		offset = 8 - dayi;
+	}
+	var dj = 1 + offset + obj.offset * 7; //dj = daynumber of date
 
 			
-			obj.date = year.toString() + '-' + obj.month + '-' + dj.toString();
+	obj.date = year.toString() + '-' + padout(obj.month) + '-' + dj.toString();
 			
-			delete obj.type;
-			delete obj.day;
-			delete obj.month;
-			delete obj.offset;
+	delete obj.type;
+	delete obj.day;
+	delete obj.month;
+	delete obj.offset;
 		
 	return obj;
 }
 
-//function calculateLastOffset
+
+//type 3
+//calculate date of last day ie: "last monday of september"
+function calculateLastOf(obj, year){
+	//get last day of month
+	var dayCount = daysInMonth(obj.month, year);
+	var date = new Date(year.toString() + '-' + padout(obj.month) + '-' + dayCount);
+	while (date.getDay() != obj.day)
+	{
+		dayCount--;
+		date = new Date(year.toString() + '-' + padout(obj.month) + '-' + dayCount);
+	}
+	console.log(date.toISOString().substring(0, 10));
+}
 
 
 
@@ -56,6 +65,9 @@ module.exports = {
 	},
 	getIndexDays: function (obj, year){
 		return calculateFirstOfOffset(obj, year);
+	},
+	getLastDays: function (obj, year){
+		return calculateLastOf(obj, year);
 	}
 };
 
@@ -87,7 +99,17 @@ function calculateEaster(year){
 
 
 
+//gerneral stuff
+function daysInMonth(month, year){
+	let d = new Date(year, month, 0);
+	return d.getDate();
+}
 
+function lastDayOfMonth(month, year){
+	let m = daysInMonth(month, year);
+	let d = new Date(year, month - 1, m);
+	return d.getDay();
+}
 
 
 
