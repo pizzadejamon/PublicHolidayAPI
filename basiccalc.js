@@ -4,11 +4,10 @@
 
 //type 0
 function calculateSetDays(obj, year){ //only sets the date of type 0 holidays according to the year
-
-			obj.date = year.toString() + '-' + obj.day;
-			delete obj.type;
-			delete obj.day;
-			return obj;
+		obj.date = year.toString() + '-' + obj.day;
+		delete obj.type;
+		delete obj.day;
+		return obj;
 }
 
 
@@ -52,6 +51,12 @@ function calculateLastOf(obj, year){
 		date = new Date(year.toString() + '-' + padout(obj.month) + '-' + dayCount);
 	}
 	console.log(date.toISOString().substring(0, 10));
+	
+	delete obj.type;
+	delete obj.day;
+	delete obj.month;
+	
+	return obj;
 }
 
 
@@ -105,6 +110,7 @@ function daysInMonth(month, year){
 	return d.getDate();
 }
 
+//currently not used
 function lastDayOfMonth(month, year){
 	let m = daysInMonth(month, year);
 	let d = new Date(year, month - 1, m);

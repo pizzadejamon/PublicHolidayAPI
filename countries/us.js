@@ -113,11 +113,11 @@ for(var i = 0; i < phodays.num; i++){
 			break;
 		}
 	}
-	console.log(JSON.stringify(phodays));
+	//console.log(JSON.stringify(phodays));
 	
 }
 
-processForYear(2017);
+//processForYear(2017);
 
 
 
