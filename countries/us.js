@@ -1,6 +1,6 @@
 //public holiday calculation for germany
 //returns JSON object
-var basiccalc = require('./basiccalc.js');
+var basiccalc = require('./../basiccalc.js');
 
 
 
@@ -13,7 +13,7 @@ var basiccalc = require('./basiccalc.js');
 
 //object containing german holidays
 var phodays = {
-		"num": 17,
+		"num": 10,
 		"holidays":[
 			{
 				"name": "New Years Day",
@@ -47,7 +47,7 @@ var phodays = {
 				"name": "Martin Luther King Day",
 				"region": "Federal",
 				"date": "",
-				"type": 1,
+				"type": 2,
 				"day": 1,
 				"month": 1,
 				"offset": 2
@@ -56,7 +56,7 @@ var phodays = {
 				"name": "Washingtons Birthday",
 				"region": "Federal",
 				"date": "",
-				"type": 1,
+				"type": 2,
 				"day": 1,
 				"month": 2,
 				"offset": 2
@@ -65,34 +65,60 @@ var phodays = {
 				"name": "Memorial Day",
 				"region": "Federal",
 				"date": "",
-				"type": 2,
+				"type": 3,
 				"day": 1,
 				"month": 5
 			},
 			{
-				"name": "Washingtons Birthday",
+				"name": "Labor Day",
 				"region": "Federal",
 				"date": "",
-				"type": 1,
+				"type": 2,
 				"day": 1,
-				"month": 2,
-				"offset": 2
+				"month": 9,
+				"offset": 0
+			},
+			{
+				"name": "Columbus Day",
+				"region": "Federal",
+				"date": "",
+				"type": 2,
+				"day": 1,
+				"month": 10,
+				"offset": 1
+			},
+			{
+				"name": "Thanksgiving Day",
+				"region": "Federal",
+				"date": "",
+				"type": 2,
+				"day": 4,
+				"month": 11,
+				"offset": 3
 			},
 		]
 			
 	};
 
 function processForYear(year){
-	//for set days (example: christmas is always on 25.12.
-	phodays = basiccalc.getSetDays(phodays, year);
-	
+for(var i = 0; i < phodays.num; i++){
+		
+		//this switch has to be alltered in every calculation
+		switch(phodays.holidays[i].type){ 
+		case 0:
+			basiccalc.getSetDays(phodays.holidays[i], year);
+			break;
+		case 2:
+			basiccalc.getIndexDays(phodays.holidays[i], year);
+			break;
 
-	
+		}
+	}
 	console.log(JSON.stringify(phodays));
 	
 }
 
-
+processForYear(2017);
 
 
 

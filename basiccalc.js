@@ -1,33 +1,82 @@
 //does basic, non country specific calculations.
+//type 1 calculation is declared country specific and processed in xx.js
 
+//type 0
+function calculateSetDays(obj, year){ //only sets the date of type 0 holidays according to the year
 
-function calculateSetDays(holiOBJ, year){ //only sets the date of type 0 holidays according to the year
-	
-	var i = holiOBJ.num;
-	
-	for(let j = 0; j < i; j++){
-		if(holiOBJ.holidays[j].type == 0){
-			holiOBJ.holidays[j].date = year.toString() + '-' + holiOBJ.holidays[j].day;
-			delete holiOBJ.holidays[j].type;
-			delete holiOBJ.holidays[j].day;
-		}
-	}
-	return holiOBJ;
+			obj.date = year.toString() + '-' + obj.day;
+			delete obj.type;
+			delete obj.day;
+			return obj;
 }
 
 
 
 
-//easter calculation
+//type 2
+//calculating first of or index
+function calculateFirstOfOffset(obj, year){
+
+	
+			//get day of first day of month
+			var d = new Date(year.toString() + '-' + padout(obj.month) + '-01');
+			let dayi = d.getDay();
+
+			var offset;
+			//calculate days until next day
+			if(dayi <= obj.day){
+				offset = obj.day - dayi; //<= 0
+			}else{
+				offset = 8 - dayi;
+			}
+
+			var dj = 1 + offset + obj.offset * 7;
+
+			
+			obj.date = year.toString() + '-' + obj.month + '-' + dj.toString();
+			
+			delete obj.type;
+			delete obj.day;
+			delete obj.month;
+			delete obj.offset;
+		
+	return obj;
+}
+
+//function calculateLastOffset
+
+
+
+module.exports = {
+	getSetDays: function (obj, year){
+		return calculateSetDays(obj, year);
+	},
+	getEasterDay: function(year){
+		return calculateEaster(year);
+	},
+	getIndexDays: function (obj, year){
+		return calculateFirstOfOffset(obj, year);
+	}
+};
+
+
+
+
+
+
+
+
+//misc calcs
+//easter calculation with Gauß Easter Formula
 function padout(number) { return (number < 10) ? '0' + number : number; }
-function calculateEaster(Y){
-	    var C = Math.floor(Y/100);
-	    var N = Y - 19*Math.floor(Y/19);
+function calculateEaster(year){
+	    var C = Math.floor(year/100);
+	    var N = year - 19*Math.floor(year/19);
 	    var K = Math.floor((C - 17)/25);
 	    var I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15;
 	    I = I - 30*Math.floor((I/30));
 	    I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11));
-	    var J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4);
+	    var J = year + Math.floor(year/4) + I + 2 - C + Math.floor(C/4);
 	    J = J - 7*Math.floor(J/7);
 	    var L = I - J;
 	    var M = 3 + Math.floor((L + 40)/44);
@@ -43,14 +92,9 @@ function calculateEaster(Y){
 
 
 
-module.exports = {
-	getSetDays: function (holiOBJ, year){
-		return calculateSetDays(holiOBJ, year);
-	},
-	getEasterDay: function(year){
-		return calculateEaster(year);
-	}
-};
+
+
+
 
 
 
