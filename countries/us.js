@@ -7,11 +7,8 @@ var basiccalc = require('./../basiccalc.js');
 //Date is in ISO Format:
 //YYYY-MM-DD
 
-//type 0: set day (25.12 = Christmas)
-//type 1: first or index (like "1st monday september", or "third monday may") OFFSET = WEEKS (3rd monday = 1st monday + 2 weeks)
-//type 2: last (like "last monday of september)
 
-//object containing german holidays
+//object containing USA holidays
 var phodays = {
 		"num": 10,
 		"holidays":[
