@@ -1,4 +1,4 @@
-//public holiday calculation for germany
+//public holiday calculation for switzerland
 //returns JSON object
 var basiccalc = require('./../basiccalc.js');
 
@@ -8,131 +8,125 @@ var basiccalc = require('./../basiccalc.js');
 //YYYY-MM-DD
 
 
-//object containing german holidays
+//object containing switzerland holidays
 var phodays = {
-		"num": 17,
+		"num": 16,
 		"holidays":[
 			{
-				"name": "Neujahr",
-				"region": "DE: Alle Bundesländer",
+				"name": "Neujahrstag",
+				"region": "CH: Alle Kantonen",
 				"date": "",
 				"type": 0,
 				"day": "01-01"
 			},
 			{
+				"name": "Berchtoldstag",
+				"region": "CH: Vereinzelte Kantonen",
+				"date": "",
+				"type": 0,
+				"day": "02-01"
+			},
+			{
 				"name": "Heilige Drei Könige",
-				"region": "DE: Baden-Württemberg, Bayern, Sachsen-Anhalt",
+				"region": "CH: Vereinzelte Kantonen",
 				"date": "",
 				"type": 0,
 				"day": "01-06"
 			},
 			{
+				"name": "Joseftag",
+				"region": "CH: Vereinzelte Kantonen",
+				"date": "",
+				"type": 0,
+				"day": "19-03"
+			},
+			{
 				"name": "Karfreitag",
-				"region": "DE: Alle Bundesländer",
+				"region": "CH: Alle Kantonen",
 				"date": "",
 				"type": 1,
 				"offset": -2
 			},
 			{
-				"name": "Ostersonntag",
-				"region": "DE: Brandenburg, Hessen",
-				"date": "",
-				"type": 1,
-				"offset": 0
-			},
-			{
 				"name": "Ostermontag",
-				"region": "DE: Alle Bundesländer",
+				"region": "CH: Alle Kantonen",
 				"date": "",
 				"type": 1,
 				"offset": 1
 			},
 			{
-				"name": "Erster Mai, Tag der Arbeit",
-				"region": "DE: Alle Bundesländer",
+				"name": "Tag der Arbeit",
+				"region": "CH: Vereinzelte Kantonen",
 				"date": "",
 				"type": 0,
 				"day": "05-01"
 			},
 			{
-				"name": "Christi-Himmelfahrt",
-				"region": "DE: Alle Bundesländer",
+				"name": "Auffahrt",
+				"region": "CH: Alle Kantonen",
 				"date": "",
 				"type": 1,
 				"offset": 39
 			},
 			{
-				"name": "Pfingstsonntag",
-				"region": "DE: Brandenburg, Hessen",
-				"date": "",
-				"type": 1,
-				"offset": 49
-			},
-			{
 				"name": "Pfingstmontag",
-				"region": "DE: Alle Bundesländer",
+				"region": "CH: Alle Kantonen",
 				"date": "",
 				"type": 1,
 				"offset": 50
 			},
 			{
 				"name": "Fronleichnam",
-				"region": "DE: Baden-Württemberg, Bayern, Hessen, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland, Thüringen",
+				"region": "CH: Alle Kantonen",
 				"date": "",
 				"type": 1,
 				"offset": 60
 			},
 			{
+				"name": "Bundesfeier",
+				"region": "CH: Alle Kantonen",
+				"date": "",
+				"type": 0,
+				"day": "08-01"
+			},
+			{
 				"name": "Mariä Himmelfahrt",
-				"region": "DE: Bayern, Saarland",
+				"region": "CH: Überwiegend alle Kantonen",
 				"date": "",
 				"type": 0,
 				"day": "08-15"
 			},
 			{
-				"name": "Tag der deutschen Einheit",
-				"region": "DE: Alle Bundesländer",
-				"date": "",
-				"type": 0,
-				"day": "10-03"
-			},
-			{
-				"name": "Reformation",
-				"region": "DE: Brandenburg, Mecklenburg-Vorpommern, Sachsen, Sachsen-Anhalt, Thüringen",
-				"date": "",
-				"type": 0,
-				"day": "10-31"
-			},
-			{
 				"name": "Allerheiligen",
-				"region": "DE: Baden-Württemberg, Bayern, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland",
+				"region": "CH: Überwiegend alle Kantonen",
 				"date": "",
 				"type": 0,
 				"day": "11-01"
 			},
 			{
-				"name": "Buß- und Bettag",
-				"region": "DE: Sachsen",
+				"name": "Mariä Empfängnis",
+				"region": "CH: Vereinzelte Kantonen",
 				"date": "",
-				"type": 5
+				"type": 0,
+				"day": "12-08"
 			},
 			{
-				"name": "Erster Weihnachtsfeiertag",
+				"name": "Weihnachtstag",
 				"region": "DE: Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
 			},
 			{
-				"name": "Zweiter Weihnachtsfeiertag",
+				"name": "Stephanstag",
 				"region": "DE: Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "12-26"
 			},
-		]
-			
+		]	
 	};
+
 
 
 //main function of de.js, itterates through all holidays, applies calculation
@@ -147,18 +141,13 @@ function processForYear(year){
 		case 1:
 			processEasterHolidays(year);
 			break;
-		case 5:
-			processBettag(phodays.holidays[i], year);
-			break;
 		}
 	}
-	
+
 }
 
 
-
-
-//germany specific calculation
+//switzerland specific calculation
 function processEasterHolidays(year){
 	var easterday = new Date(year.toString() + '-' + basiccalc.getEasterDay(year));
 	
@@ -175,23 +164,7 @@ function processEasterHolidays(year){
 		}
 	}
 }
-//germany specific calculation
-function processBettag(obj, year){
-	//get 23.11.year
-	let n = year.toString() + '-' + "11-23";
-	let d = new Date(n);
-	let day = d.getDay();
-	
-	//wendsday = 3
-	var offset = -4 - day;
-	if(day > 3){
-		offset += 7;
-	}
 
-	d.setTime(d.getTime() + offset * 86400000);
-	obj.date = d.toISOString().substring(0, 10);
-	delete obj.type;
-}
 
 
 

@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //general
-var supported = ["DE", "US"];
+var supported = ["DE", "US", "CH"];
 
 
 //returns JSON object with all holidays of all countries (array)
@@ -17,6 +17,7 @@ function getData(countries, year){
 	
 	var de = require('./countries/de.js');
 	var us = require('./countries/us.js');
+	var ch = require('./countries/ch.js');
 	
 	var data;
 	
@@ -28,6 +29,9 @@ function getData(countries, year){
 			break;
 		case "US":
 			next = us.getHolidays(year);
+			break;
+		case "CH":
+			next = ch.getHolidays(year);
 			break;
 		}
 		

@@ -1,4 +1,4 @@
-//public holiday calculation for germany
+//public holiday calculation for united states of america
 //returns JSON object
 var basiccalc = require('./../basiccalc.js');
 
