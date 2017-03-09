@@ -1,12 +1,8 @@
-//public holiday calculation for switzerland
-//returns JSON object
+//Country File for Switzerland / Schweiz - PublicHolidayAPI
+//author: Marius Riehl
+//date:	  2017-03-08
+
 var basiccalc = require('./../basiccalc.js');
-
-
-
-//Date is in ISO Format:
-//YYYY-MM-DD
-
 
 //object containing switzerland holidays
 var phodays = {
@@ -112,14 +108,14 @@ var phodays = {
 			},
 			{
 				"name": "Weihnachtstag",
-				"region": "DE: Alle Bundesländer",
+				"region": "CH: Alle Kantonen",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
 			},
 			{
 				"name": "Stephanstag",
-				"region": "DE: Alle Bundesländer",
+				"region": "CH: Alle Kantonen",
 				"date": "",
 				"type": 0,
 				"day": "12-26"
@@ -175,7 +171,3 @@ module.exports = {
 			return phodays;
 		}
 }
-
-
-
-
