@@ -19,6 +19,7 @@ var supported = ["DE", "US", "CH", "AT", "BE"]; //list of countries
 function dataFromCountryString(countryCode, year){
 	var next;
 	var cc = require('./countries/' + countryCode.toLowerCase() + '.js');
+	console.log(year);
 	return next = cc.getHolidays(year);
 	
 }
@@ -29,10 +30,7 @@ function getData(countries, year){
 	var next = undefined;
 	for(var k = 0; k < countries.length; k++){
 		next = undefined;
-		
 		next = dataFromCountryString(countries[k], year);
-		
-		
 		if(k < 1){
 			data = JSON.parse(JSON.stringify(next)); //thanks Dominik :D "js pros standard copy function"
 		}else{
@@ -41,16 +39,65 @@ function getData(countries, year){
 		}
 	}
 
+	//now sort data, key is timestamp of date
+	data.holidays.sort(function(a, b){
+		var x = a['date']; var y = b['date'];
+		var x1 = (new Date(x)).getTime(); var y1 = (new Date(y)).getTime();
+		return ((x1 < y1) ? -1 : ((x1 > y1) ? 1 : 0));
+	});
+	
 	return data;
 }
 
+//gets the next holiday (from now on)
+function getNextHoliday(countries, year){
+	var time = Date.now();
+	var data = getData(countries, year);
+	for(var i = 0; i < data.num; i++){
+		var date = new Date(data.holidays[i].date);
+		if(date.getTime() > time){
+			
+			//is this date used in other countries too? 
+			var j = i + 1;
+			while(data.holidays[j].date == data.holidays[i].date){
+				data.holidays[i].name += ", " + data.holidays[j].name;
+				data.holidays[i].region += ", " + data.holidays[j].region;
+				j++;
+			}
+			data.holidays[i].countryCount = j - i;
+			return data.holidays[i];
+		}
+	}
+}
+
+//only returns holidays inbetween a certain area of dates
+function getHolidaysArea(countries, year, datex, datey){
+	var data = getData(countries, year);
+	var x = (new Date(datex)).getTime();
+	var y = (new Date(datey)).getTime();
+	if(x < y){ //swap if order is wrong
+		let z = y; y = x; x = z;
+	}
+	//itterate through data set
+	for(var i = 0; i < data.num; i++){
+		let p = (new Date(data.holidays[i].date)).getTime();
+		if(p < x || p > y){ //out of range
+			data.holidays[i].splice(i, 1); //remove
+		}
+	}
+	
+	return data;
+}
 
 //process and respond for incomming post requests
 //check for correct body & parameters, crunch the numbers and return JSON Object
 app.post('/data/', function(req, res){
-	if(typeof req.body.year != 'undefined' && typeof req.body.countries != 'undefined' && typeof req.body.requesttype != 'undefined'){
+	console.log(req.body);
+	
+	if(typeof req.body.year != 'undefined' && typeof req.body.countries != 'undefined' && typeof req.body.requesttype != 'undefined'
+		&& req.body.year != '' && req.body.countries != '' && req.body.requesttype != ''){
 		//headers contain needed parameters, proceed (maybe check API key?)
-
+		
 		//check format
 		if(req.body.year.length != 4){
 			res.status(400).send("Bad Request. Wrong format for year parameter.")
@@ -62,14 +109,12 @@ app.post('/data/', function(req, res){
 		req.body.countries = req.body.countries.toUpperCase();
 		//convert countries string to array
 		let countries = req.body.countries.split(",");
-		console.log(countries);
 		//check last char and empty
 		for(var i = 0; i < countries.length; i++){
 			if(countries[i] == ''){
 				countries.splice(i, 1);
 			}
 		}
-		console.log(countries);
 		
 		//check if each country is supported and format is correct
 		for(var j = 0; j < countries.length; j++){
@@ -96,6 +141,24 @@ app.post('/data/', function(req, res){
 				return;
 			}catch(err){
 				console.log(err); //internal error, prevent server from crashing and log error
+			}
+			break;
+		case "next":
+			try{
+				res.send(getNextHoliday(countries, req.body.year));
+				return;
+			}catch(err){
+				console.log(err);
+			}	
+			break;
+		case "xlisty":
+			try{
+				
+				
+				
+				//res.send()
+			}catch(err){
+				
 			}
 			break;
 		default:

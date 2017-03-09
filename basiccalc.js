@@ -57,11 +57,11 @@ function calculateLastOf(obj, year){
 		date = new Date(year.toString() + '-' + padout(obj.month) + '-' + dayCount);
 	}
 	
-	
+	obj.date = date.toISOString().substring(0, 10);
 	delete obj.type;
 	delete obj.day;
 	delete obj.month;
-	
+
 	return obj;
 }
 

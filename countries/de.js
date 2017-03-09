@@ -166,7 +166,7 @@ function processForYear(year){
 			break;
 		}
 	}
-	
+	console.log(year);
 }
 
 
@@ -211,6 +211,7 @@ function processBettag(obj, year){
 module.exports = {
 		getHolidays: function (year){
 			processForYear(year);
+			console.log(year);
 			return phodays;
 		}
 }
