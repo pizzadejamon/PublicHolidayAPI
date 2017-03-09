@@ -50,7 +50,7 @@ function calculateLastOf(obj, year){
 		dayCount--;
 		date = new Date(year.toString() + '-' + padout(obj.month) + '-' + dayCount);
 	}
-	console.log(date.toISOString().substring(0, 10));
+	
 	
 	delete obj.type;
 	delete obj.day;

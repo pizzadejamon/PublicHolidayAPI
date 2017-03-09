@@ -1,12 +1,8 @@
-//public holiday calculation for germany
-//returns JSON object
+//Country File for United States of America / Vereinigte Staaten von Amerika - PublicHolidayAPI
+//author: Marius Riehl
+//date:	  2017-03-08
+
 var basiccalc = require('./../basiccalc.js');
-
-
-
-//Date is in ISO Format:
-//YYYY-MM-DD
-
 
 //object containing USA holidays
 var phodays = {
@@ -98,7 +94,8 @@ var phodays = {
 	};
 
 function processForYear(year){
-for(var i = 0; i < phodays.num; i++){
+
+	for(var i = 0; i < phodays.num; i++){
 		
 		//this switch has to be alltered in every calculation
 		switch(phodays.holidays[i].type){ 
@@ -123,7 +120,3 @@ module.exports = {
 			return phodays;
 		}
 }
-
-
-
-

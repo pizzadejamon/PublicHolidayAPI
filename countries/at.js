@@ -1,134 +1,154 @@
-//Country File for Germany / Deutschland - PublicHolidayAPI
+//Country File for Austria / Österreich - PublicHolidayAPI
 //author: Marius Riehl
-//date:	  2017-03-08
+//date:	  2017-03-09
+
+
 var basiccalc = require('./../basiccalc.js');
 
 
-//object containing german holidays
+//object containing austria holidays
 var phodays = {
 		"num": 17,
 		"holidays":[
 			{
 				"name": "Neujahr",
-				"region": "DE: Alle Bundesländer",
+				"tname": "New Year's Day",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "01-01"
 			},
 			{
 				"name": "Heilige Drei Könige",
-				"region": "DE: Baden-Württemberg, Bayern, Sachsen-Anhalt",
+				"tname": "Epiphany",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "01-06"
 			},
 			{
+				"name": "Joseftag",
+				"tname": "St Joseph's Day",
+				"region": "AT: Kärnten, Steiermark, Tirol, Voralberg",
+				"date": "",
+				"type": 0,
+				"day": "19-03"
+			},
+			{
 				"name": "Karfreitag",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Good Friday",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 1,
 				"offset": -2
 			},
 			{
-				"name": "Ostersonntag",
-				"region": "DE: Brandenburg, Hessen",
-				"date": "",
-				"type": 1,
-				"offset": 0
-			},
-			{
 				"name": "Ostermontag",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Easter Monday",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 1,
 				"offset": 1
 			},
 			{
-				"name": "Erster Mai, Tag der Arbeit",
-				"region": "DE: Alle Bundesländer",
+				"name": "Staatsfeiertag",
+				"tname": "National Day",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "05-01"
 			},
 			{
-				"name": "Christi-Himmelfahrt",
-				"region": "DE: Alle Bundesländer",
+				"name": "Christi-Himmelfagrt",
+				"tname": "Ascension Day",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 1,
 				"offset": 39
 			},
 			{
-				"name": "Pfingstsonntag",
-				"region": "DE: Brandenburg, Hessen",
-				"date": "",
-				"type": 1,
-				"offset": 49
-			},
-			{
 				"name": "Pfingstmontag",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Whit Monday",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 1,
 				"offset": 50
 			},
 			{
 				"name": "Fronleichnam",
-				"region": "DE: Baden-Württemberg, Bayern, Hessen, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland, Thüringen",
+				"tname": "Corpus Christi",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 1,
 				"offset": 60
 			},
 			{
 				"name": "Mariä Himmelfahrt",
-				"region": "DE: Bayern, Saarland",
+				"tname": "Assumption of the Virgin Mary",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "08-15"
 			},
 			{
-				"name": "Tag der deutschen Einheit",
-				"region": "DE: Alle Bundesländer",
+				"name": "Nationalfeiertag",
+				"tname": "National Holiday",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 0,
-				"day": "10-03"
-			},
-			{
-				"name": "Reformation",
-				"region": "DE: Brandenburg, Mecklenburg-Vorpommern, Sachsen, Sachsen-Anhalt, Thüringen",
-				"date": "",
-				"type": 0,
-				"day": "10-31"
+				"day": "10-26"
 			},
 			{
 				"name": "Allerheiligen",
-				"region": "DE: Baden-Württemberg, Bayern, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland",
+				"tname": "All Saints' Day",
+				"region": "Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "11-01"
 			},
 			{
-				"name": "Buß- und Bettag",
-				"region": "DE: Sachsen",
+				"name": "Mariä Empfängnis",
+				"tname": "Immaculate Conception",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
-				"type": 5
+				"type": 0,
+				"day": "12-08"
 			},
 			{
-				"name": "Erster Weihnachtsfeiertag",
-				"region": "DE: Alle Bundesländer",
+				"name": "Heiliger Abend",
+				"tname": "Christmas Eve",
+				"region": "AT: Alle Bundesländer (nach Arbeitsvertrag)",
+				"date": "",
+				"type": 0,
+				"day": "12-24"
+			},
+			{
+				"name": "Christtag",
+				"tname": "Christmas Day",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
 			},
 			{
-				"name": "Zweiter Weihnachtsfeiertag",
-				"region": "DE: Alle Bundesländer",
+				"name": "Stefanitag",
+				"tname": "St. Stephans Day",
+				"region": "AT: Alle Bundesländer",
 				"date": "",
 				"type": 0,
 				"day": "12-26"
 			},
-		]
-			
+			{
+				"name": "Silvester",
+				"tname": "New Year's Eve",
+				"region": "AT: Alle Bundesländer (nach Arbeitsvertrag)",
+				"date": "",
+				"type": 0,
+				"day": "12-31"
+			},
+		]	
 	};
+
 
 
 //main function of de.js, itterates through all holidays, applies calculation
@@ -143,18 +163,13 @@ function processForYear(year){
 		case 1:
 			processEasterHolidays(year);
 			break;
-		case 5:
-			processBettag(phodays.holidays[i], year);
-			break;
 		}
 	}
-	
+
 }
 
 
-
-
-//germany specific calculation
+//austria specific calculation
 function processEasterHolidays(year){
 	var easterday = new Date(year.toString() + '-' + basiccalc.getEasterDay(year));
 	
@@ -171,23 +186,7 @@ function processEasterHolidays(year){
 		}
 	}
 }
-//germany specific calculation
-function processBettag(obj, year){
-	//get 23.11.year
-	let n = year.toString() + '-' + "11-23";
-	let d = new Date(n);
-	let day = d.getDay();
-	
-	//wendsday = 3
-	var offset = -4 - day;
-	if(day > 3){
-		offset += 7;
-	}
 
-	d.setTime(d.getTime() + offset * 86400000);
-	obj.date = d.toISOString().substring(0, 10);
-	delete obj.type;
-}
 
 
 
