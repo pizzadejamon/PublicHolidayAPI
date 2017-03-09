@@ -1,3 +1,10 @@
+//PublicHolidayAPI
+//main handles post-requests
+//author: Marius Riehl
+//date:	  2017-03-08
+//change: 2017-03-09
+
+
 //server objects (nice libraries :p)
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -6,8 +13,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //general
-var supported = ["DE", "US", "CH", "AT"];
+var supported = ["DE", "US", "CH", "AT", "BE"]; //list of countries
 
+
+function dataFromCountryString(countryCode, year){
+	var next;
+	var cc = require('./countries/' + countryCode.toLowerCase() + '.js');
+	return next = cc.getHolidays(year);
+	
+}
 
 //returns JSON object with all holidays of all countries (array)
 function getData(countries, year){
@@ -16,24 +30,7 @@ function getData(countries, year){
 	for(var k = 0; k < countries.length; k++){
 		next = undefined;
 		
-		switch(countries[k]){
-		case "DE":
-			var de = require('./countries/de.js');
-			next = de.getHolidays(year);
-			break;
-		case "US":
-			var us = require('./countries/us.js');
-			next = us.getHolidays(year);
-			break;
-		case "CH":
-			var ch = require('./countries/ch.js');
-			next = ch.getHolidays(year);
-			break;
-		case "AT":
-			var at = require('./countries/at.js');
-			next = at.getHolidays(year);
-			break;
-		}
+		next = dataFromCountryString(countries[k], year);
 		
 		
 		if(k < 1){
@@ -66,27 +63,29 @@ app.post('/data/', function(req, res){
 		//convert countries string to array
 		let countries = req.body.countries.split(",");
 		console.log(countries);
-		//check if each country is supported and format is correct
-		var isSupported = false;
-		for(var j = 0; j < countries.length; j++){
-			if(countries[j].length != 2){
-				break; //not in ISO 3166 Alpha-2 Format - stop
-			}
-			
-			
-			for(var i = 0; i < supported.length; i++){
-				if(countries[j] == supported[i]){
-					isSupported = true;
-				}
-			}
-			if(isSupported == false){ //at least one is not supported, stop checking
-				break;
+		//check last char and empty
+		for(var i = 0; i < countries.length; i++){
+			if(countries[i] == ''){
+				countries.splice(i, 1);
 			}
 		}
+		console.log(countries);
 		
-		if(!isSupported){ //unsupported, throw error
-			res.status(400).send("Bad Request. Wrong #countries# format, or >= 1 country not supported.");
+		//check if each country is supported and format is correct
+		for(var j = 0; j < countries.length; j++){
+			
+			if(countries[j].length != 2){
+				res.status(400).send("Bad Request. Wrong country request format. Use: AA,BB,CC");
+				return;
+			}
+			
+			
+			if(supported.indexOf(countries[j]) == -1){
+				res.status(400).send("Bad Request. Country " + countries[j] + " not supported.");
+				return;
+			}
 		}
+
 		
 		//country is supported, everything checked, get the data:
 		//react according to type
@@ -94,19 +93,21 @@ app.post('/data/', function(req, res){
 		case "list":
 			try{
 				res.send(getData(countries, req.body.year));
+				return;
 			}catch(err){
-				//res.status(400).send("Bad Request. Your input produced an internal server error.");
+				console.log(err); //internal error, prevent server from crashing and log error
 			}
 			break;
 		default:
 			res.status(400).send("Bad Request. Request-Type is not supported.");
-			break;	
+			return;	
 		}
 		
 		
 		
 	}else{
 		res.status(400).send("Bad Request. Check API documentation for required params.");
+		return;
 	}
 		
 	

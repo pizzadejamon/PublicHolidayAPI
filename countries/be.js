@@ -1,126 +1,95 @@
-//Country File for Switzerland / Schweiz - PublicHolidayAPI
+//Country File for Belgium / Belgien - PublicHolidayAPI
 //author: Marius Riehl
-//date:	  2017-03-08
+//date:	  2017-03-09
 //change: 2017-03-09
 
 var basiccalc = require('./../basiccalc.js');
 
-//object containing switzerland holidays
+
+//object containing belgian holidays
 var phodays = {
-		"num": 16,
+		"num": 10,
 		"holidays":[
 			{
-				"name": "Neujahrstag",
-				"region": "CH: Alle Kantonen",
+				"name": "Nieuwjaar",
+				"tname": "New Year's Day",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "01-01"
 			},
 			{
-				"name": "Berchtoldstag",
-				"region": "CH: Vereinzelte Kantonen",
-				"date": "",
-				"type": 0,
-				"day": "02-01"
-			},
-			{
-				"name": "Heilige Drei Könige",
-				"region": "CH: Vereinzelte Kantonen",
-				"date": "",
-				"type": 0,
-				"day": "01-06"
-			},
-			{
-				"name": "Joseftag",
-				"region": "CH: Vereinzelte Kantonen",
-				"date": "",
-				"type": 0,
-				"day": "19-03"
-			},
-			{
-				"name": "Karfreitag",
-				"region": "CH: Alle Kantonen",
-				"date": "",
-				"type": 1,
-				"offset": -2
-			},
-			{
-				"name": "Ostermontag",
-				"region": "CH: Alle Kantonen",
+				"name": "Paasmaandag",
+				"tname": "Easter Monday",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 1
 			},
 			{
-				"name": "Tag der Arbeit",
-				"region": "CH: Vereinzelte Kantonen",
+				"name": "Dag van de arbeid",
+				"tname": "Labour Day",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "05-01"
 			},
 			{
-				"name": "Auffahrt",
-				"region": "CH: Alle Kantonen",
+				"name": "Onze Lieve Heer hemelvaart",
+				"tname": "Ascension",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 39
 			},
 			{
-				"name": "Pfingstmontag",
-				"region": "CH: Alle Kantonen",
+				"name": "Pinkstermaandag",
+				"tname": "Pentecost Monday",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 50
 			},
 			{
-				"name": "Fronleichnam",
-				"region": "CH: Alle Kantonen",
-				"date": "",
-				"type": 1,
-				"offset": 60
-			},
-			{
-				"name": "Bundesfeier",
-				"region": "CH: Alle Kantonen",
+				"name": "Nationale feestdag",
+				"tname": "Beglian National Day",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
-				"day": "08-01"
+				"day": "06-21"
 			},
 			{
-				"name": "Mariä Himmelfahrt",
-				"region": "CH: Überwiegend alle Kantonen",
+				"name": "Onze Lieve Vrouw hemelvaart",
+				"tname": "Assumption of Mary",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "08-15"
 			},
 			{
 				"name": "Allerheiligen",
-				"region": "CH: Überwiegend alle Kantonen",
+				"tname": "All Saints' Day",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "11-01"
 			},
 			{
-				"name": "Mariä Empfängnis",
-				"region": "CH: Vereinzelte Kantonen",
+				"name": "Wapenstilstand",
+				"tname": "Armistice Day",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
-				"day": "12-08"
+				"day": "11-11"
 			},
 			{
-				"name": "Weihnachtstag",
-				"region": "CH: Alle Kantonen",
+				"name": "Kerstmis",
+				"tname": "Christmas",
+				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
-			},
-			{
-				"name": "Stephanstag",
-				"region": "CH: Alle Kantonen",
-				"date": "",
-				"type": 0,
-				"day": "12-26"
-			},
+			}
 		]	
 	};
 
@@ -144,7 +113,7 @@ function processForYear(year){
 }
 
 
-//switzerland specific calculation
+//austria specific calculation
 function processEasterHolidays(year){
 	var easterday = new Date(year.toString() + '-' + basiccalc.getEasterDay(year));
 	

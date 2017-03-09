@@ -2,12 +2,17 @@
 This is a free Holiday API. It takes year & country as parameter and returns  
 JSON object with all holidays and dates, for the given year.  
 
-Most API's on the internet are too expansive, so i decided to develop my own,  
-and share the code for free.  
+Most API's i could find on the internet were to pricy, so i decided to develop my own,  
+and share the code for free. 
 
-Any suggestions, fixes and comments highly appreciated.  
+I'm hosting the API at https://api.mriehl.de
+ 
 
-Read further down below for technical stuff & how to use this API.  
+Any suggestions, fixes and comments are highly appreciated.  
+
+Read further down below for technical stuff & how to use this API. 
+
+#this is not finished, will add this later 
 
 #Types
 Type		Meaning  
