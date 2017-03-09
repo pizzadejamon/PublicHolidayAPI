@@ -1,7 +1,7 @@
 //Country File for Austria / Österreich - PublicHolidayAPI
 //author: Marius Riehl
 //date:	  2017-03-09
-
+//change: 2017-03-09
 
 var basiccalc = require('./../basiccalc.js');
 
@@ -59,7 +59,7 @@ var phodays = {
 				"day": "05-01"
 			},
 			{
-				"name": "Christi-Himmelfagrt",
+				"name": "Christi-Himmelfahrt",
 				"tname": "Ascension Day",
 				"region": "AT: Alle Bundesländer",
 				"date": "",

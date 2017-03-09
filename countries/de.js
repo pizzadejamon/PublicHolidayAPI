@@ -1,6 +1,7 @@
 //Country File for Germany / Deutschland - PublicHolidayAPI
 //author: Marius Riehl
 //date:	  2017-03-08
+//change: 2017-03-09
 var basiccalc = require('./../basiccalc.js');
 
 
@@ -10,118 +11,135 @@ var phodays = {
 		"holidays":[
 			{
 				"name": "Neujahr",
-				"region": "DE: Alle Bundesländer",
+				"tname": "New Year's Day",
+				"region": "DE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "01-01"
 			},
 			{
 				"name": "Heilige Drei Könige",
-				"region": "DE: Baden-Württemberg, Bayern, Sachsen-Anhalt",
+				"tname": "Epiphany",
+				"region": "DE: Baden-Württemberg, Bavaria, Saxony-Anhalt",
 				"date": "",
 				"type": 0,
 				"day": "01-06"
 			},
 			{
 				"name": "Karfreitag",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Good Friday",
+				"region": "DE: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": -2
 			},
 			{
 				"name": "Ostersonntag",
-				"region": "DE: Brandenburg, Hessen",
+				"tname": "Easter Sunday",
+				"region": "DE: Brandenburg, Hesse",
 				"date": "",
 				"type": 1,
 				"offset": 0
 			},
 			{
 				"name": "Ostermontag",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Easter Monday",
+				"region": "DE: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 1
 			},
 			{
 				"name": "Erster Mai, Tag der Arbeit",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Labour Day",
+				"region": "DE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "05-01"
 			},
 			{
 				"name": "Christi-Himmelfahrt",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Ascension Day",
+				"region": "DE: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 39
 			},
 			{
 				"name": "Pfingstsonntag",
-				"region": "DE: Brandenburg, Hessen",
+				"tname": "Pentecost",
+				"region": "DE: Brandenburg, Hesse",
 				"date": "",
 				"type": 1,
 				"offset": 49
 			},
 			{
 				"name": "Pfingstmontag",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Whit Monday",
+				"region": "DE: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 50
 			},
 			{
 				"name": "Fronleichnam",
-				"region": "DE: Baden-Württemberg, Bayern, Hessen, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland, Thüringen",
+				"tname": "Corpus Christi",
+				"region": "DE: Baden-Württemberg, Bavaria, Hesse, North Rhine-Westphalia, Rhineland-Palatinate, Saarland, Thuringia",
 				"date": "",
 				"type": 1,
 				"offset": 60
 			},
 			{
 				"name": "Mariä Himmelfahrt",
-				"region": "DE: Bayern, Saarland",
+				"tname": "Assumption Day",
+				"region": "DE: Bavaria, Saarland",
 				"date": "",
 				"type": 0,
 				"day": "08-15"
 			},
 			{
 				"name": "Tag der deutschen Einheit",
-				"region": "DE: Alle Bundesländer",
+				"tname": "German Unity Day",
+				"region": "DE: Nation-Wide",
 				"date": "",
 				"type": 0,
 				"day": "10-03"
 			},
 			{
 				"name": "Reformation",
-				"region": "DE: Brandenburg, Mecklenburg-Vorpommern, Sachsen, Sachsen-Anhalt, Thüringen",
+				"tname": "Reformation Day",
+				"region": "DE: Brandenburg, Mecklenburg-Vorpommern, Saxony, Saxony-Anhalt, Thuringia",
 				"date": "",
 				"type": 0,
 				"day": "10-31"
 			},
 			{
 				"name": "Allerheiligen",
-				"region": "DE: Baden-Württemberg, Bayern, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland",
+				"tname": "All Saints' Day",
+				"region": "DE: Baden-Württemberg, Bavaria, North Rhine-Westphalia, Rhineland-Palatinate, Saarland",
 				"date": "",
 				"type": 0,
 				"day": "11-01"
 			},
 			{
 				"name": "Buß- und Bettag",
-				"region": "DE: Sachsen",
+				"tname": "Repentance and Prayer Day",
+				"region": "DE: Saxony",
 				"date": "",
 				"type": 5
 			},
 			{
 				"name": "Erster Weihnachtsfeiertag",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Christmas Day",
+				"region": "DE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
 			},
 			{
 				"name": "Zweiter Weihnachtsfeiertag",
-				"region": "DE: Alle Bundesländer",
+				"tname": "Saints Stephen's Day",
+				"region": "DE:  Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-26"
@@ -148,10 +166,8 @@ function processForYear(year){
 			break;
 		}
 	}
-	
+	console.log(year);
 }
-
-
 
 
 //germany specific calculation
@@ -178,7 +194,7 @@ function processBettag(obj, year){
 	let d = new Date(n);
 	let day = d.getDay();
 	
-	//wendsday = 3
+	//wednesday = 3
 	var offset = -4 - day;
 	if(day > 3){
 		offset += 7;
@@ -195,6 +211,7 @@ function processBettag(obj, year){
 module.exports = {
 		getHolidays: function (year){
 			processForYear(year);
+			console.log(year);
 			return phodays;
 		}
 }

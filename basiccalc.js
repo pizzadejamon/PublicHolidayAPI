@@ -1,3 +1,9 @@
+//Caculation for Dates
+//author: Marius Riehl
+//date:	  2017-03-08
+//change: 2017-03-09
+
+
 //does basic, non country specific calculations.
 //type 1 calculation is declared country specific and processed in xx.js
 
@@ -51,11 +57,11 @@ function calculateLastOf(obj, year){
 		date = new Date(year.toString() + '-' + padout(obj.month) + '-' + dayCount);
 	}
 	
-	
+	obj.date = date.toISOString().substring(0, 10);
 	delete obj.type;
 	delete obj.day;
 	delete obj.month;
-	
+
 	return obj;
 }
 
