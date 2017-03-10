@@ -166,7 +166,6 @@ function processForYear(year){
 			break;
 		}
 	}
-	console.log(year);
 }
 
 
@@ -182,8 +181,6 @@ function processEasterHolidays(year){
 			
 			d.setTime(easterday.getTime() + phodays.holidays[i].offset * 86400000);
 			phodays.holidays[i].date = d.toISOString().substring(0, 10);
-			delete phodays.holidays[i].type;
-			delete phodays.holidays[i].offset;
 		}
 	}
 }
@@ -202,7 +199,7 @@ function processBettag(obj, year){
 
 	d.setTime(d.getTime() + offset * 86400000);
 	obj.date = d.toISOString().substring(0, 10);
-	delete obj.type;
+	
 }
 
 
@@ -211,7 +208,6 @@ function processBettag(obj, year){
 module.exports = {
 		getHolidays: function (year){
 			processForYear(year);
-			console.log(year);
 			return phodays;
 		}
 }

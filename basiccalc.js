@@ -11,8 +11,6 @@
 //type 0
 function calculateSetDays(obj, year){ //only sets the date of type 0 holidays according to the year
 		obj.date = year.toString() + '-' + obj.day;
-		delete obj.type;
-		delete obj.day;
 		return obj;
 }
 
@@ -35,12 +33,6 @@ function calculateFirstOfOffset(obj, year){
 
 			
 	obj.date = year.toString() + '-' + padout(obj.month) + '-' + dj.toString();
-			
-	delete obj.type;
-	delete obj.day;
-	delete obj.month;
-	delete obj.offset;
-		
 	return obj;
 }
 
@@ -58,10 +50,6 @@ function calculateLastOf(obj, year){
 	}
 	
 	obj.date = date.toISOString().substring(0, 10);
-	delete obj.type;
-	delete obj.day;
-	delete obj.month;
-
 	return obj;
 }
 
@@ -122,14 +110,3 @@ function lastDayOfMonth(month, year){
 	let d = new Date(year, month - 1, m);
 	return d.getDay();
 }
-
-
-
-
-
-
-
-
-
-
-

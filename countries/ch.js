@@ -156,8 +156,6 @@ function processEasterHolidays(year){
 			
 			d.setTime(easterday.getTime() + phodays.holidays[i].offset * 86400000);
 			phodays.holidays[i].date = d.toISOString().substring(0, 10);
-			delete phodays.holidays[i].type;
-			delete phodays.holidays[i].offset;
 		}
 	}
 }
