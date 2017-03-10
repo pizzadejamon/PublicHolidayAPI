@@ -1,6 +1,6 @@
-//Country File for Germany / Deutschland - PublicHolidayAPI
+//Country File for Bulgaria / Bulgarien - PublicHolidayAPI
 //author: Marius Riehl
-//date:	  2017-03-08
+//date:	  2017-03-10
 //change: 2017-03-10
 var basiccalc = require('./../basiccalc.js');
 
@@ -10,20 +10,20 @@ var phodays = {
 		"num": 17,
 		"holidays":[
 			{
-				"name": "Neujahr",
+				"name": "Нова година",
 				"tname": "New Year's Day",
-				"region": "DE: Nationwide",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "01-01"
 			},
 			{
-				"name": "Heilige Drei Könige",
-				"tname": "Epiphany",
-				"region": "DE: Baden-Württemberg, Bavaria, Saxony-Anhalt",
+				"name": "Ден на Освобождението на България от османско робство",
+				"tname": "Liberation Day",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 0,
-				"day": "01-06"
+				"day": "03-03"
 			},
 			{
 				"name": "Karfreitag",
@@ -32,6 +32,14 @@ var phodays = {
 				"date": "",
 				"type": 1,
 				"offset": -2
+			},
+			{
+				"name": "Karsamstag",
+				"tname": "Good Friday",
+				"region": "DE: Nationwide",
+				"date": "",
+				"type": 1,
+				"offset": -1
 			},
 			{
 				"name": "Ostersonntag",
@@ -50,60 +58,44 @@ var phodays = {
 				"offset": 1
 			},
 			{
-				"name": "Erster Mai, Tag der Arbeit",
+				"name": "Ден на труда и на международната работническа солидарност",
 				"tname": "Labour Day",
-				"region": "DE: Nationwide",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "05-01"
 			},
 			{
-				"name": "Christi-Himmelfahrt",
-				"tname": "Ascension Day",
-				"region": "DE: Nationwide",
-				"date": "",
-				"type": 1,
-				"offset": 39
-			},
-			{
-				"name": "Pfingstsonntag",
-				"tname": "Pentecost",
-				"region": "DE: Brandenburg, Hesse",
-				"date": "",
-				"type": 1,
-				"offset": 49
-			},
-			{
-				"name": "Pfingstmontag",
-				"tname": "Whit Monday",
-				"region": "DE: Nationwide",
-				"date": "",
-				"type": 1,
-				"offset": 50
-			},
-			{
-				"name": "Fronleichnam",
-				"tname": "Corpus Christi",
-				"region": "DE: Baden-Württemberg, Bavaria, Hesse, North Rhine-Westphalia, Rhineland-Palatinate, Saarland, Thuringia",
-				"date": "",
-				"type": 1,
-				"offset": 60
-			},
-			{
-				"name": "Mariä Himmelfahrt",
-				"tname": "Assumption Day",
-				"region": "DE: Bavaria, Saarland",
+				"name": "Гергьовден, ден на храбростта и Българската армия",
+				"tname": "Saint Georg's Day",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 0,
-				"day": "08-15"
+				"day": "05-06"
 			},
 			{
-				"name": "Tag der deutschen Einheit",
-				"tname": "German Unity Day",
-				"region": "DE: Nationwide",
+				"name": "Ден на българската просвета и култура и на славянската писменост",
+				"tname": "Saints Cyril and Methodius Day",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 0,
-				"day": "10-03"
+				"day": "05-24"
+			},
+			{
+				"name": "Ден на Съединението",
+				"tname": "Unification Day",
+				"region": "BG: Nationwide",
+				"date": "",
+				"type": 0,
+				"day": "09-06"
+			},
+			{
+				"name": "Ден на независимостта на България",
+				"tname": "Independence Day",
+				"region": "BG: Nationwide",
+				"date": "",
+				"type": 0,
+				"day": "09-22"
 			},
 			{
 				"name": "Reformation",

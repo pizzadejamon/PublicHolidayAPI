@@ -73,12 +73,7 @@ function getNextHoliday(countries, year){
 
 
 
-
-
-
-
-
-//misc functions
+//miscallaneous functions
 function getCountryArray(countrystring){
 	//delete all spaces from countries string
 	countrystring = countrystring.replace(/\s+/g, '');
@@ -94,7 +89,6 @@ function getCountryArray(countrystring){
 	}
 	return countries;
 }
-
 
 
 
