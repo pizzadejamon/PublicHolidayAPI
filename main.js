@@ -52,7 +52,6 @@ function getData(countries, year){
 function getNextHoliday(countries, year){
 	var time = Date.now();
 	var data = getData(countries, year);
-	console.log(data);
 	for(var i = 0; i < data.num; i++){
 		var date = new Date(data.holidays[i].date);
 		if(date.getTime() > time){
@@ -89,96 +88,143 @@ function getHolidaysArea(countries, year, datex, datey){
 	return data;
 }
 
+
+//misc functions
+function getCountryArray(countrystring){
+	//delete all spaces from countries string
+	countrystring = countrystring.replace(/\s+/g, '');
+	//support lower case chars
+	countrystring = countrystring.toUpperCase();
+	//convert countries string to array
+	let countries = countrystring.split(",");
+	//check last char and empty
+	for(var i = 0; i < countries.length; i++){
+		if(countries[i] == ''){
+			countries.splice(i, 1);
+		}
+	}
+	return countries;
+}
+
+
+
+
+//post request handling function
+function checkCountry(req, res){
+	//check countries
+	let countries = getCountryArray(req);
+	
+	//check if each country is supported and format is correct
+	for(var j = 0; j < countries.length; j++){
+		
+		if(countries[j].length != 2){
+			res.status(400).send("Bad Request. Wrong country request format. Use: AA,BB,CC");
+			return false;
+		}
+		
+		
+		if(supported.indexOf(countries[j]) == -1){
+			res.status(400).send("Bad Request. Country " + countries[j] + " not supported.");
+			return false;
+		}
+	}
+	return countries; //return array, if everything is fine
+}
+function checkYear(req, res){
+	//check year
+	let p = req.replace(/\D/g, ''); //remove non numeric chars
+	if(p != req){
+		res.status(400).send("Bad Request. Only non numeric characters in [year] parameter are allowed.");
+		return false;
+	}
+	
+	if(req.length != 4){
+		res.status(400).send("Bad Request. Wrong format for year parameter.");
+		return false;
+	}
+	if(parseInt(req) < 1000){
+		res.status(400).send("Bad Request. Year must be > 1000.");
+		return false;
+	}
+	return p; //return formatted string, if everything is fine
+}
+
+
+
+//list type, process here
+//required params: countries, year
+function typeList(req, res){
+	
+	//check required params
+	if(typeof req.body.countries == "undefined" || typeof req.body.year == "undefined" || req.body.year == "" || req.body.countries == ""){
+		res.status(400).send("Bad Request. Check API documentation for required params.");
+		return;
+	}
+	
+	//check year
+	let year = checkYear(req.body.year, res);
+	if(typeof year != "string"){ //returns false, when something is wrong, and correct string if its fine
+		return;
+	}
+	
+	//check countries
+	let countries = checkCountry(req.body.countries, res);
+	if(!Array.isArray(countries)){ //returns array if everything is fine, returns false if not
+		return;
+	}
+
+	//everything fine, get the data and send response
+	try{
+		res.send(clearList(getData(countries, year)));
+		return;
+	}catch(err){
+		console.log(err); //internal error, prevent server from crashing and log error
+	}
+	return;
+}
+
+//next type, required params: countries (only)
+function typeNext(req, res){
+	//check required params
+	if(typeof req.body.countries == "undefined" || req.body.countries == ""){
+		res.status(400).send("Bad Request. Check API documentation for required params.");
+		return;
+	}
+	
+	//check countries
+	let countries = checkCountry(req.body.countries, res);
+	if(!Array.isArray(countries)){ //returns array if everything is fine, returns false if not
+		return;
+	}
+	
+	//get data and respond
+	try{
+		let p = new Date();
+		res.send(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4))));
+		return;
+	}catch(err){
+		console.log(err);
+	}
+	return;
+}
+
+
 //process and respond for incomming post requests
 //check for correct body & parameters, crunch the numbers and return JSON Object
 app.post('/data/', function(req, res){	
-	if(typeof req.body.year != 'undefined' && typeof req.body.countries != 'undefined' && typeof req.body.requesttype != 'undefined'
-		&& req.body.year != '' && req.body.countries != '' && req.body.requesttype != ''){
-		//headers contain needed parameters, proceed (maybe check API key?)
-		
-		//check format
-		let p = req.body.year.replace(/\D/g, ''); //remove non numeric chars
-		if(p != req.body.year){
-			res.status(400).send("Bad Request. Only non numeric characters in [year] parameter are allowed.");
-			return;
-		}
-		
-		if(req.body.year.length != 4){
-			res.status(400).send("Bad Request. Wrong format for year parameter.");
-			return;
-		}
-		if(parseInt(req.body.year) < 1000){
-			res.status(400).send("Bad Request. Year must be > 1000.");
-			return;
-		}
-
-		
-		//delete all spaces from countries string
-		req.body.countries = req.body.countries.replace(/\s+/g, '');
-		//support lower case chars
-		req.body.countries = req.body.countries.toUpperCase();
-		//convert countries string to array
-		let countries = req.body.countries.split(",");
-		//check last char and empty
-		for(var i = 0; i < countries.length; i++){
-			if(countries[i] == ''){
-				countries.splice(i, 1);
-			}
-		}
-		
-		//check if each country is supported and format is correct
-		for(var j = 0; j < countries.length; j++){
-			
-			if(countries[j].length != 2){
-				res.status(400).send("Bad Request. Wrong country request format. Use: AA,BB,CC");
-				return;
-			}
-			
-			
-			if(supported.indexOf(countries[j]) == -1){
-				res.status(400).send("Bad Request. Country " + countries[j] + " not supported.");
-				return;
-			}
-		}
-
-		
-		//country is supported, everything checked, get the data:
-		//react according to type
+	if(typeof req.body.requesttype != 'undefined'){
+		req.body.requesttype = req.body.requesttype.toUpperCase();
 		switch(req.body.requesttype){
-		case "list":
-			try{
-				res.send(clearList(getData(countries, req.body.year)));
-				return;
-			}catch(err){
-				console.log(err); //internal error, prevent server from crashing and log error
-			}
-			break;
-		case "next":
-			try{
-				console.log(getNextHoliday(countries, req.body.year));
-				res.send(clearParams(getNextHoliday(countries, req.body.year)));
-				return;
-			}catch(err){
-				console.log(err);
-			}	
-			break;
-		case "xlisty":
-			try{
-				
-				
-				
-				//res.send()
-			}catch(err){
-				
-			}
+		case "LIST":
+			typeList(req, res);
+			return;
+		case "NEXT":
+			typeNext(req, res);
 			break;
 		default:
 			res.status(400).send("Bad Request. Request-Type is not supported.");
-			return;	
+			return;
 		}
-		
-		
-		
 	}else{
 		res.status(400).send("Bad Request. Check API documentation for required params.");
 		return;
@@ -189,7 +235,6 @@ app.post('/data/', function(req, res){
 
 //removes unwanted variables from object before sending it to client
 function clearParams(obj){
-		console.log(obj);
 		switch(obj.type){
 		case 0:
 			delete obj.day;
