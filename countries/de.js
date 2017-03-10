@@ -100,7 +100,7 @@ var phodays = {
 			{
 				"name": "Tag der deutschen Einheit",
 				"tname": "German Unity Day",
-				"region": "DE: Nation-Wide",
+				"region": "DE: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "10-03"
