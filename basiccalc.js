@@ -32,7 +32,7 @@ function calculateFirstOfOffset(obj, year){
 	var dj = 1 + offset + obj.offset * 7; //dj = daynumber of date
 
 			
-	obj.date = year.toString() + '-' + padout(obj.month) + '-' + dj.toString();
+	obj.date = year.toString() + '-' + padout(obj.month) + '-' + padout(dj);
 	return obj;
 }
 
@@ -42,11 +42,11 @@ function calculateFirstOfOffset(obj, year){
 function calculateLastOf(obj, year){
 	//get last day of month
 	var dayCount = daysInMonth(obj.month, year);
-	var date = new Date(year.toString() + '-' + padout(obj.month) + '-' + dayCount);
+	var date = new Date(year.toString() + '-' + padout(obj.month) + '-' + padout(dayCount));
 	while (date.getDay() != obj.day)
 	{
 		dayCount--;
-		date = new Date(year.toString() + '-' + padout(obj.month) + '-' + dayCount);
+		date = new Date(year.toString() + '-' + padout(obj.month) + '-' + padout(dayCount));
 	}
 	
 	obj.date = date.toISOString().substring(0, 10);

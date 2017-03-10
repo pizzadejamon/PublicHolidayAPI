@@ -69,24 +69,13 @@ function getNextHoliday(countries, year){
 	}
 }
 
-//only returns holidays inbetween a certain area of dates
-function getHolidaysArea(countries, year, datex, datey){
-	var data = getData(countries, year);
-	var x = (new Date(datex)).getTime();
-	var y = (new Date(datey)).getTime();
-	if(x < y){ //swap if order is wrong
-		let z = y; y = x; x = z;
-	}
-	//itterate through data set
-	for(var i = 0; i < data.num; i++){
-		let p = (new Date(data.holidays[i].date)).getTime();
-		if(p < x || p > y){ //out of range
-			data.holidays[i].splice(i, 1); //remove
-		}
-	}
-	
-	return data;
-}
+
+
+
+
+
+
+
 
 
 //misc functions
@@ -142,14 +131,36 @@ function checkYear(req, res){
 		res.status(400).send("Bad Request. Wrong format for year parameter.");
 		return false;
 	}
-	if(parseInt(req) < 1000){
-		res.status(400).send("Bad Request. Year must be > 1000.");
+	if(parseInt(req) < 1970){
+		res.status(400).send("Bad Request. Year must be >= 1970.");
 		return false;
 	}
 	return p; //return formatted string, if everything is fine
 }
-
-
+function checkDate(req, res){
+	//check dates for area type request
+	if(req.length != 10){ //wrong length
+		res.status(400).send("Bad Request. Invalid date format. Use ISO-8601 YYYY-MM-DD");
+		return false;
+	}
+	let p = req.replace(/\D/g, ''); //remove non numeric chars
+	p = req.replace(/[0-9]/g, 'X'); //replace numeric with X for format check
+	if(p != "XXXX-XX-XX"){
+		res.status(400).send("Bad Request. Invalid date format. Use ISO-8601 YYYY-MM-DD");
+		return false;
+	}
+	if(parseInt(req.substring(0,4)) < 1970){
+		res.status(400).send("Bad Request. Year must be >= 1970.");
+		return;
+	}
+	let q = Date.parse(req);
+	if(isNaN(q)){
+		res.status(400).send("Bad Request. Invalid date object. Use ISO-8601 YYYY-MM-DD");
+		return;
+	}
+		
+	return true;	//everything fine, return true
+}
 
 //list type, process here
 //required params: countries, year
@@ -208,6 +219,97 @@ function typeNext(req, res){
 	return;
 }
 
+//area type, required params: countries, start, end in ISO 8601 format
+function typeArea(req, res){
+	//check required params
+	if(typeof req.body.countries == "undefined" || typeof req.body.start == "undefined" || typeof req.body.end == "undefined" || 
+			req.body.start == "" || req.body.end == "" || req.body.countries == ""){
+		res.status(400).send("Bad Request. Check API documentation for required params.");
+		return;
+	}
+	
+	//check countries
+	let countries = checkCountry(req.body.countries, res);
+	if(!Array.isArray(countries)){ //returns array if everything is fine, returns false if not
+		return;
+	}
+	
+	//check start and end date
+	if(!checkDate(req.body.start, res) || !checkDate(req.body.end, res)){
+		return; //date check invalid
+	}//else:
+	//new date objects
+	let x = new Date(req.body.start);
+	let y = new Date(req.body.end);
+	
+	//calculate number of years
+	var dt = parseInt(y.toISOString().substring(0, 4)) - parseInt(x.toISOString().substring(0, 4)) + 1;
+	if(dt < 1){
+		res.status(400).send("Bad request. Start date must be before end date.");
+		return;
+	}else if(dt > 10){
+		res.status(400).send("Bad request. Not more than 10 years area allowed.");
+		return;
+	}
+	//date format is valid, got dt (number of years inbetween
+	var data = undefined;
+	var next = undefined;
+	
+	try{
+		for(var i = 0; i < dt; i++){ //itterate through the years and put the data together
+			next = undefined;
+			let z = (parseInt(x.toISOString().substring(0, 4)) + i).toString();
+			next = clearList(getData(countries, z));
+			if(i < 1){
+				data = JSON.parse(JSON.stringify(next)); //copy data into object
+			}else{
+				data.num += next.num;
+				data.holidays = data.holidays.concat(next.holidays);
+			}
+		
+		}
+		//ok, got the object, now itterate through the first year, delete all that are smaller than x
+		let j = 0;let v = data.num -1;
+		while(parseInt(data.holidays[j].date.substring(0, 4)) == x.getFullYear() && v > 0){
+			let p = (new Date(data.holidays[j].date)).getTime();
+			if(p < x.getTime()){
+				data.holidays.splice(0, 1); //remove out of array
+				data.num--;
+				j--; //nachrücken problem
+			}
+			j++;v--;
+		}//not itterate through the last year backwards, delete all that are bigger than x
+		let k = data.num - 1; v = data.num - 1;
+		while(parseInt(data.holidays[k].date.substring(0, 4)) == y.getFullYear() && v > 0){
+			let p = (new Date(data.holidays[k].date)).getTime();
+			if(p > y.getTime()){
+				data.holidays.splice(data.holidays.length -1, 1); //remove out of array
+				data.num--;
+			}
+			k--;v--;
+		}
+		//hardcoded check for last one///////////////////////////////////////////////////////
+		let p = (new Date(data.holidays[data.num-1].date)).getTime();						//this has to be removed by improving the logic!
+		if(p > y.getTime()){
+			data.holidays.splice(data.holidays.length -1, 1); //remove out of array
+			data.num--;
+		}
+		////////////////////////////////////////////////////////////////////////////////////
+		//check if no holidays were found
+		if(data.num > 0){
+			res.send(data);
+		}else{
+			res.send("Keine Feiertage in diesem Bereich.");
+		}
+		
+		return;
+	}catch(err){
+		console.log(err);
+		res.status(500).send("Internal Server Error. Something went wrong.");
+		return;
+	}
+	
+}
 
 //process and respond for incomming post requests
 //check for correct body & parameters, crunch the numbers and return JSON Object
@@ -220,6 +322,9 @@ app.post('/data/', function(req, res){
 			return;
 		case "NEXT":
 			typeNext(req, res);
+			break;
+		case "AREA":
+			typeArea(req, res);
 			break;
 		default:
 			res.status(400).send("Bad Request. Request-Type is not supported.");
