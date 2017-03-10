@@ -2,7 +2,7 @@
 //main handles post-requests
 //author: Marius Riehl
 //date:	  2017-03-08
-//change: 2017-03-09
+//change: 2017-03-10
 
 
 //server objects (nice libraries :p)
@@ -18,9 +18,9 @@ var supported = ["DE", "US", "CH", "AT", "BE"]; //list of countries
 
 function dataFromCountryString(countryCode, year){
 	var next;
-	var cc = require('./countries/' + countryCode.toLowerCase() + '.js');
-	console.log(year);
-	return next = cc.getHolidays(year);
+	var cc = undefined;
+	cc = require('./countries/' + countryCode.toLowerCase() + '.js');
+	return next = JSON.parse(JSON.stringify(cc.getHolidays(year)));
 	
 }
 
@@ -45,7 +45,6 @@ function getData(countries, year){
 		var x1 = (new Date(x)).getTime(); var y1 = (new Date(y)).getTime();
 		return ((x1 < y1) ? -1 : ((x1 > y1) ? 1 : 0));
 	});
-	
 	return data;
 }
 
@@ -53,6 +52,7 @@ function getData(countries, year){
 function getNextHoliday(countries, year){
 	var time = Date.now();
 	var data = getData(countries, year);
+	console.log(data);
 	for(var i = 0; i < data.num; i++){
 		var date = new Date(data.holidays[i].date);
 		if(date.getTime() > time){
@@ -91,17 +91,27 @@ function getHolidaysArea(countries, year, datex, datey){
 
 //process and respond for incomming post requests
 //check for correct body & parameters, crunch the numbers and return JSON Object
-app.post('/data/', function(req, res){
-	console.log(req.body);
-	
+app.post('/data/', function(req, res){	
 	if(typeof req.body.year != 'undefined' && typeof req.body.countries != 'undefined' && typeof req.body.requesttype != 'undefined'
 		&& req.body.year != '' && req.body.countries != '' && req.body.requesttype != ''){
 		//headers contain needed parameters, proceed (maybe check API key?)
 		
 		//check format
-		if(req.body.year.length != 4){
-			res.status(400).send("Bad Request. Wrong format for year parameter.")
+		let p = req.body.year.replace(/\D/g, ''); //remove non numeric chars
+		if(p != req.body.year){
+			res.status(400).send("Bad Request. Only non numeric characters in [year] parameter are allowed.");
+			return;
 		}
+		
+		if(req.body.year.length != 4){
+			res.status(400).send("Bad Request. Wrong format for year parameter.");
+			return;
+		}
+		if(parseInt(req.body.year) < 1000){
+			res.status(400).send("Bad Request. Year must be > 1000.");
+			return;
+		}
+
 		
 		//delete all spaces from countries string
 		req.body.countries = req.body.countries.replace(/\s+/g, '');
@@ -137,7 +147,7 @@ app.post('/data/', function(req, res){
 		switch(req.body.requesttype){
 		case "list":
 			try{
-				res.send(getData(countries, req.body.year));
+				res.send(clearList(getData(countries, req.body.year)));
 				return;
 			}catch(err){
 				console.log(err); //internal error, prevent server from crashing and log error
@@ -145,7 +155,8 @@ app.post('/data/', function(req, res){
 			break;
 		case "next":
 			try{
-				res.send(getNextHoliday(countries, req.body.year));
+				console.log(getNextHoliday(countries, req.body.year));
+				res.send(clearParams(getNextHoliday(countries, req.body.year)));
 				return;
 			}catch(err){
 				console.log(err);
@@ -176,6 +187,38 @@ app.post('/data/', function(req, res){
 	
 });
 
+//removes unwanted variables from object before sending it to client
+function clearParams(obj){
+		console.log(obj);
+		switch(obj.type){
+		case 0:
+			delete obj.day;
+			break;
+		case 1:
+			delete obj.offset;
+			break;
+		case 2:
+			delete obj.day;
+			delete obj.month;
+			delete obj.offset;
+			break;
+		case 3:
+			delete obj.day;
+			delete obj.month;
+			break;
+		}
+		delete obj.type;
+	
+	return obj;
+}
+
+//removes unwanted variables of list
+function clearList(obj){
+	for(var i = 0; i < obj.num; i++){
+		obj.holidays[i] = clearParams(obj.holidays[i]);
+	}
+	return obj;
+}
 
 
 //app listens for post (or get) requests
