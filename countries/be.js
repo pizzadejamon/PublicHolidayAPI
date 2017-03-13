@@ -52,7 +52,7 @@ var phodays = {
 			},
 			{
 				"name": "Nationale feestdag",
-				"tname": "Beglian National Day",
+				"tname": "Belgian National Day",
 				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,

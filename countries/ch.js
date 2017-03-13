@@ -11,112 +11,126 @@ var phodays = {
 		"holidays":[
 			{
 				"name": "Neujahrstag",
-				"region": "CH: Alle Kantonen",
+				"tname": "New Year's Day",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "01-01"
 			},
 			{
 				"name": "Berchtoldstag",
-				"region": "CH: Vereinzelte Kantonen",
+				"tname": "St. Berchtold",
+				"region": "CH: Not all cantons",
 				"date": "",
 				"type": 0,
 				"day": "02-01"
 			},
 			{
 				"name": "Heilige Drei Könige",
-				"region": "CH: Vereinzelte Kantonen",
+				"tname": "Epiphany",
+				"region": "CH: Not all cantons",
 				"date": "",
 				"type": 0,
 				"day": "01-06"
 			},
 			{
 				"name": "Joseftag",
-				"region": "CH: Vereinzelte Kantonen",
+				"tname": "St Joseph's Day",
+				"region": "CH: Not all cantons",
 				"date": "",
 				"type": 0,
 				"day": "19-03"
 			},
 			{
 				"name": "Karfreitag",
-				"region": "CH: Alle Kantonen",
+				"tname": "Good Friday",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": -2
 			},
 			{
 				"name": "Ostermontag",
-				"region": "CH: Alle Kantonen",
+				"tname": "Easter Monday",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 1
 			},
 			{
 				"name": "Tag der Arbeit",
-				"region": "CH: Vereinzelte Kantonen",
+				"tname": "Labor Day",
+				"region": "CH: Not all cantons",
 				"date": "",
 				"type": 0,
 				"day": "05-01"
 			},
 			{
 				"name": "Auffahrt",
-				"region": "CH: Alle Kantonen",
+				"tname": "Ascension",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 39
 			},
 			{
 				"name": "Pfingstmontag",
-				"region": "CH: Alle Kantonen",
+				"tname": "Whit Monday",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 50
 			},
 			{
 				"name": "Fronleichnam",
-				"region": "CH: Alle Kantonen",
+				"tname": "Corpus Christi",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 60
 			},
 			{
 				"name": "Bundesfeier",
-				"region": "CH: Alle Kantonen",
+				"tname": "Swiss National Day",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "08-01"
 			},
 			{
 				"name": "Mariä Himmelfahrt",
-				"region": "CH: Überwiegend alle Kantonen",
+				"tname": "Assumption",
+				"region": "CH: Mostly all cantons",
 				"date": "",
 				"type": 0,
 				"day": "08-15"
 			},
 			{
 				"name": "Allerheiligen",
-				"region": "CH: Überwiegend alle Kantonen",
+				"tname": "All Saints Day",
+				"region": "CH: Mostly all cantons",
 				"date": "",
 				"type": 0,
 				"day": "11-01"
 			},
 			{
 				"name": "Mariä Empfängnis",
-				"region": "CH: Vereinzelte Kantonen",
+				"tname": "Immaculate Conception",
+				"region": "CH: Some cantons",
 				"date": "",
 				"type": 0,
 				"day": "12-08"
 			},
 			{
 				"name": "Weihnachtstag",
-				"region": "CH: Alle Kantonen",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
 			},
 			{
 				"name": "Stephanstag",
-				"region": "CH: Alle Kantonen",
+				"region": "CH: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-26"
