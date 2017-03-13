@@ -28,6 +28,8 @@ function convert(obj){
 		+ "CALSCALE:GREGORIAN\r\n"
 		+ "METHOD:PUBLISH\r\n";
 	
+	ics += "X-WR-CALDESC:Number of Holidays:" + obj.num.toString() +"\r\n";
+	
 	//itterate through list, convert to vCal
 	var qdate = convertDate(new Date().toISOString());
 	for(var i = 0; i < obj.num; i++){
@@ -40,7 +42,7 @@ function convert(obj){
 
 		
 		ics += "SUMMARY:" + obj.holidays[i].tname + " - " + obj.holidays[i].name + "\r\n"; //use translated name as title
-		//ics += "DESCRIPTION:" + obj.holidays[i].name + "\r\n"; //use original name in description
+		//ics += "DESCRIPTION:" + obj.holidays[i].name + "\r\n"; //use original name in description                      DESCRIPTION IS NOT SHOWN IN GOOGLE CAL
 		ics += "LOCATION:" + obj.holidays[i].region + "\r\n";
 		ics += "STATUS:CONFIRMED\r\n";
 		ics += "SEQUENCE:0\r\n";
