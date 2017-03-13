@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 var supported = ["DE", "US", "CH", "AT", "BE", "BG"]; //list of countries
 
 var icsConverter = require('./icsConverter.js');
+var xmlConverter = require('./xmlConverter.js');
 
 function dataFromCountryString(countryCode, year){
 	var next;
@@ -202,9 +203,10 @@ function typeList(req, res){
 			res.send(clearList(getData(countries, year)));
 			return;
 		case "ICS":
-			var icsa = clearList(getData(countries, year));
-			var icsb = icsConverter.getICS(icsa);
-			res.send(icsb);
+			res.send(icsConverter.getICS(clearList(getData(countries, year))));
+			return;
+		case "XML":
+			res.send(xmlConverter.getXML(clearList(getData(countries, year))));
 			return;
 		}
 	}catch(err){
@@ -244,6 +246,8 @@ function typeNext(req, res){
 		case "ICS":
 			res.send(icsConverter.getICS(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4)))));
 			return;
+		case "XML":
+			res.send(xmlConverter.getXML(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4)))));
 		}
 	}catch(err){
 		console.log(err);
@@ -343,6 +347,8 @@ function typeArea(req, res){
 			case "ICS":
 				res.send(icsConverter.getICS(data));
 				return;
+			case "XML":
+				res.send(xmlConverter.getXML(data));
 			}
 		}else{
 			res.send("No Holidays found for the supplied params.");
