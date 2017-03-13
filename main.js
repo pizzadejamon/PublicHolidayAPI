@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //general
-var supported = ["DE", "US", "CH", "AT", "BE"]; //list of countries
+var supported = ["DE", "US", "CH", "AT", "BE", "BG"]; //list of countries
 
 
 function dataFromCountryString(countryCode, year){

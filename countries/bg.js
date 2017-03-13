@@ -1,13 +1,13 @@
 //Country File for Bulgaria / Bulgarien - PublicHolidayAPI
 //author: Marius Riehl
 //date:	  2017-03-10
-//change: 2017-03-10
+//change: 2017-03-13
 var basiccalc = require('./../basiccalc.js');
 
 
 //object containing german holidays
 var phodays = {
-		"num": 17,
+		"num": 14,
 		"holidays":[
 			{
 				"name": "Нова година",
@@ -26,33 +26,25 @@ var phodays = {
 				"day": "03-03"
 			},
 			{
-				"name": "Karfreitag",
+				"name": "Велики петък",
 				"tname": "Good Friday",
-				"region": "DE: Nationwide",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": -2
 			},
 			{
-				"name": "Karsamstag",
-				"tname": "Good Friday",
-				"region": "DE: Nationwide",
-				"date": "",
-				"type": 1,
-				"offset": -1
-			},
-			{
-				"name": "Ostersonntag",
+				"name": "Великден",
 				"tname": "Easter Sunday",
-				"region": "DE: Brandenburg, Hesse",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 0
 			},
 			{
-				"name": "Ostermontag",
+				"name": "Великден",
 				"tname": "Easter Monday",
-				"region": "DE: Nationwide",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 1
@@ -98,40 +90,33 @@ var phodays = {
 				"day": "09-22"
 			},
 			{
-				"name": "Reformation",
-				"tname": "Reformation Day",
-				"region": "DE: Brandenburg, Mecklenburg-Vorpommern, Saxony, Saxony-Anhalt, Thuringia",
-				"date": "",
-				"type": 0,
-				"day": "10-31"
-			},
-			{
-				"name": "Allerheiligen",
-				"tname": "All Saints' Day",
-				"region": "DE: Baden-Württemberg, Bavaria, North Rhine-Westphalia, Rhineland-Palatinate, Saarland",
+				"name": "Ден на народните будители",
+				"tname": "National Awakening Day",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "11-01"
 			},
 			{
-				"name": "Buß- und Bettag",
-				"tname": "Repentance and Prayer Day",
-				"region": "DE: Saxony",
+				"name": "Бъдни вечер",
+				"tname": "Christmas Eve",
+				"region": "BG: Nationwide",
 				"date": "",
-				"type": 5
+				"type": 0,
+				"day": "12-24"
 			},
 			{
-				"name": "Erster Weihnachtsfeiertag",
+				"name": "Рождество Христово",
 				"tname": "Christmas Day",
-				"region": "DE: Nationwide",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
 			},
 			{
-				"name": "Zweiter Weihnachtsfeiertag",
-				"tname": "Saints Stephen's Day",
-				"region": "DE:  Nationwide",
+				"name": "Рождество Христово",
+				"tname": "Saints Stephen's Day / Christmas",
+				"region": "BG: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-26"
@@ -158,6 +143,38 @@ function processForYear(year){
 			break;
 		}
 	}
+	
+	//bulgaria specific day dependencies:
+	//if 24.12 is a sunday, add additional holiday on 27
+	var date = new Date(year.toString() + '-12-24');
+	if(date.getDay() == 0){
+		let dummyDay = {	
+			"name": "Рождество Христово",
+			"tname": "Christmas Holiday",
+			"region": "BG: Nationwide",
+			"type": 0,
+			"day": "12-27" 
+		};
+		phodays.holidays.push(dummyDay);
+		phodays.num++;
+		basiccalc.getSetDays(phodays.holidays[phodays.holidays.length-1], year);
+	}
+	//if 01.01 is a sunday, add additional holiday on 02
+	date = new Date(year.toString() + "-01-01");
+	if(date.getDay() == 0){
+		let dummyDay = {	
+				"name": "Нова година",
+				"tname": "New Year Holiday",
+				"region": "BG: Nationwide",
+				"type": 0,
+				"day": "01-02" 
+		};
+		phodays.holidays.push(dummyDay);
+		phodays.num++;
+		basiccalc.getSetDays(phodays.holidays[phodays.holidays.length-1], year);
+	}
+
+					
 }
 
 
