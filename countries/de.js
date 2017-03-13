@@ -7,7 +7,7 @@ var basiccalc = require('./../basiccalc.js');
 
 //object containing german holidays
 var phodays = {
-		"num": 17,
+		"num": 16,
 		"holidays":[
 			{
 				"name": "Neujahr",
@@ -104,14 +104,6 @@ var phodays = {
 				"date": "",
 				"type": 0,
 				"day": "10-03"
-			},
-			{
-				"name": "Reformation",
-				"tname": "Reformation Day",
-				"region": "DE: Brandenburg, Mecklenburg-Vorpommern, Saxony, Saxony-Anhalt, Thuringia",
-				"date": "",
-				"type": 0,
-				"day": "10-31"
 			},
 			{
 				"name": "Allerheiligen",

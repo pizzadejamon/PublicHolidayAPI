@@ -11,6 +11,7 @@ var phodays = {
 		"holidays":[
 			{
 				"name": "New Years Day",
+				"tname": "New Years Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 0,
@@ -18,6 +19,7 @@ var phodays = {
 			},
 			{
 				"name": "Independence Day",
+				"tname": "Independence Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 0,
@@ -25,6 +27,7 @@ var phodays = {
 			},
 			{
 				"name": "Veterans Day",
+				"tname": "Veterans Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 0,
@@ -32,6 +35,7 @@ var phodays = {
 			},
 			{
 				"name": "Christmas",
+				"tname": "Christmas",
 				"region": "US: Federal",
 				"date": "",
 				"type": 0,
@@ -39,6 +43,7 @@ var phodays = {
 			},
 			{
 				"name": "Martin Luther King Day",
+				"tname": "Martin Luther King Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 2,
@@ -48,6 +53,7 @@ var phodays = {
 			},
 			{
 				"name": "Washingtons Birthday",
+				"tname": "Washingtons Birthday",
 				"region": "US: Federal",
 				"date": "",
 				"type": 2,
@@ -57,6 +63,7 @@ var phodays = {
 			},
 			{
 				"name": "Memorial Day",
+				"tname": "Memorial Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 3,
@@ -65,6 +72,7 @@ var phodays = {
 			},
 			{
 				"name": "Labor Day",
+				"tname": "Labor Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 2,
@@ -74,6 +82,7 @@ var phodays = {
 			},
 			{
 				"name": "Columbus Day",
+				"tname": "Columbus Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 2,
@@ -83,6 +92,7 @@ var phodays = {
 			},
 			{
 				"name": "Thanksgiving Day",
+				"tname": "Thanksgiving Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 2,

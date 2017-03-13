@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //general
 var supported = ["DE", "US", "CH", "AT", "BE", "BG"]; //list of countries
 
+var icsConverter = require('./icsConverter.js');
 
 function dataFromCountryString(countryCode, year){
 	var next;
@@ -145,15 +146,25 @@ function checkDate(req, res){
 	}
 	if(parseInt(req.substring(0,4)) < 1970){
 		res.status(400).send("Bad Request. Year must be >= 1970.");
-		return;
+		return false;
 	}
 	let q = Date.parse(req);
 	if(isNaN(q)){
 		res.status(400).send("Bad Request. Invalid date object. Use ISO-8601 YYYY-MM-DD");
-		return;
+		return false;
 	}
 		
 	return true;	//everything fine, return true
+}
+function checkResponseType(req, res){
+	//check if response type is supported
+	req = req.toUpperCase();
+	if(req == "XML" || req == "JSON" || req == "ICS"){
+		return true;
+	}else{
+		res.status(400).send("Bad Request. Response type not supported. Use: XML, JSON, ICS");
+		return false;
+	}
 }
 
 //list type, process here
@@ -178,12 +189,27 @@ function typeList(req, res){
 		return;
 	}
 
+	//check responsetype
+	if(typeof req.body.responsetype == "undefined" || req.body.responsetype == ""){req.body.responsetype = "JSON";}
+	if(!checkResponseType(req.body.responsetype, res)){
+		return; //returnd false, stop
+	}req.body.responsetype = req.body.responsetype.toUpperCase();
+
 	//everything fine, get the data and send response
 	try{
-		res.send(clearList(getData(countries, year)));
-		return;
+		switch(req.body.responsetype){
+		case "JSON":
+			res.send(clearList(getData(countries, year)));
+			return;
+		case "ICS":
+			var icsa = clearList(getData(countries, year));
+			var icsb = icsConverter.getICS(icsa);
+			res.send(icsb);
+			return;
+		}
 	}catch(err){
 		console.log(err); //internal error, prevent server from crashing and log error
+		res.status(500).send("Internal Server Error. Something went wrong");
 	}
 	return;
 }
@@ -202,13 +228,26 @@ function typeNext(req, res){
 		return;
 	}
 	
+	//check responsetype
+	if(typeof req.body.responsetype == "undefined" || req.body.responseType == ""){req.body.responsetype = "JSON";}
+	if(!checkResponseType(req.body.responsetype, res)){
+		return; //returnd false, stop
+	}req.body.responsetype = req.body.responsetype.toUpperCase();
+	
 	//get data and respond
 	try{
 		let p = new Date();
-		res.send(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4))));
-		return;
+		switch(req.body.responsetype){
+		case "JSON":
+			res.send(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4))));
+			return;
+		case "ICS":
+			res.send(icsConverter.getICS(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4)))));
+			return;
+		}
 	}catch(err){
 		console.log(err);
+		res.status(500).send("Internal Server Error. Something went wrong");
 	}
 	return;
 }
@@ -227,6 +266,12 @@ function typeArea(req, res){
 	if(!Array.isArray(countries)){ //returns array if everything is fine, returns false if not
 		return;
 	}
+	
+	//check responsetype
+	if(typeof req.body.responsetype == "undefined" || req.body.responsetype == ""){req.body.responsetype = "JSON";}
+	if(!checkResponseType(req.body.responsetype, res)){
+		return; //returned false, stop, else ok
+	}req.body.responsetype = req.body.responsetype.toUpperCase();
 	
 	//check start and end date
 	if(!checkDate(req.body.start, res) || !checkDate(req.body.end, res)){
@@ -291,15 +336,22 @@ function typeArea(req, res){
 		////////////////////////////////////////////////////////////////////////////////////
 		//check if no holidays were found
 		if(data.num > 0){
-			res.send(data);
+			switch(req.body.responsetype){
+			case "JSON":
+				res.send(data);
+				return;
+			case "ICS":
+				res.send(icsConverter.getICS(data));
+				return;
+			}
 		}else{
-			res.send("Keine Feiertage in diesem Bereich.");
+			res.send("No Holidays found for the supplied params.");
 		}
 		
 		return;
 	}catch(err){
-		console.log(err);
-		res.status(500).send("Internal Server Error. Something went wrong.");
+console.log(err);
+		res.status(500).send("Internal Server Error. Something went wrong. We are currently working on fixing this.");
 		return;
 	}
 	
