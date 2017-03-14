@@ -8,16 +8,58 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik+Mono+One" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <style>
+  	body{
+  		 overflow-x: hidden;
+  	}
+  
+  	.maintext{
+         font-family: 'Roboto Mono', sans-serif;
+         font-size: 18px;  	
+  	}
+  	.footertext{
+  		color: #ffffff;
+  		padding-left: 80px;
+  		padding-right: 80px;
+  		padding-top: 40px;
+  	}
+  	.mainheading{
+  		font-family: 'Rubik Mono One', sans-serif;
+  	}
+  	.designcolor{
+  		background-color: rgba(249, 209, 0, 0.6);
+  	}
+  	.abutton{
+  		font-family: 'Rubik Mono One', sans-serif;
+  		font-size: 26px;
+  		padding-top: 10px;
+  		display:block;
+  		color:#333;
+  	}
+  	.abutton:hover{
+  		color:#333;
+  	}
+  	.box{
+  		width:320px;
+  		height:52px;
+  		vertical-align: middle;
+  	}
+
+  
+  </style>
+  
+  
 </head>
 <body>
 
-<div class="jumbotron text-center" style="background-color: rgba(249, 209, 0, 0.6);">
+<div class="jumbotron text-center designcolor" style="border-bottom: 3px solid #FE9A2E;">
   <h1 style="font-family: 'Rubik Mono One', sans-serif;">Public Holiday API</h1>
-  <p style="font-family: 'Roboto Mono', sans-serif;">providing free data for over 80 holidays in 6 countries<br></p>
+  <p style="font-family: 'Roboto Mono', sans-serif;">providing free data for over 80 holidays in 6 countries via REST<br></p>
 
 </div>
 
-<div class="container" id="live-statistics" style="margin-bottom: 100px;">
+<div class="container well" id="live-statistics" style="margin-bottom: 100px;">
 	<div class="row">
 		
 		<div class="col-sm-2">
@@ -63,8 +105,8 @@
 <div class="container">
 	<div class="row">
 	<div class="col-sm-12">
-	<h1 style="font-family: 'Rubik Mono One', sans-serif;">Basic Usage / Info</h1>
-	<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;">
+	<h1 class="mainheading">Basic Usage / Info</h1>
+	<p class="maintext">
 		<br>A REST service providing dates of public holidays. Currently supporting 6 countries.<br><br>
 		
 		Do all post requests to <a href="https://api.mriehl.de/data/">https://api.mriehl.de/data</a>.<br>
@@ -81,10 +123,10 @@
 
 
 <div class="container">
-	<h1 style="font-family: 'Rubik Mono One', sans-serif;">Sample usage</h1><br>
+	<h1 class="mainheading">Sample usage</h1><br>
 	<div class="row">
 		<div class="col-sm-6">
-		<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;">
+		<p class="maintext">
 		<b>Request:</b><br><br>
 		
 		POST /data/ HTTP/1.1<br>
@@ -92,14 +134,13 @@
 		content-type: application/x-www-form-urlencoded<br>
 		content-length: 79<br><br>
 
-		countries=<b>DE</b>&requesttype=<b>area<br></b>&start=<b>2017-04-13</b>&end=<b>2017-04-28</b><br>&responsetype=<b>JSON</b><br>
+		countries=<b>DE</b>&amp;requesttype=<b>area<br></b>&amp;start=<b>2017-04-13</b>&amp;end=<b>2017-04-28</b><br>&amp;responsetype=<b>JSON</b><br>
 		
 		</p>
 		</div>
 		<div class="col-sm-6">
-		<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;">
+		<p class="maintext">
 		<b>Response:</b><br><br>
-		
 		{<br>
 			&nbsp;&nbsp;"num": 2,<br>
 			&nbsp;&nbsp;"holidays": [<br>
@@ -120,20 +161,23 @@
 		
 		</p>
 		</div>
+	</div><br>
+	<div class="center-block box designcolor">
+	<a  href="#samples" class="text-center abutton">More Examples</a><div></div>
 	</div>
 </div><br><br><br>
 
-<div class="container">
+<div class="container well">
 	<div class="row">
 	<div class="col-sm-12">
-	<h1 style="font-family: 'Rubik Mono One', sans-serif;">Parameters</h1>
-	<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;">
+	<h1 class="mainheading">Parameters</h1>
+	<p class="maintext">
 		<b><a href="#requesttype">requesttype</a></b> - specifies which of PublicHolidayAPI's  3 functions is to be used<br><br>
 		<b><a href="#responsetype">responsetype</a></b> - declares the requested response-format (JSON, XML...)<br><br>
-		<b>year</b> - only for requesttype=LIST, specifies the year for which the dates are calculated<br><br>
-		<b>countries</b> - list of countries (unlimited), allows <br><br>
-		<b>start</b> - only for requesttype=AREA, specifies the beginning of the time interval<br><br>
-		<b>end</b> - only for requesttype=AREA, specifies the end of the time interval<br><br>
+		<b><a href="#year">year</a></b> - only for requesttype=LIST, specifies the year for which the dates are calculated<br><br>
+		<b><a href="#countries">countries</a></b> - list of countries (unlimited), allows <br><br>
+		<b><a href="#date">start</a></b> - only for requesttype=AREA, specifies the beginning of the time interval<br><br>
+		<b><a href="#date">end</a></b> - only for requesttype=AREA, specifies the end of the time interval<br><br>
 	</p>
 	</div>
 	</div>
@@ -144,20 +188,20 @@
 
 <div class="container">
 <a name="requesttype"></a>
-<h1 style="font-family: 'Rubik Mono One', sans-serif;">Request Types [requesttype]</h1>
+<h1 class="mainheading">Request Types [requesttype]</h1>
 <br><br>
 <div class="row">
 		<div class="col-sm-4">
-		<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;"><b>LIST [requesttpye=LIST]</b><br>
+		<p class="maintext"><b>LIST [requesttpye=LIST]</b><br>
 			Returns data for a whole year<br><br>Required parameters:<br><br>requestype=LIST<br>countries=XX,XX<br>year=YYYY<br><br>Optional parameters:<br>responseType
 		</p>
 		</div>
 		<div class="col-sm-4">
-		<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;"><b>NEXT [requesttype=NEXT]</b><br>
+		<p class="maintext"><b>NEXT [requesttype=NEXT]</b><br>
 			Returns only the next holiday<br><br>Required parameters:<br><br>requestype=LIST<br>countries=XX,XX<br><br>Optional parameters:<br>responseType
 		</p></div>
 		<div class="col-sm-4">
-		<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;"><b>AREA [requesttype=AREA]</b><br>
+		<p class="maintext"><b>AREA [requesttype=AREA]</b><br>
 			Returns data for a specific time<br>I.E: 2017-04-01 until 2017-05-01<br>Required parameters:<br><br>requestype=LIST<br>countries=XX,XX<br>start=YYYY-MM-DD<br>end=YYYY-MM-DD<br><br>Optional parameters:<br>responseType
 		</p>
 		</div>	
@@ -165,11 +209,11 @@
 </div><br><br><br>
 <div class="container">
 <a name="responsetype"></a>
-<h1 style="font-family: 'Rubik Mono One', sans-serif;">Response Types [responsetype]</h1>
+<h1 class="mainheading">Response Types [responsetype]</h1>
 <br><br>
 	<div class="row">
 	<div class="col-sm-4">
-		<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;"><b>JSON [responsetpye=JSON]</b><br>
+		<p class="maintext"><b>JSON [responsetpye=JSON]</b><br>
 			If responsetype is not specified, it defaults to JSON.<br>Returns a JSON formatted object.<br><br>Example:<br>
 			 {<br>
 				&nbsp;&nbsp;"name": "Karfreitag",<br>
@@ -180,7 +224,7 @@
 		</p>
 		</div>
 		<div class="col-sm-4">
-		<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;"><b>XML [responsetype=XML]</b><br>
+		<p class="maintext"><b>XML [responsetype=XML]</b><br>
 			Converts JSON responsetype to XML format. <br>This is not the default.<br>Returns XML formatted file.<br><br>Exmaple:<br>
 			&lt;holiday&gt;<br>
 			&nbsp;&lt;name&gt;Karfreitag&lt;/name&gt;	<br>
@@ -191,7 +235,7 @@
 			
 		</p></div>
 		<div class="col-sm-4">
-		<p style="font-family: 'Roboto Mono', sans-serif; font-size: 18px;"><b>ICS [responsetype=ICS]</b><br>
+		<p class="maintext"><b>ICS [responsetype=ICS]</b><br>
 			Converts JSON responsetype into ICS calendar.<br>Warning: contains less information that JSON/xml.<br><br>Can be imported into Google Calendar our Outlook.<br>
 			Use this if you want to share your calendar with the world.<br><br>Use this tool, if you want to generate a .ics and dont want to use the API
 		</p>
@@ -200,5 +244,83 @@
 </div>
 <br><br><br>
 
+
+<div class="container">
+	<a name="year"></a>
+	<div class="row">
+	<div class="col-sm-12">
+	<h1 class="mainheading">year-format [year]</h1>
+	<p class="maintext">
+		Required for [requesttype=LIST], specifies the year, the dates are calculated for. <br>Needs to be provided in 4 digit <b>ISO-8601 format = YYYY</b>. 
+		<br>Also: year must be > 1000 | Examples:<br><br>
+		2017 - ok<br>9999 - ok<br>0999 - 4 digits, but invalid<br>-435 - invalid
+	</p>
+	</div>
+	</div>
+</div>
+<br><br><br>
+
+<div class="container">
+	<a name="countries"></a>
+	<div class="row">
+	<div class="col-sm-12">
+	<h1 class="mainheading">country-format [countries]</h1>
+	<p class="maintext">
+		Required for all types of [requestType], specifies a country (or a list of countries), the dates are calculated for.<br><br>
+		Use ISO-3166-Alpha2 2 digit country code format.<br>
+		Examples: US = United States | DE = Germany [...]<br><br>
+		Currently supported countries:<br>
+		DE | Germany<br>
+		US | United States<br>
+		CH | Switzerland<br>
+		AT | Austria<br>
+		BE | Belgium<br>
+		BG | Bulgaria
+	</p>
+	</div>
+	</div>
+</div>
+<br><br><br>
+
+<div class="container">
+	<a name="date"></a>
+	<div class="row">
+	<div class="col-sm-12">
+	<h1 class="mainheading">date-format [start][end]</h1>
+	<p class="maintext">
+		Required for [requesttype=AREA], specifies beginning and end of time interval (no holidays before [start], no after [end]).<br><br>
+		Format: ISO-8601 date format: YYYY-MM-DD<br>
+		2017-04-23 | valid<br>
+		2017-4-23 &nbsp;| invalid<br>
+	</p>
+	</div>
+	</div>
+</div>
+<br><br><br>
+
+
+
+<div class="jumbotron" style="margin-bottom: 0; background-color: #333;padding-top: 0; height: 350px;border-top: 3px solid #FE9A2E;">
+		<div class="row">
+		<div class="col-sm-4">
+			<p class="maintext footertext">
+				Public Holiday Rest API<br>
+				developed by Marius Riehl<br>
+				Copyright 2017, all rights reserved.<br><br>
+				This software is open source, code avaiable
+				at GitHub *click*<br><br>
+			</p>	
+		</div>
+		<div class="col-sm-4 center-block">
+			<img src="asteroids.png" class="center-block">
+		</div>
+		<div class="col-sm-4">
+			<p class="maintext footertext text-center" style="text-align: right">If you like this project, share it with your friends :)<br>
+			This software is free, but you can leave us cookies & coffee at Paypal.<br>We &lt;3 you for your help!
+			</p>	
+		</div>
+		</div>
+		
+</div>
 </body>
 </html>
