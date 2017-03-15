@@ -8,7 +8,7 @@ function convert(obj){
 	let xml = "";
 	
 	//first num (or any other metadata that might be added to response obj in the future...
-	if(typeof obj.num != "undefined"){
+	if(typeof obj.num != 'undefined'){
 		xml += "<num>" + obj.num.toString() + "</num>\r\n";
 		//then all holiday objects
 		for(var i = 0; i < obj.num; i++){
@@ -20,7 +20,7 @@ function convert(obj){
 			xml += "</holiday>";
 		}
 	}else{
-		//this mean it is requestType = Next
+		//this means it is requestType = Next
 		xml += "<holiday>\r\n";
 		xml += "<name>" + obj.name + "</name>\r\n";
 		xml += "<tname>" + obj.tname + "</tname>\r\n";

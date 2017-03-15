@@ -5,7 +5,7 @@
 var basiccalc = require('./../basiccalc.js');
 
 
-//object containing german holidays
+//object containing bulgaria holidays
 var phodays = {
 		"num": 14,
 		"holidays":[
@@ -126,7 +126,7 @@ var phodays = {
 	};
 
 
-//main function of de.js, itterates through all holidays, applies calculation
+//main function of bg.js, itterates through all holidays, applies calculation
 function processForYear(year){
 	for(var i = 0; i < phodays.num; i++){
 		
@@ -178,7 +178,7 @@ function processForYear(year){
 }
 
 
-//germany specific calculation
+//bulgaria specific calculation
 function processEasterHolidays(year){
 	var easterday = new Date(year.toString() + '-' + basiccalc.getEasterDay(year));
 	
@@ -193,24 +193,6 @@ function processEasterHolidays(year){
 		}
 	}
 }
-//germany specific calculation
-function processBettag(obj, year){
-	//get 23.11.year
-	let n = year.toString() + '-' + "11-23";
-	let d = new Date(n);
-	let day = d.getDay();
-	
-	//wednesday = 3
-	var offset = -4 - day;
-	if(day > 3){
-		offset += 7;
-	}
-
-	d.setTime(d.getTime() + offset * 86400000);
-	obj.date = d.toISOString().substring(0, 10);
-	
-}
-
 
 
 //used in mains.js when requesting calender for country

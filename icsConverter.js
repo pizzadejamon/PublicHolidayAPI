@@ -28,26 +28,42 @@ function convert(obj){
 		+ "CALSCALE:GREGORIAN\r\n"
 		+ "METHOD:PUBLISH\r\n";
 	
-	ics += "X-WR-CALDESC:Number of Holidays:" + obj.num.toString() +"\r\n";
 	
-	//itterate through list, convert to vCal
+	
 	var qdate = convertDate(new Date().toISOString());
-	for(var i = 0; i < obj.num; i++){
+	
+	if(typeof obj.num != 'undefined'){
+		ics += "X-WR-CALDESC:Number of Holidays:" + obj.num.toString() +"\r\n";
+		
+		//itterate through list, convert to vCal
+		for(var i = 0; i < obj.num; i++){
+			ics += "BEGIN:VEVENT\r\n";
+			ics += "UID: calendar-user\r\n";
+			//add the date (DTSTART / DTEND)
+			let pdate = convertDate(obj.holidays[i].date);
+			ics += "DTSTAMP:" + qdate + "T000000Z\r\n";
+			ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
+
+			ics += "SUMMARY:" + obj.holidays[i].tname + " - " + obj.holidays[i].name + "\r\n"; //use translated name as title
+			ics += "LOCATION:" + obj.holidays[i].region + "\r\n";
+			ics += "STATUS:CONFIRMED\r\n";
+			ics += "SEQUENCE:0\r\n";
+			ics += "END:VEVENT\r\n";
+		}
+	}else{ //exception for requesttype=NEXT
+		ics += "X-WR-CALDESC:Number of Holidays:1\r\n";
 		ics += "BEGIN:VEVENT\r\n";
-		ics += "UID: noone\r\n";
-		//add the date (DTSTART / DTEND)
-		let pdate = convertDate(obj.holidays[i].date);
+		ics += "UID: calendar-user\r\n";
+		let pdate = convertDate(obj.date);
 		ics += "DTSTAMP:" + qdate + "T000000Z\r\n";
 		ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
-
-		
-		ics += "SUMMARY:" + obj.holidays[i].tname + " - " + obj.holidays[i].name + "\r\n"; //use translated name as title
-		//ics += "DESCRIPTION:" + obj.holidays[i].name + "\r\n"; //use original name in description                      DESCRIPTION IS NOT SHOWN IN GOOGLE CAL
-		ics += "LOCATION:" + obj.holidays[i].region + "\r\n";
+		ics += "SUMMARY:" + obj.tname + " - " + obj.name + "\r\n"; //use translated name as title
+		ics += "LOCATION:" + obj.region + "\r\n";
 		ics += "STATUS:CONFIRMED\r\n";
 		ics += "SEQUENCE:0\r\n";
 		ics += "END:VEVENT\r\n";
 	}
+	
 
 	//last line
 	ics += "END:VCALENDAR";
