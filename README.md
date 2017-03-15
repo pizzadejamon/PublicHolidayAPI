@@ -1,24 +1,16 @@
 # PublicHolidayAPI
-This is a free Holiday API. It takes year & country as parameter and returns  
-JSON object with all holidays and dates, for the given year.  
+A REST API service providing dates of public holidays. Currently supporting 6 countries  
+and over 80 holidays!  
+Supported output formats are JSON, XML & ICS  
+It gets even better: this service is free & open-source.  
+Feel free to expand this code, suggest new features & countries and contribute.  
 
-Most API's i could find on the internet were to pricy, so i decided to develop my own,  
-and share the code for free. 
+#API Documentation can be found on https://api.mriehl.de
 
-I'm hosting the API at https://api.mriehl.de
- 
+You have two options:  
+1. clone & Host it yourself  
+2. use https://api.mriehl.de  
 
-Any suggestions, fixes and comments are highly appreciated.  
+Enjoy! :)  
 
-Read further down below for technical stuff & how to use this API. 
-
-#this is not finished, will add this later 
-
-#Types
-Type		Meaning  
-  
-0			Holiday on fixed Date (i.e: Christmas on 12-25)  
-1			Holiday dependend on other day with offset (i.e: Easter Friday in Germany)  
-2			Holiday dependend on Weekday [+ offset] (i.e: "first monday of september")  
-3			Holiday dependend on Last Weekday (i.e: "last friday of november")  
-5			Special Day (no rules apply) -> country specific  
+# This is not finished, will add this later
