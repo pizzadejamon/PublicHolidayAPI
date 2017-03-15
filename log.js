@@ -7,7 +7,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
 	host	:	'localhost',
 	user	:	'marius',
-	password:	'kih7ith9eedoj4ohN3w', //remove before comitting
+	password:	'', //remove before comitting
 	database:	'marius'
 });
 
