@@ -13,19 +13,33 @@
   	body{
   		 overflow-x: hidden;
   	}
-  
+  	.container{
+  		margin-top: 2em;
+  		margin-bottom: 3em;
+  	}
   	.maintext{
          font-family: 'Roboto Mono', sans-serif;
-         font-size: 18px;  	
+         font-size: 18px;
+         margin-bottom: 1em;  	
+  	}
+  	.statistics{
+  		font-size: 28px;
+  		margin-bottom: 0.5em;
   	}
   	.footertext{
   		color: #ffffff;
-  		padding-left: 80px;
-  		padding-right: 80px;
-  		padding-top: 40px;
+  		padding-left: 4em;
+  		padding-right: 4em;
+  		padding-top: 2em;
+  	}
+  	.impress{
+  		color: rgb(82, 79, 79);
+  		text-decoration: underline;
+  		padding-top: 1em;
   	}
   	.mainheading{
   		font-family: 'Rubik Mono One', sans-serif;
+  		margin-bottom: 1em;
   	}
   	.designcolor{
   		background-color: rgba(249, 209, 0, 0.6);
@@ -33,7 +47,7 @@
   	.abutton{
   		font-family: 'Rubik Mono One', sans-serif;
   		font-size: 26px;
-  		padding-top: 10px;
+  		padding-top: 0.5em;
   		display:block;
   		color:#333;
   	}
@@ -55,7 +69,7 @@
 
 <div class="jumbotron text-center designcolor" style="border-bottom: 3px solid #FE9A2E;">
   <h1 style="font-family: 'Rubik Mono One', sans-serif;">Public Holiday API</h1>
-  <p style="font-family: 'Roboto Mono', sans-serif;">providing free data for over 80 holidays in 6 countries via REST<br></p>
+  <p style="font-family: 'Roboto Mono', sans-serif;">providing free data for over 80 holidays in 6 countries via REST</p>
 
 </div>
 
@@ -66,32 +80,30 @@
 		</div>
 		
 		<div class="col-sm-4 text-center">
-			<p style="font-family: 'Roboto Mono', sans-serif; font-size: 28px;">1309</p>
-			<h3 style="font-family: 'Rubik Mono One', sans-serif;">total requets</h3>
+			<p class="maintext statistics">1309</p>
+			<h3 class="mainheading">total requets</h3>
 		</div>
 		<div class="col-sm-4 text-center">
-			<p style="font-family: 'Roboto Mono', sans-serif; font-size: 28px;">24</p>
-			<h3 style="font-family: 'Rubik Mono One', sans-serif;">days online</h3>
+			<p class="maintext statistics">24</p>
+			<h3 class="mainheading">days online</h3>
 		</div>
 		
 		<div class="col-sm-2">
 		</div>
 
 	</div>
-	
-	
 	<div class="row">
 		
 		<div class="col-sm-2">
 		</div>
 		
 		<div class="col-sm-4 text-center">
-			<p style="font-family: 'Roboto Mono', sans-serif; font-size: 28px;">1309</p>
-			<h3 style="font-family: 'Rubik Mono One', sans-serif;">requests/day</h3>
+			<p class="maintext statistics">1309</p>
+			<h3 class="mainheading">requests/day</h3>
 		</div>
 		<div class="col-sm-4 text-center">
-			<p style="font-family: 'Roboto Mono', sans-serif; font-size: 28px;">13097989</p>
-			<h3 style="font-family: 'Rubik Mono One', sans-serif;">MB data created</h3>
+			<p class="maintext statistics">13097989</p>
+			<h3 class="mainheading">MB data created</h3>
 		</div>
 		
 		<div class="col-sm-2">
@@ -107,8 +119,8 @@
 	<div class="col-sm-12">
 	<h1 class="mainheading">Basic Usage / Info</h1>
 	<p class="maintext">
-		<br>A REST service providing dates of public holidays. Currently supporting 6 countries.<br><br>
-		
+		A REST service providing dates of public holidays. Currently supporting 6 countries.</p>
+	<p class="maintext">
 		Do all post requests to <a href="https://api.mriehl.de/data/">https://api.mriehl.de/data</a>.<br>
 		Always set your header 'Content-Type' to 'application/x-www-form-urlencoded'<br>
 		Use 'Advanced REST Client' or <a href="https://www.hurl.it">Hurl.it</a>, if you want to test your post request parameters.<br><br>
@@ -118,7 +130,7 @@
 	</div>
 	</div>
 </div>
-<br><br><br>
+
 
 
 
@@ -161,11 +173,11 @@
 		
 		</p>
 		</div>
-	</div><br>
+	</div>
 	<div class="center-block box designcolor">
 	<a  href="#samples" class="text-center abutton">More Examples</a><div></div>
 	</div>
-</div><br><br><br>
+</div>
 
 <div class="container well">
 	<div class="row">
@@ -182,8 +194,6 @@
 	</div>
 	</div>
 </div>
-<br><br><br>
-
 
 
 <div class="container">
@@ -206,7 +216,8 @@
 		</p>
 		</div>	
 </div>
-</div><br><br><br>
+</div>
+
 <div class="container">
 <a name="responsetype"></a>
 <h1 class="mainheading">Response Types [responsetype]</h1>
@@ -242,7 +253,7 @@
 		</div>	
 	</div>
 </div>
-<br><br><br>
+
 
 
 <div class="container">
@@ -258,7 +269,7 @@
 	</div>
 	</div>
 </div>
-<br><br><br>
+
 
 <div class="container">
 	<a name="countries"></a>
@@ -280,7 +291,7 @@
 	</div>
 	</div>
 </div>
-<br><br><br>
+
 
 <div class="container">
 	<a name="date"></a>
@@ -296,27 +307,33 @@
 	</div>
 	</div>
 </div>
-<br><br><br>
 
 
 
-<div class="jumbotron" style="margin-bottom: 0; background-color: #333;padding-top: 0; height: 350px;border-top: 3px solid #FE9A2E;">
+
+<div class="jumbotron" style="margin-bottom: 0; background-color: #333;padding-top: 0; border-top: 3px solid #FE9A2E;">
 		<div class="row">
 		<div class="col-sm-4">
 			<p class="maintext footertext">
 				Public Holiday Rest API<br>
 				developed by Marius Riehl<br>
 				Copyright 2017, all rights reserved.<br><br>
-				This software is open source, code avaiable
-				at GitHub *click*<br><br>
+				This software is open source, code available
+				at <a href="https://github.com/pizzadejamon/PublicHolidayAPI">GitHub</a>.<br><br>
 			</p>	
 		</div>
-		<div class="col-sm-4 center-block">
-			<img src="asteroids.png" class="center-block">
+		<div class="col-sm-4 center-block text-center">
+			<img src="asteroids.png" class="center-block"><br>
+				<p class="maintext">
+					<a href="https://uberspace.de">Uberspace.de</a>
+				</p>
+				<p class="maintext impress">
+					developed by Marius Riehl | marius[at]mriehl.de | Bessunger Stra&szlig;e 177a | 64347 Griesheim | Deutschland
+				</p>
 		</div>
 		<div class="col-sm-4">
-			<p class="maintext footertext text-center" style="text-align: right">If you like this project, share it with your friends :)<br>
-			This software is free, but you can leave us cookies & coffee at Paypal.<br>We &lt;3 you for your help!
+			<p class="maintext footertext text-center" style="text-align: right">If you like this project, help us and share it with your friends!<br>
+			This software is free, but you can donate some cookies at Paypal.<br>We &lt;3 you for your help!
 			</p>	
 		</div>
 		</div>
