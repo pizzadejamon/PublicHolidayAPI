@@ -18,6 +18,9 @@ body{
   		font-size: 28px;
   		margin-bottom: 0.5em;
   	}
+  	.icons{
+  		
+  	}
   	.header{
   		border-bottom: 3px solid #FE9A2E;
   	}
@@ -35,7 +38,6 @@ body{
   	}
   	.impress{
   		color: rgb(82, 79, 79);
-  		text-decoration: underline;
   		padding-top: 1em;
   	}
   	.mainheading{
@@ -57,9 +59,40 @@ body{
   	}
   	.abutton:hover{
   		color:#333;
+  		text-decoration: none;
+  	}
+  	.apressed{
+  		font-size: 24px;
   	}
   	.box{
-  		width:320px;
   		height:52px;
   		vertical-align: middle;
+  		border-right: 5px solid rgba(51, 51, 51, 0.47);
+  		border-bottom: 5px solid rgba(51, 51, 51, 0.29);
+  		border-radius: 0 0 5px 0;
   	}
+  	.boxborder{
+  		border-right: 3px solid #FE9A2E;
+  		border-bottom: 3px solid #FE9A2E;
+  	}
+  	.boxpressed{
+  		border-right: 3px solid rgba(51, 51, 51, 0.47);
+  		border-bottom: 3px solid rgba(51, 51, 51, 0.29);
+  	}
+  	
+  	.circle{
+  		width: 0.8em;
+  		height: 0.8em;
+  		border-radius: 50%;
+  		display: inline-block;
+  	}
+  	.green{
+  		background-color: rgba(44, 195, 44, 0.66);
+  	}
+  	.orange{
+  		background-color: #fe9a2e;
+  	}
+  	.red {
+  		background-color: rgba(241, 50, 10, 0.75);
+  	}
+  	
