@@ -5,6 +5,16 @@ body{
   		margin-top: 2em;
   		margin-bottom: 3em;
   	}
+  	.navbar{
+  		
+  	}
+  	.navbar-left{
+  		padding-left: 0;
+  	}
+  	.navbar-right{
+  		padding-right: 0;
+  		margin-right: 0;
+  	}
   	.well{
   		margin-bottom: 5em;
   		line-height: 3em;
@@ -17,9 +27,6 @@ body{
   	.statistics{
   		font-size: 28px;
   		margin-bottom: 0.5em;
-  	}
-  	.icons{
-  		
   	}
   	.header{
   		border-bottom: 3px solid #FE9A2E;
@@ -46,6 +53,7 @@ body{
   	}
   	.headerh{
   		margin-bottom: 0;
+  		color: #FFFFFF;
   	}
   	.designcolor{
   		background-color: rgba(249, 209, 0, 0.6);
@@ -94,5 +102,9 @@ body{
   	}
   	.red {
   		background-color: rgba(241, 50, 10, 0.75);
+  	}
+  	.icon{
+  		width: 64px;
+  		height: 64px;
   	}
   	

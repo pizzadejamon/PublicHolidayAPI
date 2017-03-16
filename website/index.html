@@ -14,30 +14,30 @@
 </head>
 <body>
 
-<div class="jumbotron text-center designcolor header" id="header">  
+<div class="jumbotron text-center header designcolor" id="header">  
   <h1 class="mainheading headerh">Public Holiday API</h1>
   <p class="maintext">providing free data for over 80 holidays in 6 countries via REST</p>
 
 </div>
 
-<div class="container" id="navbar">
+<div class="container navbar" id="navbar">
 	<div class="row">
-		<div class="col-sm-3">
-			<div class="center-block box green boxpressed hvr-overline-from-left">
+		<div class="col-md-3 col-xs-12 navbar-left">
+			<div class="center-block box green boxpressed">
 				<a  href="#header" class="text-center abutton apressed">Overview</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12">
 			<div class="center-block box designcolor hvr-overline-from-left">
 				<a  href="#parameters" class="text-center abutton">Request</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12">
 			<div class="center-block box orange hvr-overline-from-left">
 				<a  href="#response" class="text-center abutton">Response</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12 navbar-right">
 			<div class="center-block box red hvr-overline-from-left">
 				<a  href="#footer" class="text-center abutton">Legal</a>
 			</div>
@@ -151,22 +151,22 @@
 
 <div class="container" id="navbar">
 	<div class="row">
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12">
 			<div class="center-block box orange hvr-overline-from-left">
 				<a  href="#header" class="text-center abutton">Overview</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
-			<div class="center-block box red boxpressed hvr-overline-from-left">
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box red boxpressed">
 				<a  href="#parameters" class="text-center abutton apressed">Request</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12">
 			<div class="center-block box green hvr-overline-from-left">
 				<a  href="#response" class="text-center abutton">Response</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12">
 			<div class="center-block box designcolor hvr-overline-from-left">
 				<a  href="#footer" class="text-center abutton">Legal</a>
 			</div>
@@ -249,6 +249,16 @@
 </div>
 
 
+<div class="container" id="coffee">
+	<div class="row">
+		<div class="col-sm-12 center-block text-center">
+			<p class="maintext">
+				<img src="coffee.png" class="icon">
+				Get yourself a coffee!
+			</p>
+		</div>
+	</div>
+</div>
 
 <div class="container" id="year">
 	<div class="row">
@@ -293,7 +303,7 @@
 	<h1 class="mainheading">date-format [start][end]</h1>
 	<p class="maintext">
 		Required for [requesttype=AREA], specifies beginning and end of time interval (no holidays before [start], no after [end]).<br><br>
-		Format: ISO-8601 date format: YYYY-MM-DD<br>
+		Format: ISO-8601 date format: YYYY-MM-DD<br>Also: dates must be AFTER 1970-01-01<br>
 		2017-04-23 | valid<br>
 		2017-4-23 &nbsp;| invalid<br>
 	</p>
@@ -303,28 +313,27 @@
 
 <div class="container" id="navbar">
 	<div class="row">
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12">
 			<div class="center-block box red hvr-overline-from-left">
 				<a  href="#header" class="text-center abutton">Overview</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12">
 			<div class="center-block box green hvr-overline-from-left">
 				<a  href="#parameters" class="text-center abutton">Request</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
-			<div class="center-block box orange boxpressed hvr-overline-from-left">
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box orange boxpressed">
 				<a  href="#response" class="text-center abutton apressed">Response</a>
 			</div>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-md-3 col-xs-12">
 			<div class="center-block box designcolor hvr-overline-from-left">
 				<a  href="#footer" class="text-center abutton">Legal</a>
 			</div>
 		</div>
 	</div>
-
 </div>
 
 <div class="container well" id="response">
@@ -333,6 +342,7 @@
 	<h1 class="mainheading">Response handling</h1>
 	<p class="maintext">
 		<b><a href="#errors">HTTPS Errors</a></b> - list of error / status codes that the API might return (and their meaning)<br>
+		<b><a href="#resformat">Format</a></b> - text info about format of the response<br>
 		<b><a href="#resjson">JSON reponse</a></b> - structure of a json response [with example]<br>
 		<b><a href="#resics">ICSreponse</a></b> - structure of a ICS (calendar)response [with example]<br>
 		<b><a href="#resxml">XML reponse</a></b> - structure of a XML response [with example]<br>
@@ -345,10 +355,10 @@
 
 <div class="container" id="errors">
 	<h1 class="mainheading">HTTPS Error Codes</h1>
-	<p class="maintext icon">During usage, the API will respond with one of the following response (error codes):<br></p>
+	<p class="maintext">During usage, the API will respond with one of the following response (error codes):<br></p>
 	<div class="row">
 		<div class="col-sm-12">
-			<p class="maintext icon">
+			<p class="maintext">
 				<span class="circle green"></span> | 200 | everything is ok | response body should carry data.<br>
 				<span class="circle green"></span> | 204 | No content	   | not your fault, there are just no holidays in the given time frame.<br>
 				<span class="circle orange"></span> | 400 | Bad Request	   | the <a href='#parameters'>parameters</a> you submitted are in wrong format.<br>
@@ -356,9 +366,188 @@
 				<span class="circle orange"></span> | 501 | Not implemented | the requesttype you specified does not exist.
 			</p>
 		</div>
-	
 	</div>
+</div>
 
+<div class="container" id="resformat">
+	<h1 class="mainheading">Response Format</h1>
+	<p class="maintext">Learn about the structure of responses:<br></p>
+	<div class="row">
+		<div class="col-sm-12">
+			<p class="maintext">
+				<b>JSON:</b> if requesttype=LIST||area, the response contains a count [num] of holidays, and an array [holidays].<br>
+				res.holidays[] elements contain [name], [tname], [date] and [region].<br>
+				name = name in language of the country<br>
+				tname = name of the holiday in english<br>
+				date = date of the holiday in ISO-8601 format<br>
+				region = where the holiday is observed (nationwide etc...)<br>
+				For requesttype=NEXT only one holiday is returnd, so no array &amp; no [num]-variable. <br>
+				Instead: [countrycount] = number of countries the holiday is observed in.<br><br>
+				<b>XML:</b> unlike JSON, in XML no array is returned (parent element),<br> 
+				instead you get an &lt;holiday&gt;-object with attribute num=n (=array index).<br><br>
+				<b>ICS:</b> - calendar format, save as .ics and import it to your calendar :)
+			</p>
+		</div>
+	</div>
+</div>
+
+
+<div class="container" id="cookie">
+	<div class="row">
+		<div class="col-sm-12 center-block text-center">
+			<p class="maintext">
+				<img src="cookie.png" class="icon">
+				You earned a cookie!
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="container" id="resjson">
+	<h1 class="mainheading">JSON response</h1>
+	<div class="row">
+		<div class="col-sm-6">
+			<p class="maintext">
+				Request:<br><br>
+				Get Next Holiday of BG, DE or US in JSON format<br>
+				POST /data/ HTTP/1.1<br>
+				HOST: https://api.mriehl.de<br>
+				content-type: application/x-www-form-urlencoded<br>
+				content-length: 60<br><br>
+
+				<b>countries=DE,US,BG&amp;requesttype=next&amp;responsetype=json</b>
+			</p>
+		</div>
+		
+		<div class="col-sm-6">
+			<p class="maintext">
+				Response:<br><br>
+				<span class="circle green"></span> | 200 ok<br>
+				{<br>
+					&nbsp;&nbsp;&nbsp;"name": "Велики петък, Karfreitag",<br>
+					&nbsp;&nbsp;&nbsp;"tname": "Good Friday",<br>
+					&nbsp;&nbsp;&nbsp;"region": "BG: Nationwide, DE: Nationwide",<br>
+					&nbsp;&nbsp;&nbsp;"date": "2017-04-14",<br>
+					&nbsp;&nbsp;&nbsp;"countryCount": 2<br>
+				}
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="container" id="resics">
+	<h1 class="mainheading">ICS response</h1>
+	<div class="row">
+		<div class="col-sm-6">
+			<p class="maintext">
+				Request:<br><br>
+				Get Next Holiday of US in calendar format<br>
+				POST /data/ HTTP/1.1<br>
+				HOST: https://api.mriehl.de<br>
+				content-type: application/x-www-form-urlencoded<br>
+				content-length: 53<br><br>
+
+				<b>countries=US&amp;requesttype=next&amp;responsetype=ics</b>
+			</p>
+		</div>
+		
+		<div class="col-sm-6">
+			<p class="maintext">
+				Response:<br><br>
+				<span class="circle green"></span> | 200 ok<br>
+					BEGIN:VCALENDAR<br>
+					&nbsp;&nbsp;&nbsp;	PRODID:-//PublicHolidayAPI//EN<br>
+						&nbsp;&nbsp;&nbsp;VERSION:2.0<br>
+						&nbsp;&nbsp;&nbsp;CALSCALE:GREGORIAN<br>
+						&nbsp;&nbsp;&nbsp;METHOD:PUBLISH<br>
+						&nbsp;&nbsp;&nbsp;X-WR-CALDESC:Number of Holidays:1<br>
+						&nbsp;&nbsp;&nbsp;BEGIN:VEVENT<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UID: calendar-user<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DTSTAMP:20170316T000000Z<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DTSTART;VALUE=DATE:<b>20170529</b><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUMMARY:<b>Memorial Day - Memorial Day</b><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOCATION:<b>US: Federal</b><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STATUS:CONFIRMED<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEQUENCE:0<br>
+						&nbsp;&nbsp;&nbsp;END:VEVENT<br>
+					END:VCALENDAR
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="container" id="resxml">
+	<h1 class="mainheading">XML response</h1>
+	<div class="row">
+		<div class="col-sm-6">
+			<p class="maintext">
+				Request:<br><br>
+				Get Holiday of US in JSON format between 2017-04-20 and 2017-05-30<br>
+				POST /data/ HTTP/1.1<br>
+				HOST: https://api.mriehl.de<br>
+				content-type: application/x-www-form-urlencoded<br>
+				content-length: 79<br><br>
+
+				<b>countries=US&amp;requesttype=area&amp;responsetype=<br>xml&amp;start=2017-04-20&amp;end=2017-05-30</b>
+			</p>
+		</div>
+		
+		<div class="col-sm-6">
+			<p class="maintext">
+				Response:<br><br>
+				<span class="circle green"></span> | 200 ok<br>
+				&lt;num&gt;1&lt;/num&gt;<br>
+				&lt;holiday num=0&gt;<br>
+				&nbsp;&nbsp;&nbsp;	&lt;name&gt;Memorial Day&lt;/name&gt;<br>
+				&nbsp;&nbsp;&nbsp;	&lt;tname&gt;Memorial Day&lt;/tname&gt;<br>
+				&nbsp;&nbsp;&nbsp;	&lt;region&gt;US: Federal&lt;/region&gt;<br>
+				&nbsp;&nbsp;&nbsp;	&lt;date&gt;2017-05-29&lt;/date&gt;<br>
+				&lt;/holiday&gt;
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="container" id="navbar">
+	<div class="row">
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box designcolor hvr-overline-from-left">
+				<a  href="#header" class="text-center abutton">Overview</a>
+			</div>
+		</div>
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box red hvr-overline-from-left">
+				<a  href="#parameters" class="text-center abutton">Request</a>
+			</div>
+		</div>
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box green hvr-overline-from-left">
+				<a  href="#response" class="text-center abutton apressed">Response</a>
+			</div>
+		</div>
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box orange boxpressed">
+				<a  href="#footer" class="text-center abutton">Legal</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container well" id="legal">
+	<h1 class="mainheading">Legal / Disclaimer</h1>
+	<div class="row">
+		<div class="col-sm-12">
+			<p class="maintext">
+				This software is free and open source. We do not guarantee 100% availability.<br>
+				Do not make your software dependend on this service.<br>
+				We do our best to keep this service online, but again, we can't guarantee it.<br>
+				There might be unknown issues with this software, that you might expierience.<br>
+				We are not liable for anything. absolutly.<br><br>
+				Images on this site are licensed under public domain.<br><br>
+				Since this site is hosted in europe/germany: Impressum befindet sich im unten / impress can be found at bottom of page.
+			</p>
+		</div>
+	</div>
 </div>
 
 <div class="jumbotron footer" id="footer">
