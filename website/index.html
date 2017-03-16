@@ -9,71 +9,45 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
-  <style>
-  	body{
-  		 overflow-x: hidden;
-  	}
-  	.container{
-  		margin-top: 2em;
-  		margin-bottom: 3em;
-  	}
-  	.maintext{
-         font-family: 'Roboto Mono', sans-serif;
-         font-size: 18px;
-         margin-bottom: 1em;  	
-  	}
-  	.statistics{
-  		font-size: 28px;
-  		margin-bottom: 0.5em;
-  	}
-  	.footertext{
-  		color: #ffffff;
-  		padding-left: 4em;
-  		padding-right: 4em;
-  		padding-top: 2em;
-  	}
-  	.impress{
-  		color: rgb(82, 79, 79);
-  		text-decoration: underline;
-  		padding-top: 1em;
-  	}
-  	.mainheading{
-  		font-family: 'Rubik Mono One', sans-serif;
-  		margin-bottom: 1em;
-  	}
-  	.designcolor{
-  		background-color: rgba(249, 209, 0, 0.6);
-  	}
-  	.abutton{
-  		font-family: 'Rubik Mono One', sans-serif;
-  		font-size: 26px;
-  		padding-top: 0.5em;
-  		display:block;
-  		color:#333;
-  	}
-  	.abutton:hover{
-  		color:#333;
-  	}
-  	.box{
-  		width:320px;
-  		height:52px;
-  		vertical-align: middle;
-  	}
-
-  
-  </style>
-  
-  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="hover.css">
 </head>
 <body>
 
-<div class="jumbotron text-center designcolor" style="border-bottom: 3px solid #FE9A2E;">
-  <h1 style="font-family: 'Rubik Mono One', sans-serif;">Public Holiday API</h1>
-  <p style="font-family: 'Roboto Mono', sans-serif;">providing free data for over 80 holidays in 6 countries via REST</p>
+<div class="jumbotron text-center designcolor header" id="header">  
+  <h1 class="mainheading headerh">Public Holiday API</h1>
+  <p class="maintext">providing free data for over 80 holidays in 6 countries via REST</p>
 
 </div>
 
-<div class="container well" id="live-statistics" style="margin-bottom: 100px;">
+<div class="container" id="navbar">
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="center-block box green boxpressed hvr-overline-from-left">
+				<a  href="#header" class="text-center abutton apressed">Overview</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box designcolor hvr-overline-from-left">
+				<a  href="#parameters" class="text-center abutton">Request</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box orange hvr-overline-from-left">
+				<a  href="#response" class="text-center abutton">Response</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box red hvr-overline-from-left">
+				<a  href="#footer" class="text-center abutton">Legal</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="container well" id="statistics">
 	<div class="row">
 		
 		<div class="col-sm-2">
@@ -90,7 +64,6 @@
 		
 		<div class="col-sm-2">
 		</div>
-
 	</div>
 	<div class="row">
 		
@@ -108,21 +81,19 @@
 		
 		<div class="col-sm-2">
 		</div>
-
 	</div>
-	
-	
 </div>
 
-<div class="container">
+<div class="container" id="basicinfo">
 	<div class="row">
 	<div class="col-sm-12">
 	<h1 class="mainheading">Basic Usage / Info</h1>
 	<p class="maintext">
 		A REST service providing dates of public holidays. Currently supporting 6 countries.</p>
 	<p class="maintext">
-		Do all post requests to <a href="https://api.mriehl.de/data/">https://api.mriehl.de/data</a>.<br>
-		Always set your header 'Content-Type' to 'application/x-www-form-urlencoded'<br>
+		1. Do POST requests to <a href="https://api.mriehl.de/data/">https://api.mriehl.de/data</a>.<br>
+		2. Add <a href="#parameters">parameters</a> &amp; always set your header 'Content-Type' to 'application/x-www-form-urlencoded'<br>
+		3. Profit!<br>
 		Use 'Advanced REST Client' or <a href="https://www.hurl.it">Hurl.it</a>, if you want to test your post request parameters.<br><br>
 		If you stumble on any bugs, errors or other issues, please report them on <a href="https://github.com/pizzadejamon/PublicHolidayAPI">GitHub</a>.<br>
 		Your work is highly appreciated!
@@ -134,18 +105,16 @@
 
 
 
-<div class="container">
+<div class="container" id="sample">
 	<h1 class="mainheading">Sample usage</h1><br>
 	<div class="row">
 		<div class="col-sm-6">
 		<p class="maintext">
 		<b>Request:</b><br><br>
-		
 		POST /data/ HTTP/1.1<br>
 		HOST: https://api.mriehl.de<br>
 		content-type: application/x-www-form-urlencoded<br>
 		content-length: 79<br><br>
-
 		countries=<b>DE</b>&amp;requesttype=<b>area<br></b>&amp;start=<b>2017-04-13</b>&amp;end=<b>2017-04-28</b><br>&amp;responsetype=<b>JSON</b><br>
 		
 		</p>
@@ -153,6 +122,7 @@
 		<div class="col-sm-6">
 		<p class="maintext">
 		<b>Response:</b><br><br>
+		<span class="circle green"></span> | 200 ok<br>
 		{<br>
 			&nbsp;&nbsp;"num": 2,<br>
 			&nbsp;&nbsp;"holidays": [<br>
@@ -174,30 +144,55 @@
 		</p>
 		</div>
 	</div>
-	<div class="center-block box designcolor">
-	<a  href="#samples" class="text-center abutton">More Examples</a><div></div>
-	</div>
+	<p class="maintext text-center"><a  href="#response"><b>More Examples</b></a></p>
+	
+
 </div>
 
-<div class="container well">
+<div class="container" id="navbar">
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="center-block box orange hvr-overline-from-left">
+				<a  href="#header" class="text-center abutton">Overview</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box red boxpressed hvr-overline-from-left">
+				<a  href="#parameters" class="text-center abutton apressed">Request</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box green hvr-overline-from-left">
+				<a  href="#response" class="text-center abutton">Response</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box designcolor hvr-overline-from-left">
+				<a  href="#footer" class="text-center abutton">Legal</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="container well" id="parameters">
 	<div class="row">
 	<div class="col-sm-12">
 	<h1 class="mainheading">Parameters</h1>
 	<p class="maintext">
-		<b><a href="#requesttype">requesttype</a></b> - specifies which of PublicHolidayAPI's  3 functions is to be used<br><br>
-		<b><a href="#responsetype">responsetype</a></b> - declares the requested response-format (JSON, XML...)<br><br>
-		<b><a href="#year">year</a></b> - only for requesttype=LIST, specifies the year for which the dates are calculated<br><br>
-		<b><a href="#countries">countries</a></b> - list of countries (unlimited), allows <br><br>
-		<b><a href="#date">start</a></b> - only for requesttype=AREA, specifies the beginning of the time interval<br><br>
-		<b><a href="#date">end</a></b> - only for requesttype=AREA, specifies the end of the time interval<br><br>
+		<b><a href="#requesttype">requesttype</a></b> - specifies which of PublicHolidayAPI's  3 functions is to be used<br>
+		<b><a href="#responsetype">responsetype</a></b> - declares the requested response-format (JSON, XML...)<br>
+		<b><a href="#year">year</a></b> - only for requesttype=LIST, specifies the year for which the dates are calculated<br>
+		<b><a href="#countries">countries</a></b> - list of countries (unlimited), allows <br>
+		<b><a href="#date">start</a></b> - only for requesttype=AREA, specifies the beginning of the time interval<br>
+		<b><a href="#date">end</a></b> - only for requesttype=AREA, specifies the end of the time interval
 	</p>
 	</div>
 	</div>
 </div>
 
 
-<div class="container">
-<a name="requesttype"></a>
+<div class="container" id="requesttype">
 <h1 class="mainheading">Request Types [requesttype]</h1>
 <br><br>
 <div class="row">
@@ -218,8 +213,7 @@
 </div>
 </div>
 
-<div class="container">
-<a name="responsetype"></a>
+<div class="container" id="responsetype">
 <h1 class="mainheading">Response Types [responsetype]</h1>
 <br><br>
 	<div class="row">
@@ -256,8 +250,7 @@
 
 
 
-<div class="container">
-	<a name="year"></a>
+<div class="container" id="year">
 	<div class="row">
 	<div class="col-sm-12">
 	<h1 class="mainheading">year-format [year]</h1>
@@ -271,8 +264,7 @@
 </div>
 
 
-<div class="container">
-	<a name="countries"></a>
+<div class="container" id="countries">
 	<div class="row">
 	<div class="col-sm-12">
 	<h1 class="mainheading">country-format [countries]</h1>
@@ -286,15 +278,16 @@
 		CH | Switzerland<br>
 		AT | Austria<br>
 		BE | Belgium<br>
-		BG | Bulgaria
+		BG | Bulgaria<br>
+		
+		<br>DU | Dummy
 	</p>
 	</div>
 	</div>
 </div>
 
 
-<div class="container">
-	<a name="date"></a>
+<div class="container" id="date">
 	<div class="row">
 	<div class="col-sm-12">
 	<h1 class="mainheading">date-format [start][end]</h1>
@@ -308,10 +301,67 @@
 	</div>
 </div>
 
+<div class="container" id="navbar">
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="center-block box red hvr-overline-from-left">
+				<a  href="#header" class="text-center abutton">Overview</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box green hvr-overline-from-left">
+				<a  href="#parameters" class="text-center abutton">Request</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box orange boxpressed hvr-overline-from-left">
+				<a  href="#response" class="text-center abutton apressed">Response</a>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="center-block box designcolor hvr-overline-from-left">
+				<a  href="#footer" class="text-center abutton">Legal</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="container well" id="response">
+	<div class="row">
+	<div class="col-sm-12">
+	<h1 class="mainheading">Response handling</h1>
+	<p class="maintext">
+		<b><a href="#errors">HTTPS Errors</a></b> - list of error / status codes that the API might return (and their meaning)<br>
+		<b><a href="#resjson">JSON reponse</a></b> - structure of a json response [with example]<br>
+		<b><a href="#resics">ICSreponse</a></b> - structure of a ICS (calendar)response [with example]<br>
+		<b><a href="#resxml">XML reponse</a></b> - structure of a XML response [with example]<br>
+	</p>
+	</div>
+	</div>
+</div>
 
 
 
-<div class="jumbotron" style="margin-bottom: 0; background-color: #333;padding-top: 0; border-top: 3px solid #FE9A2E;">
+<div class="container" id="errors">
+	<h1 class="mainheading">HTTPS Error Codes</h1>
+	<p class="maintext icon">During usage, the API will respond with one of the following response (error codes):<br></p>
+	<div class="row">
+		<div class="col-sm-12">
+			<p class="maintext icon">
+				<span class="circle green"></span> | 200 | everything is ok | response body should carry data.<br>
+				<span class="circle green"></span> | 204 | No content	   | not your fault, there are just no holidays in the given time frame.<br>
+				<span class="circle orange"></span> | 400 | Bad Request	   | the <a href='#parameters'>parameters</a> you submitted are in wrong format.<br>
+				<span class="circle red"></span> | 500 | FATAL Internal Server Error | we messed up. sorry. report the bug on <a href="https://github.com/pizzadejamon/PublicHolidayAPI">GitHub</a>.<br>
+				<span class="circle orange"></span> | 501 | Not implemented | the requesttype you specified does not exist.
+			</p>
+		</div>
+	
+	</div>
+
+</div>
+
+<div class="jumbotron footer" id="footer">
 		<div class="row">
 		<div class="col-sm-4">
 			<p class="maintext footertext">

@@ -1,0 +1,98 @@
+body{
+  		 overflow-x: hidden;
+  	}
+  	.container{
+  		margin-top: 2em;
+  		margin-bottom: 3em;
+  	}
+  	.well{
+  		margin-bottom: 5em;
+  		line-height: 3em;
+  	}
+  	.maintext{
+         font-family: 'Roboto Mono', sans-serif;
+         font-size: 18px;
+         margin-bottom: 1em;  	
+  	}
+  	.statistics{
+  		font-size: 28px;
+  		margin-bottom: 0.5em;
+  	}
+  	.icons{
+  		
+  	}
+  	.header{
+  		border-bottom: 3px solid #FE9A2E;
+  	}
+  	.footer{
+  		margin-bottom: 0; 
+  		background-color: #333;
+  		padding-top: 0; 
+  		border-top: 3px solid #FE9A2E;
+  	}
+  	.footertext{
+  		color: #ffffff;
+  		padding-left: 4em;
+  		padding-right: 4em;
+  		padding-top: 2em;
+  	}
+  	.impress{
+  		color: rgb(82, 79, 79);
+  		padding-top: 1em;
+  	}
+  	.mainheading{
+  		font-family: 'Rubik Mono One', sans-serif;
+  		margin-bottom: 1em;
+  	}
+  	.headerh{
+  		margin-bottom: 0;
+  	}
+  	.designcolor{
+  		background-color: rgba(249, 209, 0, 0.6);
+  	}
+  	.abutton{
+  		font-family: 'Rubik Mono One', sans-serif;
+  		font-size: 26px;
+  		padding-top: 0.4em;
+  		display:block;
+  		color:#333;
+  	}
+  	.abutton:hover{
+  		color:#333;
+  		text-decoration: none;
+  	}
+  	.apressed{
+  		font-size: 24px;
+  	}
+  	.box{
+  		height:52px;
+  		vertical-align: middle;
+  		border-right: 5px solid rgba(51, 51, 51, 0.47);
+  		border-bottom: 5px solid rgba(51, 51, 51, 0.29);
+  		border-radius: 0 0 5px 0;
+  	}
+  	.boxborder{
+  		border-right: 3px solid #FE9A2E;
+  		border-bottom: 3px solid #FE9A2E;
+  	}
+  	.boxpressed{
+  		border-right: 3px solid rgba(51, 51, 51, 0.47);
+  		border-bottom: 3px solid rgba(51, 51, 51, 0.29);
+  	}
+  	
+  	.circle{
+  		width: 0.8em;
+  		height: 0.8em;
+  		border-radius: 50%;
+  		display: inline-block;
+  	}
+  	.green{
+  		background-color: rgba(44, 195, 44, 0.66);
+  	}
+  	.orange{
+  		background-color: #fe9a2e;
+  	}
+  	.red {
+  		background-color: rgba(241, 50, 10, 0.75);
+  	}
+  	

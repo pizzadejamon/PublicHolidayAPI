@@ -5,10 +5,10 @@ Supported output formats are JSON, XML & ICS
 It gets even better: this service is free & open-source.  
 Feel free to expand this code, suggest new features & countries and contribute.  
 
-#API Documentation can be found on https://api.mriehl.de
+# API Documentation can be found here: https://api.mriehl.de
 
 You have two options:  
-1. clone & Host it yourself  
+1. clone & host it yourself  
 2. use https://api.mriehl.de  
 
 Enjoy! :)  

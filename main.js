@@ -9,14 +9,17 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //general
-var supported = ["DE", "US", "CH", "AT", "BE", "BG"]; //list of countries
+var supported = ["DE", "US", "CH", "AT", "BE", "BG", "DU"]; //list of countries
 
 var icsConverter = require('./icsConverter.js');
 var xmlConverter = require('./xmlConverter.js');
+
+
+var enablelogging = false;
 
 function dataFromCountryString(countryCode, year){
 	var next;
@@ -52,6 +55,9 @@ function getData(countries, year){
 
 //gets the next holiday (from now on)
 function getNextHoliday(countries, year){
+	if(year > 9999){
+		return false; //leave recursive calculation
+	}
 	var time = Date.now();
 	var data = getData(countries, year);
 	for(var i = 0; i < data.num; i++){
@@ -69,6 +75,8 @@ function getNextHoliday(countries, year){
 			return data.holidays[i];
 		}
 	}
+	let yearp1 = (parseInt(year) + 1).toString();
+	return getNextHoliday(countries, yearp1); //no next holiday for this year, try in next year (recursive)
 }
 
 
@@ -198,16 +206,21 @@ function typeList(req, res){
 
 	//everything fine, get the data and send response
 	try{
-		switch(req.body.responsetype){
-		case "JSON":
-			res.send(clearList(getData(countries, year)));
-			return;
-		case "ICS":
-			res.send(icsConverter.getICS(clearList(getData(countries, year))));
-			return;
-		case "XML":
-			res.send(xmlConverter.getXML(clearList(getData(countries, year))));
-			return;
+		var data = clearList(getData(countries, year));
+		if(data.num > 0){
+			switch(req.body.responsetype){
+			case "JSON":
+				res.json(data);
+				return;
+			case "ICS":
+				res.send(icsConverter.getICS(data));
+				return;
+			case "XML":
+				res.send(xmlConverter.getXML(data));
+				return;
+			}
+		}else{
+			res.status(204).send(); //no content
 		}
 	}catch(err){
 		console.log(err); //internal error, prevent server from crashing and log error
@@ -239,19 +252,25 @@ function typeNext(req, res){
 	//get data and respond
 	try{
 		let p = new Date();
+		let nextholiday = getNextHoliday(countries, p.toISOString().substring(0, 4));
+		if(nextholiday == false){
+			res.status(204).send();
+			return;
+		}
+		nextholiday = clearParams(nextholiday);
 		switch(req.body.responsetype){
 		case "JSON":
-			res.send(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4))));
+			res.json(nextholiday);
 			return;
 		case "ICS":
-			res.send(icsConverter.getICS(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4)))));
+			res.send(icsConverter.getICS(nextholiday));
 			return;
 		case "XML":
-			res.send(xmlConverter.getXML(clearParams(getNextHoliday(countries, p.toISOString().substring(0, 4)))));
+			res.send(xmlConverter.getXML(nextholiday));
 		}
 	}catch(err){
 		console.log(err);
-		res.status(500).send("Internal Server Error. Something went wrong");
+		res.status(500).send("Internal Server Error. We messed up.");
 	}
 	return;
 }
@@ -318,31 +337,26 @@ function typeArea(req, res){
 			if(p < x.getTime()){
 				data.holidays.splice(0, 1); //remove out of array
 				data.num--;
-				j--; //nachrücken problem
+				j--; //nachrücken problem -> solved by v
 			}
 			j++;v--;
 		}//not itterate through the last year backwards, delete all that are bigger than x
-		let k = data.num - 1; v = data.num - 1;
-		while(parseInt(data.holidays[k].date.substring(0, 4)) == y.getFullYear() && v > 0){
-			let p = (new Date(data.holidays[k].date)).getTime();
-			if(p > y.getTime()){
-				data.holidays.splice(data.holidays.length -1, 1); //remove out of array
-				data.num--;
+		let k = data.num - 1;
+		while(k >= 0){
+			if(parseInt(data.holidays[k].date.substring(0, 4)) == y.getFullYear()){
+				let p = (new Date(data.holidays[k].date)).getTime();
+				if(p > y.getTime()){
+					data.holidays.splice(data.holidays.length - 1, 1); //remove out of array
+					data.num--;
+				}
 			}
-			k--;v--;
+			k--;
 		}
-		//hardcoded check for last one///////////////////////////////////////////////////////
-		let p = (new Date(data.holidays[data.num-1].date)).getTime();						//this has to be removed by improving the logic!
-		if(p > y.getTime()){
-			data.holidays.splice(data.holidays.length -1, 1); //remove out of array
-			data.num--;
-		}
-		////////////////////////////////////////////////////////////////////////////////////
 		//check if no holidays were found
 		if(data.num > 0){
 			switch(req.body.responsetype){
 			case "JSON":
-				res.send(data);
+				res.json(data);
 				return;
 			case "ICS":
 				res.send(icsConverter.getICS(data));
@@ -351,13 +365,13 @@ function typeArea(req, res){
 				res.send(xmlConverter.getXML(data));
 			}
 		}else{
-			res.send("No Holidays found for the supplied params.");
+			res.status(204).send(); //204 = no content
 		}
 		
 		return;
 	}catch(err){
 console.log(err);
-		res.status(500).send("Internal Server Error. Something went wrong. We are currently working on fixing this.");
+		res.status(500).send("Internal Server Error. We messed up.");
 		return;
 	}
 	
@@ -366,28 +380,31 @@ console.log(err);
 //process and respond for incomming post requests
 //check for correct body & parameters, crunch the numbers and return JSON Object
 app.post('/data/', function(req, res){	
-	if(typeof req.body.requesttype != 'undefined'){
-		req.body.requesttype = req.body.requesttype.toUpperCase();
-		switch(req.body.requesttype){
-		case "LIST":
-			typeList(req, res);
-			return;
-		case "NEXT":
-			typeNext(req, res);
-			break;
-		case "AREA":
-			typeArea(req, res);
-			break;
-		default:
-			res.status(400).send("Bad Request. Request-Type is not supported.");
+	try{
+		if(typeof req.body.requesttype != 'undefined'){
+			req.body.requesttype = req.body.requesttype.toUpperCase();
+			switch(req.body.requesttype){
+			case "LIST":
+				typeList(req, res);
+				return;
+			case "NEXT":
+				typeNext(req, res);
+				break;
+			case "AREA":
+				typeArea(req, res);
+				break;
+			default:
+				res.status(501).send("Not implemented. Request-Type is not supported.");
+				return;
+			}
+		}else{
+			res.status(400).send("Bad Request. Refer to API documentation for required params & headers.");
 			return;
 		}
-	}else{
-		res.status(400).send("Bad Request. Check API documentation for required params.");
-		return;
-	}
 		
-	
+	}catch(err){
+		res.status(500).send("Internal Server Error. We messed up.");
+	}
 });
 
 //removes unwanted variables from object before sending it to client
