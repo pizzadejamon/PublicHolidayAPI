@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Public Holiday API by Marius Riehl</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik+Mono+One" rel="stylesheet">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="hover.css">
+</head>
+<body>
+
+<div class="jumbotron text-center header designcolor" id="header">  
+  <h1 class="mainheading headerh">Calendar Generator</h1>
+  <p class="maintext">for Public Holiday API @rndtools13.eur.ad.sag:81</p>
+
+</div>
+
+<div class="container navbar" id="navbar">
+	<div class="row">
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box green hrv-overline-from-left">
+				<a  href="index.html#header" class="text-center abutton apressed">Overview</a>
+			</div>
+		</div>
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box designcolor hvr-overline-from-left">
+				<a  href="index.html#parameters" class="text-center abutton">Request</a>
+			</div>
+		</div>
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box orange hvr-overline-from-left">
+				<a  href="index.html#response" class="text-center abutton">Response</a>
+			</div>
+		</div>
+		<div class="col-md-3 col-xs-12">
+			<div class="center-block box red hvr-overline-from-left">
+				<a  href="index.html#footer" class="text-center abutton">Legal</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="container well" ng-app="" ng-init="requesttype='list';year=2017">
+	<h1 class="mainheading">Settings</h1>
+	<div class="row">
+		<div class="col-sm-12">
+			<p class="maintext">
+				<b>Step 1) Select <a href="index.html#requesttype">Request Type</a>:</b><br>
+				<form>
+					<select ng-model="requesttype">
+						<option value="list">List
+						<option value="next">Next
+						<option value="area">Area
+					</select>
+				</form>
+			</p>
+		</div>
+	</div>
+	
+	<div class="row" ng-switch="requesttype">
+		<div class="col-sm-12" ng-switch-when="list">
+			<p class="maintext"><b>Step 2) Select <a href="index.html#parameters">required parameters</a>:</b><br>
+				Year in ISO-8601 4 digit format:
+				<form>
+					<input type="number" ng-model="year">
+				</form>
+			</p>
+		</div>
+		<div class="col-sm-12" ng-switch-when="next">
+			<p class="maintext"><b>Step 2) Select <a href="index.html#parameters">required parameters</a>:</b><br>
+			
+			</p>
+		</div>
+		<div class="col-sm-12" ng-switch-when="area">
+			<p class="maintext"><b>Step 2) Select <a href="index.html#parameters">required parameters</a>:</b><br>
+			
+			</p>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="jumbotron footer" id="footer">
+		<div class="row">
+		<div class="col-sm-4">
+			<p class="maintext footertext">
+				Public Holiday Rest API<br>
+				developed by Marius Riehl<br>
+				RnD Project Office<br>
+				Student Projects<br>
+				Room 186, U12, SoftwareAG HQ
+			</p>	
+		</div>
+		<div class="col-sm-4 center-block text-center">
+			
+		</div>
+		<div class="col-sm-4">
+			<p class="maintext footertext text-center" style="text-align: right">
+				Feel free to use this service in your software! :)
+			</p>	
+		</div>
+		</div>
+		
+</div>
+</body>
+</html>
