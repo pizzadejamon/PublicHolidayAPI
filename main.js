@@ -380,6 +380,13 @@ console.log(err);
 //process and respond for incomming post requests
 //check for correct body & parameters, crunch the numbers and return JSON Object
 app.post('/data/', function(req, res){	
+	// Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+
+	
 	try{
 		if(typeof req.body.requesttype != 'undefined'){
 			req.body.requesttype = req.body.requesttype.toUpperCase();
@@ -441,4 +448,4 @@ function clearList(obj){
 
 
 //app listens for post (or get) requests
-app.listen(4444); //change this port to whatever port is available on UberSpace Avior
+app.listen(121); //change this port to whatever port is available on UberSpace Avior

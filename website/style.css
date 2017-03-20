@@ -19,7 +19,7 @@ body{
   		margin-bottom: 5em;
   		line-height: 3em;
   	}
-  	.maintext{
+  	.maintext, button{
          font-family: 'Roboto Mono', sans-serif;
          font-size: 18px;
          margin-bottom: 1em;  	
@@ -72,11 +72,13 @@ body{
   	.apressed{
   		font-size: 24px;
   	}
-  	.box{
+  	.box, button{
   		height:52px;
   		vertical-align: middle;
   		border-right: 5px solid rgba(51, 51, 51, 0.47);
   		border-bottom: 5px solid rgba(51, 51, 51, 0.29);
+  		border-top:2px solid rgba(51, 51, 51, 0.47);
+  		border-left:2px solid rgba(51, 51, 51, 0.29);
   		border-radius: 0 0 5px 0;
   	}
   	.boxborder{
@@ -107,4 +109,50 @@ body{
   		width: 64px;
   		height: 64px;
   	}
+  	.iconsmall{
+  		width: 3em;
+  		height: 3em;
+  		margin-left: 1.5em;
+  		margin-right: 2.5em;
+  		margin-bottom: 0.5em;
+  	}
+  	select {
+  		border: 1px solid #bbb;
+  		padding:.75em 5em .5em 5em;
+  		background-color:#ffffff;
+ 		color: #333;
+ 		font-family: 'Roboto Mono', sans-serif;
+ 		box-shadow:inset 0 2px 1px 0 rgba(0,0,0,0.2);
+ 		font-weight: bold;
+ 		font-size: 18px;
+  		border-bottom: 3px solid #FE9A2E;
+	}
+	select:hover{
+		border:1px solid #FE9A2E;
+  		border-bottom: 3px solid #FE9A2E;
+	}
+	option {
+  		background:#eeeeee;
+  		border-top:1px solid #444;
+  		padding:.3em 1em .3em 1em;
+	}
+	input, textarea {
+  		font-family: 'Roboto Mono', sans-serif;
+ 		font-weight: bold;
+ 		font-size: 18px;
+  		background-color:white;
+  		border: 1px solid #bbb;
+  		padding:.75em 1em .5em 1em;
+  		box-shadow:inset 0 2px 1px 0 rgba(0,0,0,0.2);
+  		width: 20em;
+  		border-bottom: 3px solid #FE9A2E;
+  		text-align: middle;
+	}
+	input:hover, input:active {
+  		border:1px solid #FE9A2E;
+  		border-bottom: 3px solid #FE9A2E;
+	}
+	button:disabled{
+		background-color: #e2e2e2;
+	}
   	
