@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik+Mono+One" rel="stylesheet">
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="http://malsup.github.com/jquery.form.js"></script> 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
   
   <link rel="stylesheet" href="style.css">
@@ -16,7 +17,7 @@
 
 <div class="jumbotron text-center header designcolor" id="header">  
   <h1 class="mainheading headerh">Calendar Generator</h1>
-  <p class="maintext">for Public Holiday API @rndtools13.eur.ad.sag:81</p>
+  <p class="maintext">for Public Holiday API</p>
 
 </div>
 
@@ -47,45 +48,131 @@
 </div>
 
 
-<div class="container well" ng-app="" ng-init="requesttype='list';year=2017">
+<div class="container well" ng-app="" ng-init="requesttype='list';year=2017;countries='DE,US';datestart='2017-01-01';dateend='2018-01-01'">
 	<h1 class="mainheading">Settings</h1>
 	<div class="row">
 		<div class="col-sm-12">
 			<p class="maintext">
 				<b>Step 1) Select <a href="index.html#requesttype">Request Type</a>:</b><br>
-				<form>
-					<select ng-model="requesttype">
+				<form name="reqtype">
+					<select ng-model="requesttype" name="requesttype" required>
 						<option value="list">List
 						<option value="next">Next
 						<option value="area">Area
-					</select>
+					</select><span ng-show="!reqtype.requesttype.$valid"><img class="iconsmall" src="resized/invalid.png">
+					</span><span ng-show="reqtype.requesttype.$valid"><img class="iconsmall" src="resized/valid.png"></span>
 				</form>
 			</p>
 		</div>
 	</div>
 	
-	<div class="row" ng-switch="requesttype">
-		<div class="col-sm-12" ng-switch-when="list">
-			<p class="maintext"><b>Step 2) Select <a href="index.html#parameters">required parameters</a>:</b><br>
-				Year in ISO-8601 4 digit format:
-				<form>
-					<input type="number" ng-model="year">
+	<div class="row">
+		<div class="col-sm-12">
+			<p class="maintext"><b>Step 2) Select country/countries:</b><br>
+				Use format defined in <a href="index.html#countries">API Documentation</a>.<br>
+				Available countries: DE, US, AT, CH...
+				<form name="countriesform">
+					<input type="text" ng-model="countries" name="countries" ng-pattern="/^(DE|US|BG|CH|AT|BE)(?:,(DE|US|BG|CH|AT|BE))*$/" required>
+					<span ng-show="countriesform.countries.$error.pattern || countriesform.countries.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
+					<span ng-show="!countriesform.countries.$error.pattern && !countriesform.countries.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
 				</form>
 			</p>
 		</div>
-		<div class="col-sm-12" ng-switch-when="next">
-			<p class="maintext"><b>Step 2) Select <a href="index.html#parameters">required parameters</a>:</b><br>
-			
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-12" ng-show="requesttype == 'list'">
+			<p class="maintext"><b>Step 3) Select <a href="index.html#parameters">required parameters</a>:</b><br>
+				Year in ISO-8601 4 digit format:
+				<form name="list">
+					<input type="number" ng-model="year" name="year" min="1970" max="9999" required>
+					<span ng-show="!list.year.$valid"><img class="iconsmall" src="resized/invalid.png"></span>
+					<span ng-show="list.year.$valid"><img class="iconsmall" src="resized/valid.png"></span>
+				</form>
 			</p>
 		</div>
-		<div class="col-sm-12" ng-switch-when="area">
-			<p class="maintext"><b>Step 2) Select <a href="index.html#parameters">required parameters</a>:</b><br>
-			
+		
+		<div class="col-sm-12" ng-show="requesttype == 'next'">
+			<p class="maintext"><b>Step 3) Select <a href="index.html#parameters">required parameters</a>:</b><br>
+				No additional parameter required.
+			</p>
+		</div>
+		
+		<div class="col-sm-12" ng-show="requesttype == 'area'">
+			<p class="maintext"><b>Step 3) Select <a href="index.html#parameters">required parameters</a>:</b><br>
+				Start / End date in ISO-8601 10 digit format YYYY-MM-DD:
+				<form name="area">
+					
+					<input type="text" ng-model="datestart" name="datestart" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
+					<span ng-show="area.datestart.$error.pattern || area.datestart.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
+					<span ng-show="!area.datestart.$error.pattern && !area.datestart.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
+					
+					<input type="text" ng-model="dateend" name="dateend" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
+					<span ng-show="area.dateend.$error.pattern || area.dateend.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
+					<span ng-show="!area.dateend.$error.pattern && !area.dateend.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
+					
+				</form>
 			</p>
 		</div>
 	</div>
-</div>
 
+	<script>
+	$(document).ready(function (){
+
+		function download(path, content) {
+		    var c = document.createElement('a');
+		    c.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+		    c.setAttribute('download', path);
+		    if (document.createEvent) {
+		        var event = document.createEvent('MouseEvents');
+		        event.initEvent('click', true, true);
+		        c.dispatchEvent(event);
+		    }
+		    else {c.click();}
+		}	
+		
+		
+	$("#final").submit(function(event){
+		
+		var values = $(this).serialize(); 
+		   $.ajax({
+	        	url : "http://127.0.0.1:121/data/", //port number must be specified here!!!
+	        	type: "post",
+	        	data: values,
+	        	complete: function (response){
+	        		download('yourcalendar.ics', response.responseText);
+	        	}
+	        });
+		
+	});
+	});
+	
+	</script>
+	
+	
+	<div class="row">
+		<div class="col-sm-12">
+			<p class="maintext">
+			<!-- Create Hidden Form, that is ready to be posted -->
+			<form id="final">
+				<input class="hidden" type="text" name="requesttype" value="{{requesttype}}">
+				<input class="hidden" type="text" name="countries" value="{{countries}}">
+				<input class="hidden" type="text" name="year" value="{{year}}">
+				<input class="hidden" type="text" name="start" value="{{datestart}}">
+				<input class="hidden" type="text" name="end" value="{{dateend}}">
+				<input class="hidden" type="text" name="responsetype" value="ics">
+				
+				<!-- Submit button -->
+				<button class="green" style="width:auto" 
+					ng-disabled="!reqtype.$valid || !countriesform.$valid || (requesttype == 'list' && !list.$valid)
+					|| (requesttype == 'area' && !area.$valid)" type="submit">Create Calendar</button>
+			</form>
+			</p>
+		</div>
+	</div>
+	
+
+</div>
 
 
 <div class="jumbotron footer" id="footer">
@@ -94,17 +181,23 @@
 			<p class="maintext footertext">
 				Public Holiday Rest API<br>
 				developed by Marius Riehl<br>
-				RnD Project Office<br>
-				Student Projects<br>
-				Room 186, U12, SoftwareAG HQ
+				Copyright 2017, all rights reserved.<br><br>
+				This software is open source, code available
+				at <a href="https://github.com/pizzadejamon/PublicHolidayAPI">GitHub</a>.<br><br>
 			</p>	
 		</div>
 		<div class="col-sm-4 center-block text-center">
-			
+			<img src="asteroids.png" class="center-block"><br>
+				<p class="maintext">
+					<a href="https://uberspace.de">Uberspace.de</a>
+				</p>
+				<p class="maintext impress">
+					developed by Marius Riehl | marius[at]mriehl.de | Bessunger Stra&szlig;e 177a | 64347 Griesheim | Deutschland
+				</p>
 		</div>
 		<div class="col-sm-4">
-			<p class="maintext footertext text-center" style="text-align: right">
-				Feel free to use this service in your software! :)
+			<p class="maintext footertext text-center" style="text-align: right">If you like this project, help us and share it with your friends!<br>
+			This software is free, but you can donate some cookies at Paypal.<br>We &lt;3 you for your help!
 			</p>	
 		</div>
 		</div>
