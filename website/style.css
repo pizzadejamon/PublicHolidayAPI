@@ -19,7 +19,7 @@ body{
   		margin-bottom: 5em;
   		line-height: 3em;
   	}
-  	.maintext{
+  	.maintext, button{
          font-family: 'Roboto Mono', sans-serif;
          font-size: 18px;
          margin-bottom: 1em;  	
@@ -72,7 +72,7 @@ body{
   	.apressed{
   		font-size: 24px;
   	}
-  	.box{
+  	.box, button{
   		height:52px;
   		vertical-align: middle;
   		border-right: 5px solid rgba(51, 51, 51, 0.47);
@@ -109,6 +109,13 @@ body{
   		width: 64px;
   		height: 64px;
   	}
+  	.iconsmall{
+  		width: 3em;
+  		height: 3em;
+  		margin-left: 1.5em;
+  		margin-right: 2.5em;
+  		margin-bottom: 0.5em;
+  	}
   	select {
   		border: 1px solid #bbb;
   		padding:.75em 5em .5em 5em;
@@ -144,5 +151,8 @@ body{
 	input:hover, input:active {
   		border:1px solid #FE9A2E;
   		border-bottom: 3px solid #FE9A2E;
+	}
+	button:disabled{
+		background-color: #e2e2e2;
 	}
   	

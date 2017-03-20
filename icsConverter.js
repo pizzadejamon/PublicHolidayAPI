@@ -26,24 +26,26 @@ function convert(obj){
 		+ "PRODID:-//PublicHolidayAPI//Copyright Marius Riehl//EN\r\n"
 		+ "VERSION:2.0\r\n"
 		+ "CALSCALE:GREGORIAN\r\n"
-		+ "METHOD:PUBLISH\r\n";
+		+ "METHOD:PUBLISH\r\n"
+		+ "X-WR-CALNAME:yourcalendar\r\n"
+		+ "X-WR-TIMEZONE:Europe/Berlin\r\n";
 	
 	
 	
 	var qdate = convertDate(new Date().toISOString());
 	
 	if(typeof obj.num != 'undefined'){
-		ics += "X-WR-CALDESC:Number of Holidays:" + obj.num.toString() +"\r\n";
+		ics += "X-WR-CALDESC:Number of Holidays " + obj.num.toString() +"\r\n";
 		
 		//itterate through list, convert to vCal
 		for(var i = 0; i < obj.num; i++){
 			ics += "BEGIN:VEVENT\r\n";
-			ics += "UID: calendar-user\r\n";
+			ics += "UID:" + obj.holidays[i].tname + "\r\n";
 			//add the date (DTSTART / DTEND)
 			let pdate = convertDate(obj.holidays[i].date);
 			ics += "DTSTAMP:" + qdate + "T000000Z\r\n";
-			ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
-
+			ics += "DTSTART:" + pdate + "T000000Z\r\n";
+			
 			ics += "SUMMARY:" + obj.holidays[i].tname + " - " + obj.holidays[i].name + "\r\n"; //use translated name as title
 			ics += "LOCATION:" + obj.holidays[i].region + "\r\n";
 			ics += "STATUS:CONFIRMED\r\n";
@@ -53,10 +55,10 @@ function convert(obj){
 	}else{ //exception for requesttype=NEXT
 		ics += "X-WR-CALDESC:Number of Holidays:1\r\n";
 		ics += "BEGIN:VEVENT\r\n";
-		ics += "UID: calendar-user\r\n";
+		ics += "UID:calendaruser\r\n";
 		let pdate = convertDate(obj.date);
 		ics += "DTSTAMP:" + qdate + "T000000Z\r\n";
-		ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
+		ics += "DTSTART:" + pdate + "T000000Z\r\n";
 		ics += "SUMMARY:" + obj.tname + " - " + obj.name + "\r\n"; //use translated name as title
 		ics += "LOCATION:" + obj.region + "\r\n";
 		ics += "STATUS:CONFIRMED\r\n";
@@ -66,7 +68,7 @@ function convert(obj){
 	
 
 	//last line
-	ics += "END:VCALENDAR";
+	ics += "END:VCALENDAR\r\n";
 	
 	return ics;
 }
