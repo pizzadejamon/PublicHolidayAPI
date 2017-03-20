@@ -12,5 +12,3 @@ You have two options:
 2. use https://api.mriehl.de  
 
 Enjoy! :)  
-
-# This is not finished, will add this later
