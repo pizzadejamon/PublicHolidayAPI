@@ -12,3 +12,5 @@ You have two options:
 2. use https://api.mriehl.de  
 
 Enjoy! :)  
+
+# NOT ONLINE YET, STILL WORKING ON SERVER
