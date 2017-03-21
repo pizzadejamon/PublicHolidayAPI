@@ -9,7 +9,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="http://malsup.github.com/jquery.form.js"></script> 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-  
+  <link rel="icon" href="favicon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="hover.css">
 </head>
@@ -49,7 +49,6 @@
 
 
 <div class="container well" ng-app="" ng-init="requesttype='list';year=2017;countries='DE,US';datestart='2017-01-01';dateend='2018-01-01'">
-	<h1 class="mainheading">Settings</h1>
 	<div class="row">
 		<div class="col-sm-12">
 			<p class="maintext">
@@ -70,7 +69,7 @@
 		<div class="col-sm-12">
 			<p class="maintext"><b>Step 2) Select country/countries:</b><br>
 				Use format defined in <a href="index.html#countries">API Documentation</a>.<br>
-				Available countries: DE, US, AT, CH...
+				Available countries: <br>DE (Germany) | US (United States) | CH (Switzerland) <br> AT (Austria) | BE (Belgium) | BG (Bulgaria)
 				<form name="countriesform">
 					<input type="text" ng-model="countries" name="countries" ng-pattern="/^(DE|US|BG|CH|AT|BE)(?:,(DE|US|BG|CH|AT|BE))*$/" required>
 					<span ng-show="countriesform.countries.$error.pattern || countriesform.countries.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>

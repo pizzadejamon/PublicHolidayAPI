@@ -105,6 +105,9 @@ body{
   	.red {
   		background-color: rgba(241, 50, 10, 0.75);
   	}
+	.blue{
+		background-color: rgba(44, 195, 193, 0.66);
+	}
   	.icon{
   		width: 64px;
   		height: 64px;
