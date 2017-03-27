@@ -7,7 +7,8 @@ var basiccalc = require('./../basiccalc.js');
 
 
 //object containing belgian holidays
-var phodays = {
+var phodays;
+var container = {
 		"num": 10,
 		"holidays":[
 			{
@@ -44,7 +45,7 @@ var phodays = {
 			},
 			{
 				"name": "Pinkstermaandag",
-				"tname": "Pentecost Monday",
+				"tname": "Whit Monday",
 				"region": "BE: Nationwide",
 				"date": "",
 				"type": 1,
@@ -60,7 +61,7 @@ var phodays = {
 			},
 			{
 				"name": "Onze Lieve Vrouw hemelvaart",
-				"tname": "Assumption of Mary",
+				"tname": "Assumption of the Virgin Mary",
 				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
@@ -84,7 +85,7 @@ var phodays = {
 			},
 			{
 				"name": "Kerstmis",
-				"tname": "Christmas",
+				"tname": "Christmas Day",
 				"region": "BE: Nationwide",
 				"date": "",
 				"type": 0,
@@ -135,6 +136,7 @@ function processEasterHolidays(year){
 //used in mains.js when requesting calender for country
 module.exports = {
 		getHolidays: function (year){
+			phodays = JSON.parse(JSON.stringify(container));
 			processForYear(year);
 			return phodays;
 		}

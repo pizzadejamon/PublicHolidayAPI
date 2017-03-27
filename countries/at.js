@@ -7,13 +7,14 @@ var basiccalc = require('./../basiccalc.js');
 
 
 //object containing austria holidays
-var phodays = {
+var phodays;
+var container = {
 		"num": 17,
 		"holidays":[
 			{
 				"name": "Neujahr",
 				"tname": "New Year's Day",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "01-01"
@@ -21,7 +22,7 @@ var phodays = {
 			{
 				"name": "Heilige Drei Könige",
 				"tname": "Epiphany",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "01-06"
@@ -32,12 +33,12 @@ var phodays = {
 				"region": "AT: Kärnten, Steiermark, Tirol, Voralberg",
 				"date": "",
 				"type": 0,
-				"day": "19-03"
+				"day": "03-19"
 			},
 			{
 				"name": "Karfreitag",
 				"tname": "Good Friday",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": -2
@@ -45,7 +46,7 @@ var phodays = {
 			{
 				"name": "Ostermontag",
 				"tname": "Easter Monday",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 1
@@ -53,15 +54,15 @@ var phodays = {
 			{
 				"name": "Staatsfeiertag",
 				"tname": "National Day",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "05-01"
 			},
 			{
 				"name": "Christi-Himmelfahrt",
-				"tname": "Ascension Day",
-				"region": "AT: Alle Bundesländer",
+				"tname": "Ascension",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 39
@@ -69,7 +70,7 @@ var phodays = {
 			{
 				"name": "Pfingstmontag",
 				"tname": "Whit Monday",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 50
@@ -77,7 +78,7 @@ var phodays = {
 			{
 				"name": "Fronleichnam",
 				"tname": "Corpus Christi",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 1,
 				"offset": 60
@@ -85,7 +86,7 @@ var phodays = {
 			{
 				"name": "Mariä Himmelfahrt",
 				"tname": "Assumption of the Virgin Mary",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "08-15"
@@ -93,7 +94,7 @@ var phodays = {
 			{
 				"name": "Nationalfeiertag",
 				"tname": "National Holiday",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "10-26"
@@ -101,7 +102,7 @@ var phodays = {
 			{
 				"name": "Allerheiligen",
 				"tname": "All Saints' Day",
-				"region": "Alle Bundesländer",
+				"region": "Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "11-01"
@@ -109,7 +110,7 @@ var phodays = {
 			{
 				"name": "Mariä Empfängnis",
 				"tname": "Immaculate Conception",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-08"
@@ -117,7 +118,7 @@ var phodays = {
 			{
 				"name": "Heiliger Abend",
 				"tname": "Christmas Eve",
-				"region": "AT: Alle Bundesländer (nach Arbeitsvertrag)",
+				"region": "AT: Nationwide (work contract)",
 				"date": "",
 				"type": 0,
 				"day": "12-24"
@@ -125,15 +126,15 @@ var phodays = {
 			{
 				"name": "Christtag",
 				"tname": "Christmas Day",
-				"region": "AT: Alle Bundesländer",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-25"
 			},
 			{
 				"name": "Stefanitag",
-				"tname": "St. Stephans Day",
-				"region": "AT: Alle Bundesländer",
+				"tname": "Saint Stephen's Day",
+				"region": "AT: Nationwide",
 				"date": "",
 				"type": 0,
 				"day": "12-26"
@@ -141,7 +142,7 @@ var phodays = {
 			{
 				"name": "Silvester",
 				"tname": "New Year's Eve",
-				"region": "AT: Alle Bundesländer (nach Arbeitsvertrag)",
+				"region": "AT: Nationwide (work contract)",
 				"date": "",
 				"type": 0,
 				"day": "12-31"
@@ -191,6 +192,7 @@ function processEasterHolidays(year){
 //used in mains.js when requesting calender for country
 module.exports = {
 		getHolidays: function (year){
+			phodays = JSON.parse(JSON.stringify(container));
 			processForYear(year);
 			return phodays;
 		}

@@ -6,7 +6,8 @@ var basiccalc = require('./../basiccalc.js');
 
 
 //object containing german holidays
-var phodays = {
+var phodays;
+var container = {
 		"num": 16,
 		"holidays":[
 			{
@@ -59,7 +60,7 @@ var phodays = {
 			},
 			{
 				"name": "Christi-Himmelfahrt",
-				"tname": "Ascension Day",
+				"tname": "Ascension",
 				"region": "DE: Nationwide",
 				"date": "",
 				"type": 1,
@@ -91,7 +92,7 @@ var phodays = {
 			},
 			{
 				"name": "Mariä Himmelfahrt",
-				"tname": "Assumption Day",
+				"tname": "Assumption of the Virgin Mary",
 				"region": "DE: Bavaria, Saarland",
 				"date": "",
 				"type": 0,
@@ -130,7 +131,7 @@ var phodays = {
 			},
 			{
 				"name": "Zweiter Weihnachtsfeiertag",
-				"tname": "Saints Stephen's Day",
+				"tname": "Saint Stephen's Day",
 				"region": "DE:  Nationwide",
 				"date": "",
 				"type": 0,
@@ -199,6 +200,7 @@ function processBettag(obj, year){
 //used in mains.js when requesting calender for country
 module.exports = {
 		getHolidays: function (year){
+			phodays = JSON.parse(JSON.stringify(container));
 			processForYear(year);
 			return phodays;
 		}
