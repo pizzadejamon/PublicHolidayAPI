@@ -9,7 +9,7 @@ $(document).ready(function (){
 	function directDownload(){
 		//transform countriesform to string
 		$("#finalcountries").val(formToString());
-
+		$("#loadanimation").removeClass("hidden");
 		var values = $("#final").serialize(); 
 		   $.ajax({
 	        	url : "http://rndtools13.eur.ad.sag:121/data/",
@@ -30,6 +30,8 @@ $(document).ready(function (){
 						let p = convertToICS(globres);
 						var calname = $("#calname").val();
 						download(calname + '.ics', p);
+						
+						$("#loadanimation").addClass("hidden");
 					}
 	        	}
 	        });
@@ -38,6 +40,7 @@ $(document).ready(function (){
 	function previewPost(){
 		//transform countriesform to string
 		$("#finalcountries").val(formToString());
+		$("#loadanimation").removeClass("hidden");
 		var values = $("#final").serialize(); 
 		   $.ajax({
 	        	url : "http://rndtools13.eur.ad.sag:121/data/",
@@ -68,6 +71,8 @@ $(document).ready(function (){
 						
 						$("#preview").html(convertToTable(globres));
 						$("#success").html("Created calendar with " + obj.num + " holidays. Download it direclty or customize it in advanced settings.");
+						
+						$("#loadanimation").addClass("hidden");
 					}
 					
 	        	}

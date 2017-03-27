@@ -19,6 +19,7 @@
   <script src="post.js"></script>
   <script src="countryselect.js"></script>
   <script src="addHoliday.js"></script>
+  <script src="edit.js"></script>
   <script>
 	var globres; //for global access to form data
 	
@@ -145,7 +146,7 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-sm-5">
 			<p class="maintext">
 			<!-- Create Hidden Form, that is ready to be posted -->
 
@@ -163,7 +164,9 @@
 			</form>
 			
 			</p>
-		</div><div class="col-sm-6" style="margin-top: 10px;"><p class="maintext"><button ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" class='btn btn-info center-block' style='width:200px;' id='previewbutton'>Preview Calendar</button></p></div>
+		</div>
+		<div class="col-sm-2"><img class="center-block hidden" style="width: 5em; height: 5em;" src="resized/loading.gif" id="loadanimation"></div>
+		<div class="col-sm-5" style="margin-top: 10px;"><p class="maintext"><button ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" class='btn btn-info center-block' style='width:200px;' id='previewbutton'>Preview Calendar</button></p></div>
 	</div>
 </div>
 
@@ -174,7 +177,7 @@
 		</div>
 		<div class="col-sm-4">
 			<!-- Modal trigger -->
-			<button type="button" class="btn btn-info center-block" data-toggle="modal" data-target="#addModal">Add custom holidays</button>
+			<button type="button" class="btn btn-info center-block" data-toggle="modal" data-target="#addModal">Add custom holiday</button>
 		</div>
 		<div class="col-sm-4">
 			<button class='btn btn-warning center-block' style='width:200px;' id='back'>Back</button>
@@ -235,6 +238,59 @@
 	</div>
 	</div>
 	</div>
+
+	<div class="modal fade" id="editModal" role="dialog">
+	<div class="modal-dialog">
+	<!-- Allows editing of new holiday -->
+	<div id="previewedit" class="modal-content">
+			<div class="modal-header">
+				<div class="alert alert-success hidden" id="successadd"></div>
+				<p class="mainheading">Edit selected holiday</p>
+			</div>
+			
+			<div class="modal-body">
+				<p class="maintext">
+					<form id="editholiday" name="editholiday">
+						<!-- hidden field for id, or use global variable? -->
+						<input type="text" id="editid" name="editid" class="hidden">
+					
+						<div class="row">
+						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language.">Org. Name:</a></div><div class="col-sm-9"><input type="text" ng-model="editname" name="editname" id="editname" required>
+						<span ng-show="editholiday.editname.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
+						<span ng-show="!editholiday.editname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
+						</div><br>
+						
+						<div class="row">
+						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english.">Eng. Name:</a></div><div class="col-sm-9"><input type="text" ng-model="edittname" name="edittname" id="edittname" required>
+						<span ng-show="editholiday.edittname.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
+						<span ng-show="!editholiday.edittname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
+						</div><br>
+						
+						<div class="row">
+						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed.">Region:</a></div><div class="col-sm-9"><input type="text" ng-model="editregion" name="editregion" id="editregion" required>
+						<span ng-show="editholiday.editregion.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
+						<span ng-show="!editholiday.editregion.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
+						</div><br>
+						
+						<div class="row">
+						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD">Date:</a></div><div class="col-sm-9"><input type="text" ng-model="editdate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="editdate" id="editdate" required>
+						<span ng-show="editholiday.editdate.$error.pattern || editholiday.editdate.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
+						<span ng-show="!editholiday.editdate.$error.pattern && !editholiday.editdate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
+						</div><br>
+						<!-- Holiday Add submit button -->
+						<button ng-disabled="!editholiday.$valid" class="btn btn-warning center-block" style="width:200px;" type="submit">Save changes</button>
+					</form>
+				</p>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Close and discard changes</button>
+			</div>
+
+	</div>
+	</div>
+	</div>
+
 </div>
 
 </div>
@@ -249,7 +305,7 @@
 				<h4 class="modal-title">Warning</h4>
 			</div>
 			<div class="modal-body">
-				<p class="maintext">Going back deletes all custom holidays. Are you sure you want to proceed?</p><br>
+				<p class="maintext">Going back deletes all custom holidays and changes. Are you sure you want to proceed?</p><br>
 				<button class='btn btn-danger center-block' style='width:200px;' id='backsure'>Back</button>
 			</div>
 			<div class="modal-footer">
@@ -259,8 +315,6 @@
 </div></div>
 
 <script>
-//initialize, or load from cookie?
-
 var app = angular.module('app', []);
 app.controller('ctrl', function($scope) {
     
