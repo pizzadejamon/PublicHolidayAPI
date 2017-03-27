@@ -1,113 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Public Holiday API by Marius Riehl</title>
+  <title>Calendar Generator RnD</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik+Mono+One" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="http://malsup.github.com/jquery.form.js"></script> 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-  
-  <link rel="stylesheet" href="style.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" href="genstyle.css">
   <link rel="stylesheet" href="hover.css">
+  
+  <!-- Custom scripts -->
+  <script src="converter.js"></script>
+  <script src="download.js"></script>
+  <script src="post.js"></script>
+  <script src="countryselect.js"></script>
+  <script src="addHoliday.js"></script>
+  <script>
+	var globres; //for global access to form data
+	
+	var customcount = 0;
+	
+	var countries = [{iso: 'DE', tname: 'Germany'}, 
+							{iso: 'NL', tname: 'Netherlands'},		
+							{iso: 'BG', tname: 'Bulgaria'},
+							{iso: 'US', tname: 'United States'},
+							{iso: 'IN', tname: 'India'},
+							{iso: 'IL', tname: 'Israel'},
+							{iso: 'SK', tname: 'Slovakia'},
+							{iso: 'UK', tname: 'United Kingdom'},
+							
+							{iso: 'MX', tname: 'Mexico'},
+							{iso: 'AT', tname: 'Austria'},
+							{iso: 'CH', tname: 'Switzerland'},
+							{iso: 'BE', tname: 'Belgium'}
+					];
+	var rndcount = 8;
+		
+		
+	
+	
+	$(document).ready(function (){
+		$("#download").click(function(){ //when download button is clicked, convert to ics and download
+			let p = convertToICS(globres);
+			var calname = $("#calname").val();
+			download(calname + '.ics', p);
+		});
+		$("#back").click(function(){
+			if(customcount == 0){
+				$("#review").addClass("hidden");
+				$("#round1").removeClass("hidden");
+				$("#success").addClass("hidden");
+			}else{ //open modal, sets custom count to 0
+				$("#backModal").modal('show');
+			}
+		});
+		$("#backsure").click(function(){ //this button goes back without anymore warning
+			$("#review").addClass("hidden");
+			$("#round1").removeClass("hidden");
+			$("#success").addClass("hidden");
+			customcount = 0;
+			$("#backModal").modal('hide');
+		});
+	
+		
+		$('[data-toggle="tooltipname"]').tooltip();
+		$('[data-toggle="tooltiptname"]').tooltip();
+		$('[data-toggle="tooltipregion"]').tooltip();
+		$('[data-toggle="tooltipdate"]').tooltip();   
+	
+		genCountSelect("#countryselect"); //on load
+	});
+	
+	</script>
 </head>
 <body>
 
-<div class="jumbotron text-center header designcolor" id="header">  
-  <h1 class="mainheading headerh">Calendar Generator</h1>
-  <p class="maintext">for Public Holiday API</p>
+<div class="jumbotron text-center header designcolor" style="height: 100px;"id="header">  
+  <h2 class="mainheading headerh" style="color:#fff;margin-top: 0;">Calendar Generator</h2>
 
 </div>
 
-<div class="container navbar" id="navbar">
+<div class="container"><!-- Error -->
 	<div class="row">
-		<div class="col-md-3 col-xs-12">
-			<div class="center-block box green hrv-overline-from-left">
-				<a  href="index.html#header" class="text-center abutton apressed">Overview</a>
-			</div>
-		</div>
-		<div class="col-md-3 col-xs-12">
-			<div class="center-block box designcolor hvr-overline-from-left">
-				<a  href="index.html#parameters" class="text-center abutton">Request</a>
-			</div>
-		</div>
-		<div class="col-md-3 col-xs-12">
-			<div class="center-block box orange hvr-overline-from-left">
-				<a  href="index.html#response" class="text-center abutton">Response</a>
-			</div>
-		</div>
-		<div class="col-md-3 col-xs-12">
-			<div class="center-block box red hvr-overline-from-left">
-				<a  href="index.html#footer" class="text-center abutton">Legal</a>
-			</div>
+		<div class="col-sm-12">
+			<div class="alert alert-danger hidden" id="error"></div>
 		</div>
 	</div>
-
+</div>
+<div class="container"><!-- Sucess -->
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="alert alert-success hidden" id="success"></div>
+		</div>
+	</div>
 </div>
 
+<div ng-app="app" ng-controller="ctrl" ng-init="calname='yourcalendar';requesttype='area';year=2017">
 
-<div class="container well" ng-app="" ng-init="requesttype='list';year=2017;countries='DE,US';datestart='2017-01-01';dateend='2018-01-01'">
-	<h1 class="mainheading">Settings</h1>
-	<div class="row">
-		<div class="col-sm-12">
-			<p class="maintext">
-				<b>Step 1) Select <a href="index.html#requesttype">Request Type</a>:</b><br>
-				<form name="reqtype">
-					<select ng-model="requesttype" name="requesttype" required>
-						<option value="list">List
-						<option value="next">Next
-						<option value="area">Area
-					</select><span ng-show="!reqtype.requesttype.$valid"><img class="iconsmall" src="resized/invalid.png">
-					</span><span ng-show="reqtype.requesttype.$valid"><img class="iconsmall" src="resized/valid.png"></span>
-				</form>
-			</p>
-		</div>
-	</div>
-	
-	<div class="row">
-		<div class="col-sm-12">
-			<p class="maintext"><b>Step 2) Select country/countries:</b><br>
-				Use format defined in <a href="index.html#countries">API Documentation</a>.<br>
-				Available countries: DE, US, AT, CH...
-				<form name="countriesform">
-					<input type="text" ng-model="countries" name="countries" ng-pattern="/^(DE|US|BG|CH|AT|BE)(?:,(DE|US|BG|CH|AT|BE))*$/" required>
-					<span ng-show="countriesform.countries.$error.pattern || countriesform.countries.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
-					<span ng-show="!countriesform.countries.$error.pattern && !countriesform.countries.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
-				</form>
-			</p>
-		</div>
-	</div>
-	
-	<div class="row">
-		<div class="col-sm-12" ng-show="requesttype == 'list'">
-			<p class="maintext"><b>Step 3) Select <a href="index.html#parameters">required parameters</a>:</b><br>
-				Year in ISO-8601 4 digit format:
-				<form name="list">
-					<input type="number" ng-model="year" name="year" min="1970" max="9999" required>
-					<span ng-show="!list.year.$valid"><img class="iconsmall" src="resized/invalid.png"></span>
-					<span ng-show="list.year.$valid"><img class="iconsmall" src="resized/valid.png"></span>
-				</form>
-			</p>
-		</div>
+<div class="container well" id="round1">
+	<p class="maintext"><b>Select desired RnD locations:</b><br></p>
+	<div id="countryselect">
 		
-		<div class="col-sm-12" ng-show="requesttype == 'next'">
-			<p class="maintext"><b>Step 3) Select <a href="index.html#parameters">required parameters</a>:</b><br>
-				No additional parameter required.
-			</p>
-		</div>
-		
+	</div>
+
+	
+	<p class="maintext"><b><br><br>Select <a href="index.html#parameters">Date Range</a>:</b><br></p>
+	<!-- Dates (Start / End) -->
+	<div class="row">
 		<div class="col-sm-12" ng-show="requesttype == 'area'">
-			<p class="maintext"><b>Step 3) Select <a href="index.html#parameters">required parameters</a>:</b><br>
+			<p class="maintext">
 				Start / End date in ISO-8601 10 digit format YYYY-MM-DD:
 				<form name="area">
 					
-					<input type="text" ng-model="datestart" name="datestart" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
+					<input type="text" ng-model="datestart" name="datestart" id="datestart" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
 					<span ng-show="area.datestart.$error.pattern || area.datestart.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 					<span ng-show="!area.datestart.$error.pattern && !area.datestart.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
 					
-					<input type="text" ng-model="dateend" name="dateend" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
+					<input type="text" ng-model="dateend" name="dateend" id="dateend" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
 					<span ng-show="area.dateend.$error.pattern || area.dateend.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 					<span ng-show="!area.dateend.$error.pattern && !area.dateend.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
 					
@@ -116,92 +129,152 @@
 		</div>
 	</div>
 
-	<script>
-	$(document).ready(function (){
-
-		function download(path, content) {
-		    var c = document.createElement('a');
-		    c.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
-		    c.setAttribute('download', path);
-		    if (document.createEvent) {
-		        var event = document.createEvent('MouseEvents');
-		        event.initEvent('click', true, true);
-		        c.dispatchEvent(event);
-		    }
-		    else {c.click();}
-		}	
-		
-		
-	$("#final").submit(function(event){
-		
-		var values = $(this).serialize(); 
-		   $.ajax({
-	        	url : "http://127.0.0.1:121/data/", //port number must be specified here!!!
-	        	type: "post",
-	        	data: values,
-	        	complete: function (response){
-	        		download('yourcalendar.ics', response.responseText);
-	        	}
-	        });
-		
-	});
-	});
-	
-	</script>
-	
-	
-	<div class="row">
+	<!-- Calendar Name -->
+	<div class="row" style="margin-bottom:40px;">
 		<div class="col-sm-12">
-			<p class="maintext">
-			<!-- Create Hidden Form, that is ready to be posted -->
-			<form id="final">
-				<input class="hidden" type="text" name="requesttype" value="{{requesttype}}">
-				<input class="hidden" type="text" name="countries" value="{{countries}}">
-				<input class="hidden" type="text" name="year" value="{{year}}">
-				<input class="hidden" type="text" name="start" value="{{datestart}}">
-				<input class="hidden" type="text" name="end" value="{{dateend}}">
-				<input class="hidden" type="text" name="responsetype" value="ics">
-				
-				<!-- Submit button -->
-				<button class="green" style="width:auto" 
-					ng-disabled="!reqtype.$valid || !countriesform.$valid || (requesttype == 'list' && !list.$valid)
-					|| (requesttype == 'area' && !area.$valid)" type="submit">Create Calendar</button>
+			<p class="maintext"><b>Set calendar name:</b><br>
+			<form name="calnameform">
+			
+				<input type="text" ng-model="calname" name="calname" id="calname" ng-pattern="/^[A-Za-z0-9\s]+$/" required>
+				<span ng-show="!calnameform.calname.$valid"><img class="iconsmall" src="resized/invalid.png"></span>
+				<span ng-show="calnameform.calname.$valid"><img class="iconsmall" src="resized/valid.png"></span>
+			
 			</form>
 			</p>
 		</div>
 	</div>
 	
+	<div class="row">
+		<div class="col-sm-6">
+			<p class="maintext">
+			<!-- Create Hidden Form, that is ready to be posted -->
 
+			<form id="final">
+				<input class="hidden" type="text" name="requesttype" value="{{requesttype}}">
+				<input class="hidden" type="text" name="countries" id='finalcountries'>
+				<input class="hidden" type="text" name="year" value="{{year}}">
+				<input class="hidden" type="text" name="start" value="{{datestart}}">
+				<input class="hidden" type="text" name="end" value="{{dateend}}">
+				<input class="hidden" type="text" name="responsetype" value="json">
+				
+				<!-- Submit button -->
+				<button class="btn btn-success center-block" style="width:200px;" ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" type="submit">Create Calendar</button>
+				
+			</form>
+			
+			</p>
+		</div><div class="col-sm-6" style="margin-top: 10px;"><p class="maintext"><button ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" class='btn btn-info center-block' style='width:200px;' id='previewbutton'>Preview Calendar</button></p></div>
+	</div>
 </div>
 
-
-<div class="jumbotron footer" id="footer">
-		<div class="row">
+<div class="container well hidden" id="review">
+	<div class="row" style="margin-bottom:40px;">
 		<div class="col-sm-4">
-			<p class="maintext footertext">
-				Public Holiday Rest API<br>
-				developed by Marius Riehl<br>
-				Copyright 2017, all rights reserved.<br><br>
-				This software is open source, code available
-				at <a href="https://github.com/pizzadejamon/PublicHolidayAPI">GitHub</a>.<br><br>
-			</p>	
+			<button ng-disabled="!calnameform.$valid" class='btn btn-success center-block' style='width:200px;' id='download'>Download</button>
 		</div>
-		<div class="col-sm-4 center-block text-center">
-			<img src="asteroids.png" class="center-block"><br>
+		<div class="col-sm-4">
+			<!-- Modal trigger -->
+			<button type="button" class="btn btn-info center-block" data-toggle="modal" data-target="#addModal">Add custom holidays</button>
+		</div>
+		<div class="col-sm-4">
+			<button class='btn btn-warning center-block' style='width:200px;' id='back'>Back</button>
+		</div>
+	</div>
+	
+
+	<!-- For previewing the calendar, is filled by js function -->
+	<div id="preview">
+	</div>
+	
+	
+	<div class="modal fade" id="addModal" role="dialog">
+	<div class="modal-dialog">
+	<!-- Allows addition of new holiday -->
+	<div id="previewadd" class="modal-content">
+			<div class="modal-header">
+				<div class="alert alert-success hidden" id="successadd"></div>
+				<p class="mainheading">Add new holidays</p>
+			</div>
+			
+			<div class="modal-body">
 				<p class="maintext">
-					<a href="https://uberspace.de">Uberspace.de</a>
+					<form id="addholiday" name="addholiday">
+						<div class="row">
+						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language.">Org. Name:</a></div><div class="col-sm-9"><input type="text" ng-model="addname" name="addname" id="addname" required>
+						<span ng-show="addholiday.addname.$error.required && !addholiday.addname.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
+						<span ng-show="!addholiday.addname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
+						</div><br>
+						
+						<div class="row">
+						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english.">Eng. Name:</a></div><div class="col-sm-9"><input type="text" ng-model="addtname" name="addtname" id="addtname" required>
+						<span ng-show="addholiday.addtname.$error.required && !addholiday.addtname.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
+						<span ng-show="!addholiday.addtname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
+						</div><br>
+						
+						<div class="row">
+						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed.">Region:</a></div><div class="col-sm-9"><input type="text" ng-model="addregion" name="addregion" id="addregion" required>
+						<span ng-show="addholiday.addregion.$error.required && !addholiday.addregion.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
+						<span ng-show="!addholiday.addregion.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
+						</div><br>
+						
+						<div class="row">
+						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD">Date:</a></div><div class="col-sm-9"><input type="text" ng-model="adddate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="adddate" id="adddate" required>
+						<span ng-show="addholiday.adddate.$error.pattern || addholiday.adddate.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
+						<span ng-show="!addholiday.adddate.$error.pattern && !addholiday.adddate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
+						</div><br>
+						<!-- Holiday Add submit button -->
+						<button ng-disabled="!addholiday.$valid" class="btn btn-info center-block" style="width:200px;" type="submit">Add Holiday</button>
+					</form>
 				</p>
-				<p class="maintext impress">
-					developed by Marius Riehl | marius[at]mriehl.de | Bessunger Stra&szlig;e 177a | 64347 Griesheim | Deutschland
-				</p>
-		</div>
-		<div class="col-sm-4">
-			<p class="maintext footertext text-center" style="text-align: right">If you like this project, help us and share it with your friends!<br>
-			This software is free, but you can donate some cookies at Paypal.<br>We &lt;3 you for your help!
-			</p>	
-		</div>
-		</div>
-		
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+
+	</div>
+	</div>
+	</div>
 </div>
+
+</div>
+</div> <!-- div end from ng -->
+
+<div class="container">
+<div class="modal fade" id="backModal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Warning</h4>
+			</div>
+			<div class="modal-body">
+				<p class="maintext">Going back deletes all custom holidays. Are you sure you want to proceed?</p><br>
+				<button class='btn btn-danger center-block' style='width:200px;' id='backsure'>Back</button>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+	</div>
+</div></div>
+
+<script>
+//initialize, or load from cookie?
+
+var app = angular.module('app', []);
+app.controller('ctrl', function($scope) {
+    
+	//initialize values
+	let d = new Date();
+	let p = d.toISOString().substring(0, 4);
+	var start = p + "-01-01";
+	var end = p + "-12-31";
+	
+	$scope.datestart = start;
+	$scope.dateend = end;
+	$scope.adddate = start;
+});
+</script>
+
 </body>
 </html>

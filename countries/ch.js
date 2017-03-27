@@ -6,7 +6,8 @@
 var basiccalc = require('./../basiccalc.js');
 
 //object containing switzerland holidays
-var phodays = {
+var phodays;
+var container = {
 		"num": 16,
 		"holidays":[
 			{
@@ -39,7 +40,7 @@ var phodays = {
 				"region": "CH: Not all cantons",
 				"date": "",
 				"type": 0,
-				"day": "19-03"
+				"day": "03-19"
 			},
 			{
 				"name": "Karfreitag",
@@ -59,7 +60,7 @@ var phodays = {
 			},
 			{
 				"name": "Tag der Arbeit",
-				"tname": "Labor Day",
+				"tname": "Labour Day",
 				"region": "CH: Not all cantons",
 				"date": "",
 				"type": 0,
@@ -99,7 +100,7 @@ var phodays = {
 			},
 			{
 				"name": "Mariä Himmelfahrt",
-				"tname": "Assumption",
+				"tname": "Assumption of the Virgin Mary",
 				"region": "CH: Mostly all cantons",
 				"date": "",
 				"type": 0,
@@ -107,7 +108,7 @@ var phodays = {
 			},
 			{
 				"name": "Allerheiligen",
-				"tname": "All Saints Day",
+				"tname": "All Saints' Day",
 				"region": "CH: Mostly all cantons",
 				"date": "",
 				"type": 0,
@@ -123,6 +124,7 @@ var phodays = {
 			},
 			{
 				"name": "Weihnachtstag",
+				"tname": "Christmas Day",
 				"region": "CH: Nationwide",
 				"date": "",
 				"type": 0,
@@ -130,6 +132,7 @@ var phodays = {
 			},
 			{
 				"name": "Stephanstag",
+				"tname": "Saint Stephen's Day",
 				"region": "CH: Nationwide",
 				"date": "",
 				"type": 0,
@@ -180,6 +183,7 @@ function processEasterHolidays(year){
 //used in mains.js when requesting calender for country
 module.exports = {
 		getHolidays: function (year){
+			phodays = JSON.parse(JSON.stringify(container));
 			processForYear(year);
 			return phodays;
 		}

@@ -6,7 +6,8 @@ var basiccalc = require('./../basiccalc.js');
 
 
 //object containing bulgaria holidays
-var phodays = {
+var phodays;
+var container = {
 		"num": 14,
 		"holidays":[
 			{
@@ -150,7 +151,7 @@ function processForYear(year){
 	if(date.getDay() == 0){
 		let dummyDay = {	
 			"name": "Рождество Христово",
-			"tname": "Christmas Holiday",
+			"tname": "Christmas Holiday observed",
 			"region": "BG: Nationwide",
 			"type": 0,
 			"day": "12-27" 
@@ -164,7 +165,7 @@ function processForYear(year){
 	if(date.getDay() == 0){
 		let dummyDay = {	
 				"name": "Нова година",
-				"tname": "New Year Holiday",
+				"tname": "New Year Holiday observed",
 				"region": "BG: Nationwide",
 				"type": 0,
 				"day": "01-02" 
@@ -173,7 +174,7 @@ function processForYear(year){
 		phodays.num++;
 		basiccalc.getSetDays(phodays.holidays[phodays.holidays.length-1], year);
 	}
-
+	
 					
 }
 
@@ -198,6 +199,7 @@ function processEasterHolidays(year){
 //used in mains.js when requesting calender for country
 module.exports = {
 		getHolidays: function (year){
+			phodays = JSON.parse(JSON.stringify(container));
 			processForYear(year);
 			return phodays;
 		}

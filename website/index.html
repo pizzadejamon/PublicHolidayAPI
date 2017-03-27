@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik+Mono+One" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
+  <link rel="icon" href="favicon.png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="hover.css">
 </head>
@@ -43,46 +43,16 @@
 			</div>
 		</div>
 	</div>
-
-</div>
-
-
-<div class="container well" id="statistics">
-	<div class="row">
-		
-		<div class="col-sm-2">
-		</div>
-		
-		<div class="col-sm-4 text-center">
-			<p class="maintext statistics">1309</p>
-			<h3 class="mainheading">total requets</h3>
-		</div>
-		<div class="col-sm-4 text-center">
-			<p class="maintext statistics">24</p>
-			<h3 class="mainheading">days online</h3>
-		</div>
-		
-		<div class="col-sm-2">
-		</div>
-	</div>
-	<div class="row">
-		
-		<div class="col-sm-2">
-		</div>
-		
-		<div class="col-sm-4 text-center">
-			<p class="maintext statistics">1309</p>
-			<h3 class="mainheading">requests/day</h3>
-		</div>
-		<div class="col-sm-4 text-center">
-			<p class="maintext statistics">13097989</p>
-			<h3 class="mainheading">MB data created</h3>
-		</div>
-		
-		<div class="col-sm-2">
+	<div class="row" style="margin-top:10px;">
+		<div class="col-xs-12">
+			<div class="center-block box blue hvr-overline-from-left">
+				<a href="gen.html" class="text-center abutton">Calendar Generator</a>
+			</div>
 		</div>
 	</div>
 </div>
+
+
 
 <div class="container" id="basicinfo">
 	<div class="row">
@@ -91,7 +61,7 @@
 	<p class="maintext">
 		A REST service providing dates of public holidays. Currently supporting 6 countries.</p>
 	<p class="maintext">
-		1. Do POST requests to <a href="https://api.mriehl.de/data/">https://api.mriehl.de/data</a>.<br>
+		1. Do POST requests to <a href="https://api.mriehl.de/data/">http://api.mriehl.de/data/</a>.<br>
 		2. Add <a href="#parameters">parameters</a> &amp; always set your header 'Content-Type' to 'application/x-www-form-urlencoded'<br>
 		3. Profit!<br>
 		Use 'Advanced REST Client' or <a href="https://www.hurl.it">Hurl.it</a>, if you want to test your post request parameters.<br><br>
@@ -112,7 +82,7 @@
 		<p class="maintext">
 		<b>Request:</b><br><br>
 		POST /data/ HTTP/1.1<br>
-		HOST: https://api.mriehl.de<br>
+		HOST: api.mriehl.de<br>
 		content-type: application/x-www-form-urlencoded<br>
 		content-length: 79<br><br>
 		countries=<b>DE</b>&amp;requesttype=<b>area<br></b>&amp;start=<b>2017-04-13</b>&amp;end=<b>2017-04-28</b><br>&amp;responsetype=<b>JSON</b><br>
@@ -289,6 +259,10 @@
 		AT | Austria<br>
 		BE | Belgium<br>
 		BG | Bulgaria<br>
+		IN | India<br>
+		IL | Israel<br>
+		MX | Mexico<br>
+		NL | Netherlands<br>
 		
 		<br>DU | Dummy
 	</p>
@@ -341,7 +315,7 @@
 	<div class="col-sm-12">
 	<h1 class="mainheading">Response handling</h1>
 	<p class="maintext">
-		<b><a href="#errors">HTTPS Errors</a></b> - list of error / status codes that the API might return (and their meaning)<br>
+		<b><a href="#errors">HTTP Errors</a></b> - list of error / status codes that the API might return (and their meaning)<br>
 		<b><a href="#resformat">Format</a></b> - text info about format of the response<br>
 		<b><a href="#resjson">JSON reponse</a></b> - structure of a json response [with example]<br>
 		<b><a href="#resics">ICSreponse</a></b> - structure of a ICS (calendar)response [with example]<br>
@@ -354,7 +328,7 @@
 
 
 <div class="container" id="errors">
-	<h1 class="mainheading">HTTPS Error Codes</h1>
+	<h1 class="mainheading">HTTP Error Codes</h1>
 	<p class="maintext">During usage, the API will respond with one of the following response (error codes):<br></p>
 	<div class="row">
 		<div class="col-sm-12">
@@ -411,7 +385,7 @@
 				Request:<br><br>
 				Get Next Holiday of BG, DE or US in JSON format<br>
 				POST /data/ HTTP/1.1<br>
-				HOST: https://api.mriehl.de<br>
+				HOST: api.mriehl.de<br>
 				content-type: application/x-www-form-urlencoded<br>
 				content-length: 60<br><br>
 
@@ -443,7 +417,7 @@
 				Request:<br><br>
 				Get Next Holiday of US in calendar format<br>
 				POST /data/ HTTP/1.1<br>
-				HOST: https://api.mriehl.de<br>
+				HOST: api.mriehl.de<br>
 				content-type: application/x-www-form-urlencoded<br>
 				content-length: 53<br><br>
 
@@ -460,11 +434,13 @@
 						&nbsp;&nbsp;&nbsp;VERSION:2.0<br>
 						&nbsp;&nbsp;&nbsp;CALSCALE:GREGORIAN<br>
 						&nbsp;&nbsp;&nbsp;METHOD:PUBLISH<br>
-						&nbsp;&nbsp;&nbsp;X-WR-CALDESC:Number of Holidays:1<br>
+						&nbsp;&nbsp;&nbsp;X-WR-CALDESC:Number of Holidays 1<br>
+						&nbsp;&nbsp;&nbsp;X-WR-CALNAME:yourcalendar<br>
+						&nbsp;&nbsp;&nbsp;X-WR-TIMEZONE:Europe/Berlin<br>
 						&nbsp;&nbsp;&nbsp;BEGIN:VEVENT<br>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UID: calendar-user<br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UID:Memorial Day<br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DTSTAMP:20170316T000000Z<br>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DTSTART;VALUE=DATE:<b>20170529</b><br>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DTSTART:<b>20170529T000000Z</b><br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUMMARY:<b>Memorial Day - Memorial Day</b><br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOCATION:<b>US: Federal</b><br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STATUS:CONFIRMED<br>
@@ -484,7 +460,7 @@
 				Request:<br><br>
 				Get Holiday of US in JSON format between 2017-04-20 and 2017-05-30<br>
 				POST /data/ HTTP/1.1<br>
-				HOST: https://api.mriehl.de<br>
+				HOST: api.mriehl.de<br>
 				content-type: application/x-www-form-urlencoded<br>
 				content-length: 79<br><br>
 
@@ -544,7 +520,8 @@
 				There might be unknown issues with this software, that you might expierience.<br>
 				We are not liable for anything. absolutly.<br><br>
 				Images on this site are licensed under public domain.<br><br>
-				Since this site is hosted in europe/germany: Impressum befindet sich im unten / impress can be found at bottom of page.
+				Since this site is hosted in europe/germany: Impressum befindet sich im unten / impress can be found at bottom of page.<br><br>
+				Icon by <a href="https://www.iconfinder.com/paomedia">Paomedia</a>, liscened under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. No changes made.
 			</p>
 		</div>
 	</div>

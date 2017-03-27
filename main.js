@@ -13,7 +13,7 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
 //general
-var supported = ["DE", "US", "CH", "AT", "BE", "BG", "DU"]; //list of countries
+var supported = ["DE", "US", "CH", "AT", "BE", "BG","IN", "NL", "MX", "IL", "SK", "UK", "DU"]; //list of countries
 
 var icsConverter = require('./icsConverter.js');
 var xmlConverter = require('./xmlConverter.js');
@@ -181,8 +181,12 @@ function checkResponseType(req, res){
 function typeList(req, res){
 	
 	//check required params
-	if(typeof req.body.countries == "undefined" || typeof req.body.year == "undefined" || req.body.year == "" || req.body.countries == ""){
-		res.status(400).send("Bad Request. Check API documentation for required params.");
+	if(typeof typeof req.body.year == "undefined" || req.body.year == ""){
+		res.status(400).send("Bad Request. 'Year' was not defined.");
+		return;
+	}
+	if(typeof req.body.countries == "undefined" || req.body.countries == ""){
+		res.status(400).send("Bad Request. No countries selected. Atleast one country is required.");
 		return;
 	}
 	
@@ -233,7 +237,7 @@ function typeList(req, res){
 function typeNext(req, res){
 	//check required params
 	if(typeof req.body.countries == "undefined" || req.body.countries == ""){
-		res.status(400).send("Bad Request. Check API documentation for required params.");
+		res.status(400).send("Bad Request. No countries selected. Atleast one country is required.");
 		return;
 	}
 	
@@ -278,9 +282,13 @@ function typeNext(req, res){
 //area type, required params: countries, start, end in ISO 8601 format
 function typeArea(req, res){
 	//check required params
-	if(typeof req.body.countries == "undefined" || typeof req.body.start == "undefined" || typeof req.body.end == "undefined" || 
-			req.body.start == "" || req.body.end == "" || req.body.countries == ""){
+	if(typeof typeof req.body.start == "undefined" || typeof req.body.end == "undefined" || 
+			req.body.start == "" || req.body.end == ""){
 		res.status(400).send("Bad Request. Check API documentation for required params.");
+		return;
+	}
+	if(typeof req.body.countries == "undefined" || req.body.countries == ""){
+		res.status(400).send("Bad Request. No countries selected. Atleast one country is required.");
 		return;
 	}
 	

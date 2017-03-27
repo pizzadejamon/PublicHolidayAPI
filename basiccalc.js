@@ -18,23 +18,20 @@ function calculateSetDays(obj, year){ //only sets the date of type 0 holidays ac
 //type 2
 //calculating first of or index
 function calculateFirstOfOffset(obj, year){
-	//get day of first day of month
-	var d = new Date(year.toString() + '-' + padout(obj.month) + '-01');
-	let dayi = d.getDay(); //something like: 01.03 is Monday
 
-	var offset;
-	//calculate days until next weekday occurs
-	if(dayi <= obj.day){
-				offset = obj.day - dayi; //<= 0
-	}else{
-		offset = 8 - dayi;
+	
+	var start = 1 + obj.offset * 7;
+	let d = new Date(year.toString() + '-' + padout(obj.month) + '-' + padout(start));
+	while(d.getDay() !== obj.day){
+		d.setDate(d.getDate() + 1);
 	}
-	var dj = 1 + offset + obj.offset * 7; //dj = daynumber of date
-
-			
-	obj.date = year.toString() + '-' + padout(obj.month) + '-' + padout(dj);
+	if(typeof obj.addoffset !== 'undefined'){
+		d.setDate(d.getDate() + 1);
+	}
+	obj.date = d.toISOString().substring(0, 10);
 	return obj;
 }
+
 
 
 //type 3

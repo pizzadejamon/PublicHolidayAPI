@@ -2,7 +2,7 @@
 //should work with next, area, list mode, if responseType == JSON
 //author: Marius Riehl
 //date:	  2017-03-13
-//change: 2017-03-13
+//change: 2017-03-21
 
 
 
@@ -18,12 +18,18 @@ function convertDate(date){
 	return pdate;
 }
 
+function getOneDayLater(date){
+	let z = new Date(date);
+	let y = new Date(z.getTime() + 24*60*60*1000);
+	return convertDate(y.toISOString());
+}
+
 function convert(obj){
 	let ics = "";
 	
 	//firstlines, calendar settings hardcoded
 	ics = "BEGIN:VCALENDAR\r\n"
-		+ "PRODID:-//PublicHolidayAPI//Copyright Marius Riehl//EN\r\n"
+		+ "PRODID:-//PublicHolidayAPI//SoftwareAG//EN\r\n"
 		+ "VERSION:2.0\r\n"
 		+ "CALSCALE:GREGORIAN\r\n"
 		+ "METHOD:PUBLISH\r\n"
@@ -43,9 +49,10 @@ function convert(obj){
 			ics += "UID:" + obj.holidays[i].tname + "\r\n";
 			//add the date (DTSTART / DTEND)
 			let pdate = convertDate(obj.holidays[i].date);
-			ics += "DTSTAMP:" + qdate + "T000000Z\r\n";
-			ics += "DTSTART:" + pdate + "T000000Z\r\n";
-			
+			let rdate = getOneDayLater(obj.holidays[i].date);
+			ics += "DTSTAMP:" + qdate + "T000000\r\n";
+			ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
+			ics += "DTEND;VALUE=DATE:" + rdate + "\r\n";
 			ics += "SUMMARY:" + obj.holidays[i].tname + " - " + obj.holidays[i].name + "\r\n"; //use translated name as title
 			ics += "LOCATION:" + obj.holidays[i].region + "\r\n";
 			ics += "STATUS:CONFIRMED\r\n";
@@ -57,8 +64,10 @@ function convert(obj){
 		ics += "BEGIN:VEVENT\r\n";
 		ics += "UID:calendaruser\r\n";
 		let pdate = convertDate(obj.date);
-		ics += "DTSTAMP:" + qdate + "T000000Z\r\n";
-		ics += "DTSTART:" + pdate + "T000000Z\r\n";
+		let rdate = getOneDayLater(obj.date);
+		ics += "DTSTAMP:" + qdate + "T000000\r\n";
+		ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
+		ics += "DTEND;VALUE=DATE:" + rdate + "\r\n";
 		ics += "SUMMARY:" + obj.tname + " - " + obj.name + "\r\n"; //use translated name as title
 		ics += "LOCATION:" + obj.region + "\r\n";
 		ics += "STATUS:CONFIRMED\r\n";
