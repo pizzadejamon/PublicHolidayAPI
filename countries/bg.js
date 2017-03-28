@@ -137,7 +137,7 @@ function processForYear(year){
 			basiccalc.getSetDays(phodays.holidays[i], year);
 			break;
 		case 1:
-			processEasterHolidays(year);
+			processEasterHolidays(year, i);
 			break;
 		case 5:
 			processBettag(phodays.holidays[i], year);
@@ -151,7 +151,7 @@ function processForYear(year){
 	if(date.getDay() == 0){
 		let dummyDay = {	
 			"name": "Рождество Христово",
-			"tname": "Christmas Holiday observed",
+			"tname": "Christmas Day observed",
 			"region": "BG: Nationwide",
 			"type": 0,
 			"day": "12-27" 
@@ -165,7 +165,7 @@ function processForYear(year){
 	if(date.getDay() == 0){
 		let dummyDay = {	
 				"name": "Нова година",
-				"tname": "New Year Holiday observed",
+				"tname": "New Year's Day observed",
 				"region": "BG: Nationwide",
 				"type": 0,
 				"day": "01-02" 
@@ -180,19 +180,13 @@ function processForYear(year){
 
 
 //bulgaria specific calculation
-function processEasterHolidays(year){
+function processEasterHolidays(year, i){
 	var easterday = new Date(year.toString() + '-' + basiccalc.getEasterDay(year));
-	
-	
-	for(var i = 0; i < phodays.num; i++){
-		if(phodays.holidays[i].type == 1)
-		{
-			var d = new Date();
+	var d = new Date();
 			
-			d.setTime(easterday.getTime() + phodays.holidays[i].offset * 86400000);
-			phodays.holidays[i].date = d.toISOString().substring(0, 10);
-		}
-	}
+	d.setTime(easterday.getTime() + phodays.holidays[i].offset * 86400000);
+	phodays.holidays[i].date = d.toISOString().substring(0, 10);
+
 }
 
 

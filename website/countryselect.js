@@ -1,11 +1,12 @@
 //generate form for countrie select (without angular for whatever reason)
-function genCountSelect(id){
+function genCountSelect(id, num){
 			
 			
 		let str = ""; //saves the html that is generated
 		str += "<form id='countriesformlist'>";
 		str += "<div class='row'style='border-bottom: 3px solid #FE9A2E;'><div class='col-sm-1'><b>Include</b></div><div class='col-sm-2'><b>ISO Code</b></div><div class='col-sm-3'><b>Country</b></div></div>";
-		for(let i = 0; i < countries.length; i++){
+		
+		for(let i = 0; i < num; i++){ //set to countries.length for all locations
 			if(i == rndcount){str += "<br><p class='maintext'><b>Other Locations</b></p>"; str += "<div class='row'style='border-bottom: 3px solid #FE9A2E;'><div class='col-sm-1'><b>Include</b></div><div class='col-sm-2'><b>ISO Code</b></div><div class='col-sm-3'><b>Country</b></div></div>";}
 			if(i % 2 == 0){ //begin row
 				str += "<div class='row' style='background-color: #ffffff;'>";

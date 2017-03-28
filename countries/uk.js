@@ -19,8 +19,8 @@ var container = {
 				"day": "01-01"
 			},
 			{
-				"name": "New Year's Day",
-				"tname": "New Year's Day",
+				"name": "New Year's Day observed",
+				"tname": "New Year's Day observed",
 				"region": "UK: Scotland",
 				"date": "",
 				"type": 0,
@@ -125,7 +125,7 @@ function processForYear(year){
 			basiccalc.getSetDays(phodays.holidays[i], year);
 			break;
 		case 1:
-			processEasterHolidays(year);
+			processEasterHolidays(year, i);
 			break;
 		case 2:
 			basiccalc.getIndexDays(phodays.holidays[i], year);
@@ -198,18 +198,15 @@ function processForYear(year){
 
 
 //uk specific calculation
-function processEasterHolidays(year){
+function processEasterHolidays(year, i){
 	var easterday = new Date(year.toString() + '-' + basiccalc.getEasterDay(year));
-	for(var i = 0; i < phodays.num; i++){
-		if(phodays.holidays[i].type == 1)
-		{
-			var d = new Date();
+	var d = new Date();
 			
-			d.setTime(easterday.getTime() + phodays.holidays[i].offset * 86400000);
-			phodays.holidays[i].date = d.toISOString().substring(0, 10);
-		}
-	}
+	d.setTime(easterday.getTime() + phodays.holidays[i].offset * 86400000);
+	phodays.holidays[i].date = d.toISOString().substring(0, 10);
+
 }
+
 
 
 

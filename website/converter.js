@@ -10,10 +10,12 @@
 				}else{
 					str += "<div class='row'>";
 				}
-				str += "<div class='col-sm-1'><input type='checkbox' checked id='ho" + i + "'></div>"; //id = hoX later use substring to get X, remove index X from array if unchecked
+				str += "<div class='col-sm-1'><input type='checkbox' checked id='ho" + i + "'></div>";
 				str += "<div class='col-sm-4'><p class='maintext'>" + obj.holidays[i].tname + "</p></div>";
 				str += "<div class='col-sm-2'><p class='maintext'>" + obj.holidays[i].date + "</p></div>";
-				str += "<div class='col-sm-5'><p class='maintext'>" + obj.holidays[i].region + "</p></div>";
+				str += "<div class='col-sm-4'><p class='maintext'>" + obj.holidays[i].region + "</p></div>";
+				//button for editing
+				str += "<dic class='col-sm-1'><a style='margin-top: 5px;' class='btn btn-default btn-xs center-block' onclick='edit(" + i + ")'><span class='glyphicon glyphicon-pencil'></span></a></div>";
 				str += "</div>";
 			}
 			str += "</form>";
@@ -57,7 +59,7 @@
 					ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
 					ics += "DTEND;VALUE=DATE:" + rdate + "\r\n";
 					ics += "SUMMARY:" + obj.holidays[i].tname + " - " + obj.holidays[i].name + "\r\n"; //use translated name as title
-					ics += "LOCATION:" + obj.holidays[i].region.replace('<br>', '; ') + "\r\n";
+					ics += "LOCATION:" + obj.holidays[i].region.split("<br>").join("; ") + "\r\n";
 					ics += "STATUS:CONFIRMED\r\n";
 					ics += "SEQUENCE:0\r\n";
 					ics += "END:VEVENT\r\n";
