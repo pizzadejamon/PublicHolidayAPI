@@ -20,6 +20,7 @@ $(document).ready(function (){
 						$("#error").html(response.responseText); //display error message
 						$("#error").removeClass("hidden");
 						$("#success").addClass("hidden");
+						$("#loadanimation").addClass("hidden");
 					}else{
 						globres = makeUnique(JSON.parse(response.responseText));
 
@@ -52,6 +53,7 @@ $(document).ready(function (){
 						
 						$("#error").removeClass("hidden");
 						$("#success").addClass("hidden");
+						$("#loadanimation").addClass("hidden");
 					}else{						
 						
 						

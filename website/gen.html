@@ -6,12 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik+Mono+One" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+ 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="icon" href="favicon.png">
   <link rel="stylesheet" href="genstyle.css">
   <link rel="stylesheet" href="hover.css">
+  
+  <!-- Calendar Widget -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
   
   <!-- Custom scripts -->
   <script src="converter.js"></script>
@@ -26,20 +32,21 @@
 	var customcount = 0;
 	
 	var countries = [{iso: 'DE', tname: 'Germany'}, 
+							{iso: 'UK', tname: 'United Kingdom'},
 							{iso: 'NL', tname: 'Netherlands'},		
 							{iso: 'BG', tname: 'Bulgaria'},
+							{iso: 'SK', tname: 'Slovakia'},
 							{iso: 'US', tname: 'United States'},
 							{iso: 'IN', tname: 'India'},
 							{iso: 'IL', tname: 'Israel'},
-							{iso: 'SK', tname: 'Slovakia'},
-							{iso: 'UK', tname: 'United Kingdom'},
+							{iso: 'MY', tname: 'Malaysia'},
 							
 							{iso: 'MX', tname: 'Mexico'},
 							{iso: 'AT', tname: 'Austria'},
 							{iso: 'CH', tname: 'Switzerland'},
 							{iso: 'BE', tname: 'Belgium'}
 					];
-	var rndcount = 8;
+	var rndcount = 9;
 		
 		
 	
@@ -73,14 +80,47 @@
 		$('[data-toggle="tooltipregion"]').tooltip();
 		$('[data-toggle="tooltipdate"]').tooltip();   
 	
-		genCountSelect("#countryselect"); //on load
+		genCountSelect("#countryselect", rndcount); //on load
+		
+		$("#showAll").click(function(){
+			if($("#showAll").prop("checked")){
+				genCountSelect("#countryselect", countries.length);
+			}else{
+				genCountSelect("#countryselect", rndcount);
+			}
+		});
+		
+		$("#header").click(function(){
+			$("#back").click();
+		});
 	});
 	
 	</script>
 </head>
 <body>
 
-<div class="jumbotron text-center header designcolor" style="height: 100px;"id="header">  
+<!-- date picker script -->
+<script>
+    $(document).ready(function(){
+      var date_input=$('input[name="datestart"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'yyyy-mm-dd',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+      };
+	  $('input[name="datestart"]').datepicker(options);
+	  $('input[name="dateend"]').datepicker(options);
+	  $('input[name="editdate"]').datepicker(options);
+	  $('input[name="adddate"]').datepicker(options);
+    })
+	
+
+</script>
+
+
+<div id="header" class="jumbotron text-center header designcolor" style="height: 100px;"id="header">  
   <h2 class="mainheading headerh" style="color:#fff;margin-top: 0;">Calendar Generator</h2>
 
 </div>
@@ -103,20 +143,20 @@
 <div ng-app="app" ng-controller="ctrl" ng-init="calname='yourcalendar';requesttype='area';year=2017">
 
 <div class="container well" id="round1">
+	<p class="maintext"><input type="checkbox" id="showAll"><b> Show all Software AG locations</b></p>
 	<p class="maintext"><b>Select desired RnD locations:</b><br></p>
 	<div id="countryselect">
 		
 	</div>
 
 	
-	<p class="maintext"><b><br><br>Select <a href="index.html#parameters">Date Range</a>:</b><br></p>
+	<p class="maintext"><b>Select <a href="index.html#parameters">Date Range</a>:</b><br></p>
 	<!-- Dates (Start / End) -->
 	<div class="row">
 		<div class="col-sm-12" ng-show="requesttype == 'area'">
 			<p class="maintext">
 				Start / End date in ISO-8601 10 digit format YYYY-MM-DD:
 				<form name="area">
-					
 					<input type="text" ng-model="datestart" name="datestart" id="datestart" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
 					<span ng-show="area.datestart.$error.pattern || area.datestart.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 					<span ng-show="!area.datestart.$error.pattern && !area.datestart.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
@@ -136,7 +176,7 @@
 			<p class="maintext"><b>Set calendar name:</b><br>
 			<form name="calnameform">
 			
-				<input type="text" ng-model="calname" name="calname" id="calname" ng-pattern="/^[A-Za-z0-9\s]+$/" required>
+				<input  type="text" ng-model="calname" name="calname" id="calname" ng-pattern="/^[A-Za-z0-9\s]+$/" required>
 				<span ng-show="!calnameform.calname.$valid"><img class="iconsmall" src="resized/invalid.png"></span>
 				<span ng-show="calnameform.calname.$valid"><img class="iconsmall" src="resized/valid.png"></span>
 			
@@ -203,25 +243,25 @@
 				<p class="maintext">
 					<form id="addholiday" name="addholiday">
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language.">Org. Name:</a></div><div class="col-sm-9"><input type="text" ng-model="addname" name="addname" id="addname" required>
+						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language."><b>Org. Name:</b></a></div><div class="col-sm-9"><input type="text" ng-model="addname" name="addname" id="addname" required>
 						<span ng-show="addholiday.addname.$error.required && !addholiday.addname.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!addholiday.addname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english.">Eng. Name:</a></div><div class="col-sm-9"><input type="text" ng-model="addtname" name="addtname" id="addtname" required>
+						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english. This name will be shown as calendar event title."><b>Eng. Name:</b></a></div><div class="col-sm-9"><input type="text" ng-model="addtname" name="addtname" id="addtname" required>
 						<span ng-show="addholiday.addtname.$error.required && !addholiday.addtname.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!addholiday.addtname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed.">Region:</a></div><div class="col-sm-9"><input type="text" ng-model="addregion" name="addregion" id="addregion" required>
+						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed. I. e: 'Nationwide' or 'California only'."><b>Region:</b></a></div><div class="col-sm-9"><input type="text" ng-model="addregion" name="addregion" id="addregion" required>
 						<span ng-show="addholiday.addregion.$error.required && !addholiday.addregion.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!addholiday.addregion.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD">Date:</a></div><div class="col-sm-9"><input type="text" ng-model="adddate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="adddate" id="adddate" required>
+						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD"><b>Date:</b></a></div><div class="col-sm-9"><input type="text" ng-model="adddate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="adddate" id="adddate" required>
 						<span ng-show="addholiday.adddate.$error.pattern || addholiday.adddate.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!addholiday.adddate.$error.pattern && !addholiday.adddate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
@@ -255,25 +295,25 @@
 						<input type="text" id="editid" name="editid" class="hidden">
 					
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language.">Org. Name:</a></div><div class="col-sm-9"><input type="text" ng-model="editname" name="editname" id="editname" required>
+						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language."><b>Org. Name:</b></a></div><div class="col-sm-9"><input type="text" ng-model="editname" name="editname" id="editname" required>
 						<span ng-show="editholiday.editname.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.editname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english.">Eng. Name:</a></div><div class="col-sm-9"><input type="text" ng-model="edittname" name="edittname" id="edittname" required>
+						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english. This name will be shown as calendar event title."><b>Eng. Name:</b></a></div><div class="col-sm-9"><input type="text" ng-model="edittname" name="edittname" id="edittname" required>
 						<span ng-show="editholiday.edittname.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.edittname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed.">Region:</a></div><div class="col-sm-9"><input type="text" ng-model="editregion" name="editregion" id="editregion" required>
+						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed. 'Nationwide' or 'California only'."><b>Region:</b></a></div><div class="col-sm-9"><input type="text" ng-model="editregion" name="editregion" id="editregion" required>
 						<span ng-show="editholiday.editregion.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.editregion.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD">Date:</a></div><div class="col-sm-9"><input type="text" ng-model="editdate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="editdate" id="editdate" required>
+						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD"><b>Date:</b></a></div><div class="col-sm-9"><input type="text" ng-model="editdate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="editdate" id="editdate" required>
 						<span ng-show="editholiday.editdate.$error.pattern || editholiday.editdate.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.editdate.$error.pattern && !editholiday.editdate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>

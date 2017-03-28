@@ -150,8 +150,8 @@ function processForYear(year){
 	date = new Date(year.toString() + "-01-01");
 	if(date.getDay() == 0){
 		let dummyDay = {	
-				"name": "New Year Holiday observed",
-				"tname": "New Year Holiday observed",
+				"name": "New Year's Day observed",
+				"tname": "New Year's Day observed",
 				"region": "US: Nationwide / Federal",
 				"type": 0,
 				"day": "01-02" 
@@ -164,8 +164,8 @@ function processForYear(year){
 	date = new Date(year.toString() + "-01-01");
 	if(date.getDay() == 6){
 		let dummyDay = {	
-				"name": "New Year Holiday observed",
-				"tname": "New Year Holiday observed",
+				"name": "New Year's Day observed",
+				"tname": "New Year's Day observed",
 				"region": "US: Nationwide / Federal",
 				"type": 0,
 				"day": "12-31" 

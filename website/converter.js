@@ -59,7 +59,7 @@
 					ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
 					ics += "DTEND;VALUE=DATE:" + rdate + "\r\n";
 					ics += "SUMMARY:" + obj.holidays[i].tname + " - " + obj.holidays[i].name + "\r\n"; //use translated name as title
-					ics += "LOCATION:" + obj.holidays[i].region.replace('<br>', '; ') + "\r\n";
+					ics += "LOCATION:" + obj.holidays[i].region.split("<br>").join("; ") + "\r\n";
 					ics += "STATUS:CONFIRMED\r\n";
 					ics += "SEQUENCE:0\r\n";
 					ics += "END:VEVENT\r\n";

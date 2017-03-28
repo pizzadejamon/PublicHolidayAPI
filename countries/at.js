@@ -162,7 +162,7 @@ function processForYear(year){
 			basiccalc.getSetDays(phodays.holidays[i], year);
 			break;
 		case 1:
-			processEasterHolidays(year);
+			processEasterHolidays(year, i);
 			break;
 		}
 	}
@@ -171,19 +171,13 @@ function processForYear(year){
 
 
 //austria specific calculation
-function processEasterHolidays(year){
+function processEasterHolidays(year, i){
 	var easterday = new Date(year.toString() + '-' + basiccalc.getEasterDay(year));
-	
-	
-	for(var i = 0; i < phodays.num; i++){
-		if(phodays.holidays[i].type == 1)
-		{
-			var d = new Date();
+	var d = new Date();
 			
-			d.setTime(easterday.getTime() + phodays.holidays[i].offset * 86400000);
-			phodays.holidays[i].date = d.toISOString().substring(0, 10);
-		}
-	}
+	d.setTime(easterday.getTime() + phodays.holidays[i].offset * 86400000);
+	phodays.holidays[i].date = d.toISOString().substring(0, 10);
+
 }
 
 

@@ -13,7 +13,7 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
 //general
-var supported = ["DE", "US", "CH", "AT", "BE", "BG","IN", "NL", "MX", "IL", "SK", "UK", "DU"]; //list of countries
+var supported = ["DE", "US", "CH", "AT", "BE", "BG","IN", "NL", "MX", "IL", "SK", "UK", "MY", "DU"]; //list of countries
 
 var icsConverter = require('./icsConverter.js');
 var xmlConverter = require('./xmlConverter.js');
@@ -224,7 +224,7 @@ function typeList(req, res){
 				return;
 			}
 		}else{
-			res.status(204).send(); //no content
+			res.status(400).send("No Holidays found in the date range you specified."); //no content
 		}
 	}catch(err){
 		console.log(err); //internal error, prevent server from crashing and log error
@@ -258,7 +258,7 @@ function typeNext(req, res){
 		let p = new Date();
 		let nextholiday = getNextHoliday(countries, p.toISOString().substring(0, 4));
 		if(nextholiday == false){
-			res.status(204).send();
+			res.status(400).send("No Holidays found in the date range you specified.");
 			return;
 		}
 		nextholiday = clearParams(nextholiday);
@@ -317,7 +317,7 @@ function typeArea(req, res){
 	if(dt < 1){
 		res.status(400).send("Bad request. Start date must be before end date.");
 		return;
-	}else if(dt > 10){
+	}else if(dt > 11){
 		res.status(400).send("Bad request. Not more than 10 years area allowed.");
 		return;
 	}
@@ -373,7 +373,7 @@ function typeArea(req, res){
 				res.send(xmlConverter.getXML(data));
 			}
 		}else{
-			res.status(204).send(); //204 = no content
+			res.status(400).send("No Holidays found in the date range you specified."); //204 = no content
 		}
 		
 		return;
@@ -429,6 +429,9 @@ function clearParams(obj){
 			delete obj.day;
 			break;
 		case 1:
+		case 6:
+		case 7:
+		case 8:
 			delete obj.offset;
 			break;
 		case 2:
