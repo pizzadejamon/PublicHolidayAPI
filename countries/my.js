@@ -43,7 +43,7 @@ var container = {
 				"region": "MY: Nationwide",
 				"date": "",
 				"type": 0,
-				"day": "08-31"
+				"day": "09-16"
 			},
 			{
 				"name": "hari Krismas",
@@ -65,7 +65,7 @@ var container = {
 			},
 			{
 				"name": "hari Wesak",
-				"tname": "Wesak Day / Birth of Buddah",
+				"tname": "Birthday of Buddah",
 				"region": "MY: Nationwide",
 				"date": "",
 				"type": 5
@@ -182,6 +182,7 @@ function getIslamic(year, k, searchstring){
 	var request = require('sync-request');
 	var url = "http://api.usno.navy.mil/islamic?year=" + year.toString();
 	var res = request('GET', url);
+	var obj = JSON.parse(res.body.toString('utf-8'));
 	for(var i = 0; i < obj.data.length; i++){
 		if(obj.data[i].holiday == searchstring){
 			var d = new Date(obj.data[i].year.toString() + '-' + padout(obj.data[i].month) + '-' + padout(obj.data[i].day));
