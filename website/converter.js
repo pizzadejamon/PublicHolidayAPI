@@ -11,6 +11,8 @@
 					str += "<div class='row row1'>";
 				}
 				if(obj.holidays[i].include == true){ //for check all / uncheck all
+				str += "<div class='col-sm-1'><input title='Include " + obj.holidays[i].tname + " as holiday.' type='checkbox' onclick='hocheck(" + i + ")' checked id='ho" + i + "' style='cursor: pointer;'></div>";}else{
+					str += "<div class='col-sm-1'><input title='Include " + obj.holidays[i].tname + " as holiday.' onclick='hocheck(" + i + ")' type='checkbox' id='ho" + i + "' style='cursor: pointer;'></div>";}
 				str += "<div class='col-sm-4' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].tname + "</p></div>";
 				str += "<div class='col-sm-2' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].date + "</p></div>";
 				str += "<div class='col-sm-4' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].region + "</p></div>";
