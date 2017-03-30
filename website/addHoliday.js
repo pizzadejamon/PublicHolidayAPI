@@ -10,7 +10,8 @@ $(document).ready(function (){
 			"name": $("#addname").val(),
 			"tname": $("#addtname").val(),
 			"region": $("#addregion").val(),
-			"date": $("#adddate").val()
+			"date": $("#adddate").val(),
+			"include": true
 		};
 		globres.holidays.push(dummy);
 		customcount++;
@@ -36,6 +37,15 @@ $(document).ready(function (){
 		}else{
 			$("#success").html("<b>Created calendar with " + globres.num + " holidays. Don't forget your towel, Hitchhiker!</b>");
 		}
+		
+		$("#addModal").modal("hide");
+		//unset val
+		$("#addname").val("");$("#addtname").val("");$("#addregion").val("");
+		let d = new Date();
+		let p = d.toISOString().substring(0, 4);
+		var start = p + "-01-01";
+		$("#adddate").val(start);
+		$("#adddate").trigger('input');
 	}
 	
 

@@ -23,7 +23,7 @@ $(document).ready(function (){
 						$("#loadanimation").hide();
 					}else{
 						globres = makeUnique(JSON.parse(response.responseText));
-
+						globres = initInclude(globres);
 					
 					
 						//download
@@ -35,6 +35,14 @@ $(document).ready(function (){
 					}
 	        	}
 	        });
+	}
+	
+	function initInclude(obj){
+	
+		for(var i = 0; i < obj.num; i++){
+			obj.holidays[i].include = true;	
+		}
+		return obj;
 	}
 	
 	function previewPost(){
@@ -63,12 +71,13 @@ $(document).ready(function (){
 						obj = makeUnique(obj);
 						
 						globres = obj; //save to globale variable
+						globres = initInclude(globres);
 						
 						$("#review").show();
 						$("#round1").hide();
 						$("#error").hide();
 						$("#success").show();
-						
+						$("#selectAllHolidays").prop("checked", true);
 						$("#preview").html(convertToTable(globres, true));
 						if(obj.num != 42){
 							$("#success").html("<b>Created calendar with " + obj.num + " holidays. Download it direclty or customize it in advanced settings.</b>");

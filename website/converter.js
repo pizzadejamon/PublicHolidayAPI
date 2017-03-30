@@ -1,5 +1,5 @@
 	//visualizes data in table
-		function convertToTable(obj, bool){
+		function convertToTable(obj){
 			let str = "";
 
 			str += "<form id='reviewform'>";
@@ -10,9 +10,7 @@
 				}else{
 					str += "<div class='row row1'>";
 				}
-				if(bool == true){ //for check all / uncheck all
-				str += "<div class='col-sm-1'><input type='checkbox' onclick='uncheckAllh()' checked id='ho" + i + "' style='cursor: pointer;'></div>";}else{
-					str += "<div class='col-sm-1'><input onclick='uncheckAllh()' type='checkbox' id='ho" + i + "' style='cursor: pointer;'></div>";}
+				if(obj.holidays[i].include == true){ //for check all / uncheck all
 				str += "<div class='col-sm-4' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].tname + "</p></div>";
 				str += "<div class='col-sm-2' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].date + "</p></div>";
 				str += "<div class='col-sm-4' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].region + "</p></div>";
@@ -29,16 +27,20 @@
 			$("#ho" + id).trigger("click");
 			return;
 		}
-		function uncheckAllh(){
+		function hocheck(id){
 			$("#selectAllHolidays").prop("checked", false);
+			//set value in globres according to checkbox
+			if($("#ho" + id).prop("checked")){
+				globres.holidays[id].include = true;
+			}else{
+				globres.holidays[id].include = false;
+			}
+			
 		}
 		
 		function convertToICS(obj){
 			//calname
 			var calname = $("#calname").val();
-			
-			//ok, get array of checkboxes 
-			var x = $("#ho1").val();
 
 			let ics = "";
 	
@@ -57,8 +59,7 @@
 			ics += "X-WR-CALDESC:Number of Holidays " + obj.num.toString() +"\r\n";
 			//itterate through list, convert to vCal
 			for(var i = 0; i < obj.num; i++){
-				var idstr = "#ho" + (i);
-				if($(idstr).prop('checked')){
+				if(obj.holidays[i].include == true){
 					ics += "BEGIN:VEVENT\r\n";
 					ics += "UID:" + obj.holidays[i].tname + "\r\n";
 					//add the date (DTSTART / DTEND)

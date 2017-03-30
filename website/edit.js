@@ -31,10 +31,9 @@ function saveEdit(){
 	var obj = {	"name": $("#editname").val(),
 				"tname": $("#edittname").val(),
 				"region": $("#editregion").val(),
-				"date": $("#editdate").val()
+				"date": $("#editdate").val(),
+				"include": true
 	};
-	console.log(obj);
-	console.log(globres.holidays[i]);
 	if(JSON.stringify(obj) != JSON.stringify(globres.holidays[i])){
 			globres.holidays[i] = obj;
 			

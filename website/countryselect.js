@@ -13,7 +13,7 @@ function genCountSelect(id, num, arrayt){
 			}else{
 				str += '<div class="row row1">';
 			}
-			str += "<div class='col-sm-1'><input onclick='uncheckAll()' style='cursor: pointer;' type='checkbox' id='country" + i + "' ";
+			str += "<div class='col-sm-1'><input onclick='uncheckAll()' style='cursor: pointer;' title='Include " + countries[i].tname + " as country' type='checkbox' id='country" + i + "' ";
 			if(arrayt[i] == true){
 					str += "checked ";
 			}
