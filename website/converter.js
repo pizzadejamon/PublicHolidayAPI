@@ -1,19 +1,21 @@
 	//visualizes data in table
-		function convertToTable(obj){
+		function convertToTable(obj, bool){
 			let str = "";
 
 			str += "<form id='reviewform'>";
 			str += "<div class='row' style='border-bottom: 3px solid #FE9A2E;'><div class='col-sm-1'><b>Include</b></div><div class='col-sm-4'><b>Holiday Name</b></div><div class='col-sm-2'><b>Date observed</b></div><div class='col-sm-5'><b>Information</b></div></div>";
 			for(let i = 0; i < obj.num; i++){
 				if(i % 2 == 0){
-				str += "<div class='row' style='background-color: #ffffff;'>";
+					str += "<div class='row row2'>";
 				}else{
-					str += "<div class='row'>";
+					str += "<div class='row row1'>";
 				}
-				str += "<div class='col-sm-1'><input type='checkbox' checked id='ho" + i + "'></div>";
-				str += "<div class='col-sm-4'><p class='maintext'>" + obj.holidays[i].tname + "</p></div>";
-				str += "<div class='col-sm-2'><p class='maintext'>" + obj.holidays[i].date + "</p></div>";
-				str += "<div class='col-sm-4'><p class='maintext'>" + obj.holidays[i].region + "</p></div>";
+				if(bool == true){ //for check all / uncheck all
+				str += "<div class='col-sm-1'><input type='checkbox' onclick='uncheckAllh()' checked id='ho" + i + "' style='cursor: pointer;'></div>";}else{
+					str += "<div class='col-sm-1'><input onclick='uncheckAllh()' type='checkbox' id='ho" + i + "' style='cursor: pointer;'></div>";}
+				str += "<div class='col-sm-4' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].tname + "</p></div>";
+				str += "<div class='col-sm-2' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].date + "</p></div>";
+				str += "<div class='col-sm-4' onclick='toggleCheckboxh(" + i + ")' style='cursor: pointer;'><p class='maintext'>" + obj.holidays[i].region + "</p></div>";
 				//button for editing
 				str += "<dic class='col-sm-1'><a style='margin-top: 5px;' class='btn btn-default btn-xs center-block' onclick='edit(" + i + ")'><span class='glyphicon glyphicon-pencil'></span></a></div>";
 				str += "</div>";
@@ -22,15 +24,22 @@
 			return str;
 		}
 		
+		
+		function toggleCheckboxh(id){
+			$("#ho" + id).trigger("click");
+			return;
+		}
+		function uncheckAllh(){
+			$("#selectAllHolidays").prop("checked", false);
+		}
+		
 		function convertToICS(obj){
 			//calname
 			var calname = $("#calname").val();
 			
 			//ok, get array of checkboxes 
-			console.log("hallo!");
 			var x = $("#ho1").val();
-			console.log(x);
-			
+
 			let ics = "";
 	
 			//firstlines, calendar settings hardcoded
@@ -58,7 +67,7 @@
 					ics += "DTSTAMP:" + qdate + "T000000\r\n";
 					ics += "DTSTART;VALUE=DATE:" + pdate + "\r\n";
 					ics += "DTEND;VALUE=DATE:" + rdate + "\r\n";
-					ics += "SUMMARY:" + obj.holidays[i].tname + " - " + obj.holidays[i].name + "\r\n"; //use translated name as title
+					ics += "SUMMARY:" + obj.holidays[i].tname + "\r\n"; //use translated name as title
 					ics += "LOCATION:" + obj.holidays[i].region.split("<br>").join("; ") + "\r\n";
 					ics += "STATUS:CONFIRMED\r\n";
 					ics += "SEQUENCE:0\r\n";

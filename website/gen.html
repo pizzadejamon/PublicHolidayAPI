@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik+Mono+One" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-  <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
+
  
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
   
   <!-- Custom scripts -->
+  <script src="uniqueify.js"></script>
   <script src="converter.js"></script>
   <script src="download.js"></script>
   <script src="post.js"></script>
@@ -47,29 +48,40 @@
 							{iso: 'BE', tname: 'Belgium'}
 					];
 	var rndcount = 9;
-		
+	
+
 		
 	
 	
 	$(document).ready(function (){
+			$("#success").hide();
+			$("#error").hide();
+			$("#review").hide();
+			$("#successadd").hide();
+			$("#successedit").hide();
+			$("#loadanimation").hide();
+		
+		
 		$("#download").click(function(){ //when download button is clicked, convert to ics and download
 			let p = convertToICS(globres);
 			var calname = $("#calname").val();
 			download(calname + '.ics', p);
+			$("#success").html("<p class='mainheading'><b>Thanks for using the calendar generator. Your calendar has been downloaded.</b></p>");
+			$("#review").html("<a style='text-decoration: none;' href='gen.html'><button class='btn btn-lg btn-info center-block'>Back</button></a><br>");
 		});
 		$("#back").click(function(){
 			if(customcount == 0){
-				$("#review").addClass("hidden");
-				$("#round1").removeClass("hidden");
-				$("#success").addClass("hidden");
+				$("#review").hide();
+				$("#round1").show();
+				$("#success").hide();
 			}else{ //open modal, sets custom count to 0
 				$("#backModal").modal('show');
 			}
 		});
 		$("#backsure").click(function(){ //this button goes back without anymore warning
-			$("#review").addClass("hidden");
-			$("#round1").removeClass("hidden");
-			$("#success").addClass("hidden");
+			$("#review").hide();
+			$("#round1").show();
+			$("#success").hide();
 			customcount = 0;
 			$("#backModal").modal('hide');
 		});
@@ -80,19 +92,72 @@
 		$('[data-toggle="tooltipregion"]').tooltip();
 		$('[data-toggle="tooltipdate"]').tooltip();   
 	
-		genCountSelect("#countryselect", rndcount); //on load
+		genCountSelect("#countryselect", rndcount, initRndChecked(rndcount, false));
 		
-		$("#showAll").click(function(){
+		$("#showAll").change(function(){
 			if($("#showAll").prop("checked")){
-				genCountSelect("#countryselect", countries.length);
+				if($("#selectAllCountries").prop("checked")){
+					genCountSelect("#countryselect", countries.length, initRndChecked(countries.length, true));
+					return;
+				}
+				genCountSelect("#countryselect", countries.length, getRndChecked());
 			}else{
-				genCountSelect("#countryselect", rndcount);
+				if($("#selectAllCountries").prop("checked")){
+					genCountSelect("#countryselect", rndcount, initRndChecked(rndcount, true));
+					return;
+				}
+				genCountSelect("#countryselect", rndcount, getRndChecked());
 			}
 		});
+		
+		//select all checkbox for countrie select
+		$("#selectAllCountries").change(function(){
+			if($("#selectAllCountries").prop("checked")){ //select all
+				if($("#showAll").prop("checked")){
+					genCountSelect("#countryselect", countries.length, initRndChecked(countries.length, true));
+				}else{
+					genCountSelect("#countryselect", rndcount, initRndChecked(rndcount, true));
+				}
+			}else{ //unselect all
+				if($("#showAll").prop("checked")){
+					genCountSelect("#countryselect", countries.length, initRndChecked(countries.length, false));
+				}else{
+					genCountSelect("#countryselect", rndcount, initRndChecked(rndcount, false));
+				}
+			}
+		});
+		
+		//select all holidays for holiday select
+		$("#selectAllHolidays").change(function() {
+			if($("#selectAllHolidays").prop("checked")){
+				$("#preview").html(convertToTable(globres, true));
+			}else{
+				$("#preview").html(convertToTable(globres, false));
+			}
+		});
+		
+		function getRndChecked(){
+			var rndchecked = new Array(rndcount);	
+				for(var i = 0; i < rndcount; i++){
+					if($("#country" + i).prop("checked")){
+						rndchecked[i] = true;
+					}else{ rndchecked[i] = false;}
+				}
+			return rndchecked;
+		}
+		function initRndChecked(num, bool){
+			var rndchecked = new Array(rndcount);
+			for(var i = 0; i < num; i++){
+				rndchecked[i] = bool;
+			}
+			return rndchecked;
+		}
 		
 		$("#header").click(function(){
 			$("#back").click();
 		});
+		
+		
 	});
 	
 	</script>
@@ -128,14 +193,14 @@
 <div class="container"><!-- Error -->
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="alert alert-danger hidden" id="error"></div>
+			<div class="alert alert-danger" id="error"></div>
 		</div>
 	</div>
 </div>
 <div class="container"><!-- Sucess -->
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="alert alert-success hidden" id="success"></div>
+			<div class="alert alert-success" id="success"></div>
 		</div>
 	</div>
 </div>
@@ -143,16 +208,34 @@
 <div ng-app="app" ng-controller="ctrl" ng-init="calname='yourcalendar';requesttype='area';year=2017">
 
 <div class="container well" id="round1">
-	<p class="maintext"><input type="checkbox" id="showAll"><b> Show all Software AG locations</b></p>
-	<p class="maintext"><b>Select desired RnD locations:</b><br></p>
-	<div id="countryselect">
-		
-	</div>
-
 	
-	<p class="maintext"><b>Select <a href="index.html#parameters">Date Range</a>:</b><br></p>
+	<!-- Calendar Name -->
+	<div class="row" style="margin-bottom:10px;">
+		<div class="col-sm-12">
+			<p class="maintext"><b>Set calendar name:</b><br>
+			<form name="calnameform">
+			
+				<input  type="text" ng-model="calname" name="calname" id="calname" ng-pattern="/^[A-Za-z0-9\s]+$/" required>
+				<span ng-show="!calnameform.calname.$valid"><img class="iconsmall" src="resized/invalid.png"></span>
+				<span ng-show="calnameform.calname.$valid"><img class="iconsmall" src="resized/valid.png"></span>
+			
+			</form>
+			</p>
+		</div>
+	</div>
+	
+	<p class="maintext"><b>Select desired RnD locations:</b><br></p>
+	
+	<div id="countryselect">
+		<!-- Filley by automated process -->
+	</div>
+	<p class="maintext" style="margin-bottom: 10px;"><input style='cursor: pointer;' type="checkbox" id="selectAllCountries"><b> Select / Unselect all</b></p>
+	<p class="maintext" style="margin-bottom: 40px;"><input style='cursor: pointer;' type="checkbox" id="showAll"><b> Show more Software AG locations</b></p>
+	
+	
+	<p class="maintext"><b>Select Date Range:</b><br></p>
 	<!-- Dates (Start / End) -->
-	<div class="row">
+	<div class="row" style="margin-bottom:40px;">
 		<div class="col-sm-12" ng-show="requesttype == 'area'">
 			<p class="maintext">
 				Start / End date in ISO-8601 10 digit format YYYY-MM-DD:
@@ -170,23 +253,17 @@
 		</div>
 	</div>
 
-	<!-- Calendar Name -->
-	<div class="row" style="margin-bottom:40px;">
-		<div class="col-sm-12">
-			<p class="maintext"><b>Set calendar name:</b><br>
-			<form name="calnameform">
-			
-				<input  type="text" ng-model="calname" name="calname" id="calname" ng-pattern="/^[A-Za-z0-9\s]+$/" required>
-				<span ng-show="!calnameform.calname.$valid"><img class="iconsmall" src="resized/invalid.png"></span>
-				<span ng-show="calnameform.calname.$valid"><img class="iconsmall" src="resized/valid.png"></span>
-			
-			</form>
-			</p>
-		</div>
-	</div>
+	
 	
 	<div class="row">
-		<div class="col-sm-5">
+		
+		<div class="col-sm-2" style="margin-top: 10px;"><a href="gen.html"><button class="btn btn-info">Reset</button></a></div>
+		
+		<div class="col-sm-4"><img class="center-block" style="width: 5em; height: 5em;" src="resized/loading.gif" id="loadanimation"></div>
+		
+		<div class="col-sm-3" style="margin-top: 10px;"><p class="maintext"><button ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" class='btn btn-warning pull-right' style='width:200px;' id='previewbutton'>Preview</button></p></div>
+		
+		<div class="col-sm-3">
 			<p class="maintext">
 			<!-- Create Hidden Form, that is ready to be posted -->
 
@@ -199,43 +276,44 @@
 				<input class="hidden" type="text" name="responsetype" value="json">
 				
 				<!-- Submit button -->
-				<button class="btn btn-success center-block" style="width:200px;" ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" type="submit">Create Calendar</button>
+				<button class="btn btn-default pull-right" style="width:200px;" ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" type="submit">Download</button>
 				
 			</form>
 			
 			</p>
 		</div>
-		<div class="col-sm-2"><img class="center-block hidden" style="width: 5em; height: 5em;" src="resized/loading.gif" id="loadanimation"></div>
-		<div class="col-sm-5" style="margin-top: 10px;"><p class="maintext"><button ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" class='btn btn-info center-block' style='width:200px;' id='previewbutton'>Preview Calendar</button></p></div>
-	</div>
+		</div>
 </div>
 
-<div class="container well hidden" id="review">
-	<div class="row" style="margin-bottom:40px;">
-		<div class="col-sm-4">
-			<button ng-disabled="!calnameform.$valid" class='btn btn-success center-block' style='width:200px;' id='download'>Download</button>
-		</div>
-		<div class="col-sm-4">
-			<!-- Modal trigger -->
-			<button type="button" class="btn btn-info center-block" data-toggle="modal" data-target="#addModal">Add custom holiday</button>
-		</div>
-		<div class="col-sm-4">
-			<button class='btn btn-warning center-block' style='width:200px;' id='back'>Back</button>
-		</div>
-	</div>
+<div class="container well" id="review">
 	
+	<p class="maintext" style="margin-bottom: 10px;"><input style='cursor: pointer;' type="checkbox" id="selectAllHolidays" checked><b> Select / Unselect all</b></p>
 
 	<!-- For previewing the calendar, is filled by js function -->
 	<div id="preview">
 	</div>
 	
+	<div class="row" style="margin-top:40px;" id="previewmenubottom">
+		
+		<div class="col-sm-6">
+			<button title="Go back to previous page." class='btn btn-info' style='font-size: 1em;' id='back'><span class='glyphicon glyphicon-backward'></span> Back</button>
+		</div>
+		<div class="col-sm-3">
+			<button title="Download calendar to pc." ng-disabled="!calnameform.$valid" class='btn btn-success pull-right' style='width: 200px;' id='download'>Download</button>
+		</div>
+		<div class="col-sm-3">
+			<!-- Modal trigger -->
+			<button title="Add a custom holiday to the calendar." type="button" style="width:200px;" class="btn btn-warning pull-right" data-toggle="modal" data-target="#addModal">Add holiday</button>
+		</div>
+	</div>
 	
 	<div class="modal fade" id="addModal" role="dialog">
 	<div class="modal-dialog">
 	<!-- Allows addition of new holiday -->
 	<div id="previewadd" class="modal-content">
 			<div class="modal-header">
-				<div class="alert alert-success hidden" id="successadd"></div>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<div class="alert alert-success" id="successadd"></div>
 				<p class="mainheading">Add new holidays</p>
 			</div>
 			
@@ -266,15 +344,10 @@
 						<span ng-show="!addholiday.adddate.$error.pattern && !addholiday.adddate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						<!-- Holiday Add submit button -->
-						<button ng-disabled="!addholiday.$valid" class="btn btn-info center-block" style="width:200px;" type="submit">Add Holiday</button>
+						<button ng-disabled="!addholiday.$valid" class="btn btn-warning center-block" style="width:200px;" type="submit">Save</button>
 					</form>
 				</p>
 			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-
 	</div>
 	</div>
 	</div>
@@ -284,7 +357,8 @@
 	<!-- Allows editing of new holiday -->
 	<div id="previewedit" class="modal-content">
 			<div class="modal-header">
-				<div class="alert alert-success hidden" id="successadd"></div>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<div class="alert alert-success" id="successedit"></div>
 				<p class="mainheading">Edit selected holiday</p>
 			</div>
 			
@@ -318,15 +392,10 @@
 						<span ng-show="!editholiday.editdate.$error.pattern && !editholiday.editdate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						<!-- Holiday Add submit button -->
-						<button ng-disabled="!editholiday.$valid" class="btn btn-warning center-block" style="width:200px;" type="submit">Save changes</button>
+						<button ng-disabled="!editholiday.$valid" class="btn btn-warning center-block" style="width:200px;" type="submit">Save & close</button>
 					</form>
 				</p>
 			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Close and discard changes</button>
-			</div>
-
 	</div>
 	</div>
 	</div>
@@ -346,9 +415,7 @@
 			</div>
 			<div class="modal-body">
 				<p class="maintext">Going back deletes all custom holidays and changes. Are you sure you want to proceed?</p><br>
-				<button class='btn btn-danger center-block' style='width:200px;' id='backsure'>Back</button>
-			</div>
-			<div class="modal-footer">
+				<button class='btn btn-danger center-block' style='width:200px;' id='backsure'><span class='glyphicon glyphicon-backward'></span> Yes</button>
 			</div>
 		</div>
 	</div>
@@ -369,6 +436,6 @@ app.controller('ctrl', function($scope) {
 	$scope.adddate = start;
 });
 </script>
-
+<a id="button"></a>
 </body>
 </html>

@@ -73,8 +73,8 @@ var container = {
 				"month": 5
 			},
 			{
-				"name": "Labor Day",
-				"tname": "Labor Day",
+				"name": "Labour Day",
+				"tname": "Labour Day",
 				"region": "US: Federal",
 				"date": "",
 				"type": 2,

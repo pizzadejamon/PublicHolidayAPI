@@ -28,49 +28,34 @@ function saveEdit(){
 	
 	//override holiday
 	var i = $("#editid").val();
-	globres.holidays[i].name = $("#editname").val();
-	globres.holidays[i].tname = $("#edittname").val();
-	globres.holidays[i].region = $("#editregion").val();
-	globres.holidays[i].date = $("#editdate").val();
+	var obj = {	"name": $("#editname").val(),
+				"tname": $("#edittname").val(),
+				"region": $("#editregion").val(),
+				"date": $("#editdate").val()
+	};
+	console.log(obj);
+	console.log(globres.holidays[i]);
+	if(JSON.stringify(obj) != JSON.stringify(globres.holidays[i])){
+			globres.holidays[i] = obj;
+			
+			customcount++; //(for modal popup when back)
 	
-	customcount++; //(for modal popup when back)
+			//now sort data, key is timestamp of date
+			globres.holidays.sort(function(a, b){
+				var x = a['date']; var y = b['date'];
+				var x1 = (new Date(x)).getTime(); var y1 = (new Date(y)).getTime();
+				return ((x1 < y1) ? -1 : ((x1 > y1) ? 1 : 0));
+			});
 	
-	//now sort data, key is timestamp of date
-	globres.holidays.sort(function(a, b){
-		var x = a['date']; var y = b['date'];
-		var x1 = (new Date(x)).getTime(); var y1 = (new Date(y)).getTime();
-		return ((x1 < y1) ? -1 : ((x1 > y1) ? 1 : 0));
-	});
-	
-	globres = makeUnique(globres);
-	
-	//reset html of preview form
-	$("#preview").html(convertToTable(globres));
-	$("#success").html("Success! Saved changes to holiday.");
-	
+		globres = makeUnique(globres);
+		//reset html of preview form
+		$("#preview").html(convertToTable(globres));
+		$("#success").html("<b>Success! Saved changes to holiday.</b>");
+	}else{
+		$("#success").html("<b>Success, but no changes were made.</b>");
+	}
+	//close modal again
+	$("#success").show();
 	$("#editModal").modal("hide");
 }
 
-//why do i have to copy this in again?
-	function makeUnique(obj){
-		var obj2 = {num : 0, holidays: []}; //dummy object
-		
-		for(let i = 0; i < obj.num; i++){
-			let found = false;
-			for(let j = 0; j < obj2.holidays.length; j++){
-				if(obj2.holidays[j].tname == obj.holidays[i].tname && obj2.holidays[j].date == obj.holidays[i].date){
-					found = true;
-				}
-			}
-			if(found == true){
-				//already in array, to not add, but add regions
-				obj2.holidays[obj2.num-1].region += "<br>" + obj.holidays[i].region;
-			}else{
-				//not found, add to array
-				obj2.holidays.push(obj.holidays[i]);
-				obj2.num++;
-			}
-		}
-		
-		return obj2;
-	}

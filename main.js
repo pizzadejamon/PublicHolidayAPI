@@ -228,7 +228,7 @@ function typeList(req, res){
 		}
 	}catch(err){
 		console.log(err); //internal error, prevent server from crashing and log error
-		res.status(500).send("Internal Server Error. Something went wrong");
+		res.status(500).send("Internal Server Error. Something went wrong. Please try again.");
 	}
 	return;
 }
@@ -274,7 +274,7 @@ function typeNext(req, res){
 		}
 	}catch(err){
 		console.log(err);
-		res.status(500).send("Internal Server Error. We messed up.");
+		res.status(500).send("Internal Server Error. We messed up. Please try again.");
 	}
 	return;
 }
@@ -317,8 +317,8 @@ function typeArea(req, res){
 	if(dt < 1){
 		res.status(400).send("Bad request. Start date must be before end date.");
 		return;
-	}else if(dt > 11){
-		res.status(400).send("Bad request. Not more than 10 years area allowed.");
+	}else if(dt > 4){
+		res.status(400).send("Bad request. Not more than 3 years area allowed. This is to prevent timeouts from long requests.");
 		return;
 	}
 	//date format is valid, got dt (number of years inbetween
@@ -379,7 +379,7 @@ function typeArea(req, res){
 		return;
 	}catch(err){
 console.log(err);
-		res.status(500).send("Internal Server Error. We messed up.");
+		res.status(500).send("Internal Server Error. We messed up. Please try again.");
 		return;
 	}
 	
@@ -418,7 +418,7 @@ app.post('/data/', function(req, res){
 		}
 		
 	}catch(err){
-		res.status(500).send("Internal Server Error. We messed up.");
+		res.status(500).send("Internal Server Error. We messed up. Please try again.");
 	}
 });
 

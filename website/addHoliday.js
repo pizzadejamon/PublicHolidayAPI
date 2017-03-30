@@ -29,33 +29,15 @@ $(document).ready(function (){
 		
 		//reset html of preview form
 		$("#preview").html(convertToTable(globres));
-		$("#successadd").html("Succesful! Added holiday <i>'" + dummy.tname + "'</i> to calendar.");
-		$("#successadd").removeClass("hidden");
-		$("#success").html("Created calendar with " + globres.num + " holidays. Download it direclty or customize it in advanced settings.");
+		$("#successadd").html("<b>Succesful! Added holiday <i>'" + dummy.tname + "'</i> to calendar.</b>");
+		$("#successadd").hide();
+		if(globres.num != 42){
+			$("#success").html("<b>Created calendar with " + globres.num + " holidays. Download it direclty or customize it in advanced settings.</b>");
+		}else{
+			$("#success").html("<b>Created calendar with " + globres.num + " holidays. Don't forget your towel, Hitchhiker!</b>");
+		}
 	}
 	
-	//why do i have to copy this in again?
-	function makeUnique(obj){
-		var obj2 = {num : 0, holidays: []}; //dummy object
-		
-		for(let i = 0; i < obj.num; i++){
-			let found = false;
-			for(let j = 0; j < obj2.holidays.length; j++){
-				if(obj2.holidays[j].tname == obj.holidays[i].tname && obj2.holidays[j].date == obj.holidays[i].date){
-					found = true;
-				}
-			}
-			if(found == true){
-				//already in array, to not add, but add regions
-				obj2.holidays[obj2.num-1].region += "<br>" + obj.holidays[i].region;
-			}else{
-				//not found, add to array
-				obj2.holidays.push(obj.holidays[i]);
-				obj2.num++;
-			}
-		}
-		
-		return obj2;
-	}
+
 	
 });
