@@ -126,6 +126,14 @@
 				}
 			}
 		});
+		$("#countryall").click(function(){
+			$("#selectAllCountries").prop("checked", true);
+			$("#selectAllCountries").trigger("change");
+		});
+		$("#countrynone").click(function(){
+			$("#selectAllCountries").prop("checked", false);
+			$("#selectAllCountries").trigger("change");
+		});
 		
 		//select all holidays for holiday select
 		$("#selectAllHolidays").change(function() {
@@ -136,6 +144,14 @@
 				globres = includeGlobres(globres, false);
 				$("#preview").html(convertToTable(globres));
 			}
+		});
+		$("#holidayall").click(function(){
+			$("#selectAllHolidays").prop("checked", true);
+			$("#selectAllHolidays").trigger("change");
+		});
+		$("#holidaynone").click(function(){
+			$("#selectAllHolidays").prop("checked", false);
+			$("#selectAllHolidays").trigger("change");
 		});
 		
 		function includeGlobres(obj, bool){
@@ -238,7 +254,8 @@
 	<div id="countryselect">
 		<!-- Filley by automated process -->
 	</div>
-	<p class="maintext" style="margin-bottom: 10px;"><input title="Use this to select / unselect all locations at once." style='cursor: pointer;' type="checkbox" id="selectAllCountries"><b> Select / Unselect all</b></p>
+	<p class="maintext hidden" style="margin-bottom: 10px;"><input title="Use this to select / unselect all locations at once." style='cursor: pointer;' type="checkbox" id="selectAllCountries"><b> Select / Unselect all</b></p>
+	<p class="maintext" style="margin-bottom: 10px;"><b>Select:</b> <a style="cursor: pointer;" id="countrynone"><b>None</b></a>, <a style="cursor: pointer;" id="countryall"><b>All</b></a>
 	<p class="maintext" style="margin-bottom: 40px;"><input title="Expands the table and shows non RnD locations of Software AG" style='cursor: pointer;' type="checkbox" id="showAll"><b> Show more Software AG locations</b></p>
 	
 	
@@ -265,7 +282,7 @@
 	
 	<div class="row">
 		
-		<div class="col-sm-2" style="margin-top: 10px;"><a href="gen.html"><button title="Resets the input form, start creating a new calendar." class="btn btn-info">Reset</button></a></div>
+		<div class="col-sm-2" style="margin-top: 10px;"><a href="gen.html"><button title="Resets the input form, start creating a new calendar." class="btn btn-info"><span class="glyphicon glyphicon-repeat"></span> Reset</button></a></div>
 		
 		<div class="col-sm-4"><img class="center-block" style="width: 5em; height: 5em;" src="resized/loading.gif" id="loadanimation"></div>
 		
@@ -284,7 +301,7 @@
 				<input class="hidden" type="text" name="responsetype" value="json">
 				
 				<!-- Submit button -->
-				<button title="Direct download of calendar without review." class="btn btn-default pull-right" style="width:200px;" ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" type="submit">Download</button>
+				<button title="Direct download of calendar without review." class="btn btn-primary pull-right" style="width:200px;" ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" type="submit">Download</button>
 				
 			</form>
 			
@@ -295,8 +312,9 @@
 
 <div class="container well" id="review">
 	
-	<p class="maintext" style="margin-bottom: 10px;"><input title="Select / unselect all holidays at once." style='cursor: pointer;' type="checkbox" id="selectAllHolidays" checked><b> Select / Unselect all</b></p>
-
+	<p class="maintext hidden" style="margin-bottom: 10px;"><input title="Select / unselect all holidays at once." style='cursor: pointer;' type="checkbox" id="selectAllHolidays" checked><b> Select / Unselect all</b></p>
+	<p class="maintext" style="margin-bottom: 10px;"><b>Select:</b> <a style="cursor: pointer;" id="holidaynone"><b>None</b></a>, <a style="cursor: pointer;" id="holidayall"><b>All</b></a>
+	
 	<!-- For previewing the calendar, is filled by js function -->
 	<div id="preview">
 	</div>
@@ -307,11 +325,11 @@
 			<button title="Go back to previous page." class='btn btn-info' style='font-size: 1em;' id='back'><span class='glyphicon glyphicon-backward'></span> Back</button>
 		</div>
 		<div class="col-sm-3">
-			<button title="Download calendar to pc." ng-disabled="!calnameform.$valid" class='btn btn-success pull-right' style='width: 200px;' id='download'>Download</button>
-		</div>
-		<div class="col-sm-3">
 			<!-- Modal trigger -->
 			<button title="Add a custom holiday to the calendar." type="button" style="width:200px;" class="btn btn-warning pull-right" data-toggle="modal" data-target="#addModal">Add holiday</button>
+		</div>
+		<div class="col-sm-3">
+			<button title="Download calendar to pc." ng-disabled="!calnameform.$valid" class='btn btn-primary pull-right' style='width: 200px;' id='download'>Download</button>
 		</div>
 	</div>
 	
@@ -352,9 +370,14 @@
 						<span ng-show="!addholiday.adddate.$error.pattern && !addholiday.adddate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						<!-- Holiday Add submit button -->
-						<button title="Adds the new holiday and closes the window." ng-disabled="!addholiday.$valid" class="btn btn-warning center-block" style="width:200px;" type="submit">Save & close</button>
+						<button title="Adds the new holiday and closes the window." ng-disabled="!addholiday.$valid" class="btn btn-success center-block" style="width:200px;" type="submit">Save & close</button>
 					</form>
 				</p>
+			</div>
+			
+			<div class="modal-footer">
+				<!-- Clear Button -->
+				<button title="Resets this form." id="addclear" style="display: inline-block" class="btn btn-warning btn-xs center-block"><span class="glyphicon glyphicon-remove"></span> Clear</button>
 			</div>
 	</div>
 	</div>
@@ -399,10 +422,22 @@
 						<span ng-show="editholiday.editdate.$error.pattern || editholiday.editdate.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.editdate.$error.pattern && !editholiday.editdate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
-						<!-- Holiday Add submit button -->
-						<button title="Saves the edits and closes the window" ng-disabled="!editholiday.$valid" class="btn btn-warning center-block" style="width:200px;" type="submit">Save & Close</button>
+						
 					</form>
+					<!-- Holiday Add submit button -->
+						<button title="Saves the edits and closes the window." ng-disabled="!editholiday.$valid" class="btn btn-success center-block" id="editsubmit" style="width:200px;">Save & Close</button>
+						
+						
 				</p>
+			</div>
+			
+			<div class="modal-footer">
+				<!-- Clear Button -->
+				<button title="Resets this form." id="editreset" style="display: inline-block" class="btn btn-info btn-xs center-block"><span class="glyphicon glyphicon-repeat"></span> Reset</button>
+				<!-- Clear Button -->
+				<button title="Resets this form." id="editclear" style="display: inline-block" class="btn btn-warning btn-xs center-block"><span class="glyphicon glyphicon-remove"></span> Clear</button>
+				<!-- Delete Holiday Button -->
+				<button title="Deletes this holiday from list completly." id="editdelete" style="display: inline-block" class="btn btn-danger btn-xs center-block"><span class='glyphicon glyphicon-trash'></span> Delete</button>
 			</div>
 	</div>
 	</div>

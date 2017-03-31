@@ -3,6 +3,10 @@ $(document).ready(function (){
 		addHoliday();
 	});
 	
+	$("#addclear").click(function (){
+		clearForm();
+	});
+	
 	function addHoliday(){
 		
 		//generate holiday obj
@@ -48,6 +52,14 @@ $(document).ready(function (){
 		$("#adddate").trigger('input');
 	}
 	
-
+	function clearForm(){
+		$("#addname").val("");$("#addname").trigger('input');
+		$("#addtname").val("");$("#addtname").trigger('input');
+		$("#addregion").val("");$("#addregion").trigger('input');
+		let d = new Date();
+		let p = d.toISOString().substring(0, 4);
+		var start = p + "-01-01";
+		$("#adddate").val(start);$("#adddate").trigger('input');
+	}
 	
 });
