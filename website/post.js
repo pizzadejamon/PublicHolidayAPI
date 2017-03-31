@@ -85,7 +85,9 @@ $(document).ready(function (){
 							$("#success").html("<b>Created calendar with " + obj.num + " holidays. Don't forget your towel, Hitchhiker!</b>");
 						}
 						
-						
+						if(obj.num < 25){
+							$("#previewmenutop").hide();
+						}
 						$("#loadanimation").hide();
 					}
 					

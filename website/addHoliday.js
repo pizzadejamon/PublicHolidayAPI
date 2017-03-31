@@ -1,5 +1,5 @@
 $(document).ready(function (){
-	$("#previewadd").submit(function(event){
+	$("#addsubmit").click(function(){
 		addHoliday();
 	});
 	
