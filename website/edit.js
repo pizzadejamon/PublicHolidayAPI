@@ -1,7 +1,19 @@
 $(document).ready(function (){
 	
-	$("#editholiday").submit(function(event){
+	$("#editsubmit").click(function(){
 		saveEdit();
+	});
+	
+	$("#editdelete").click(function(){
+		removeHoliday();
+	});
+	
+	$("#editclear").click(function(){
+		clearForm();
+	});
+	
+	$("#editreset").click(function(){
+		resetForm();
 	});
 
 });
@@ -31,10 +43,9 @@ function saveEdit(){
 	var obj = {	"name": $("#editname").val(),
 				"tname": $("#edittname").val(),
 				"region": $("#editregion").val(),
-				"date": $("#editdate").val()
+				"date": $("#editdate").val(),
+				"include": true
 	};
-	console.log(obj);
-	console.log(globres.holidays[i]);
 	if(JSON.stringify(obj) != JSON.stringify(globres.holidays[i])){
 			globres.holidays[i] = obj;
 			
@@ -59,3 +70,35 @@ function saveEdit(){
 	$("#editModal").modal("hide");
 }
 
+function removeHoliday(){
+	var id = $("#editid").val();
+	var title = globres.holidays[id].tname;
+	globres.holidays.splice(id, 1);
+	globres.num--;
+	customcount++;
+	$("#preview").html(convertToTable(globres));
+	$("#success").html("<b>Success! Removed holiday '" + title + "' from list.</b>");
+	//close modal again
+	$("#success").show();
+	$("#editModal").modal("hide");
+}
+
+function clearForm(){
+	$("#editname").val("");$("#editname").trigger("input");
+	$("#edittname").val("");$("#edittname").trigger("input");
+	$("#editregion").val("");$("#editregion").trigger("input");
+	let d = new Date();
+	let p = d.toISOString().substring(0, 4);
+	var start = p + "-01-01";
+	$("#editdate").val(start);$("#editdate").trigger("input");
+	
+}
+
+function resetForm(){
+	var id = $("#editid").val();
+	
+	$("#editname").val(globres.holidays[id].name);$("#editname").trigger("input");
+	$("#edittname").val(globres.holidays[id].tname);$("#edittname").trigger("input");
+	$("#editregion").val(globres.holidays[id].region);$("#editregion").trigger("input");
+	$("#editdate").val(globres.holidays[id].date);$("#editdate").trigger("input");
+}

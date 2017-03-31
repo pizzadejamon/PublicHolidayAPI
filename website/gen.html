@@ -62,14 +62,14 @@
 			$("#loadanimation").hide();
 		
 		
-		$("#download").click(function(){ //when download button is clicked, convert to ics and download
+		$(".download").click(function(){ //when download button is clicked, convert to ics and download
 			let p = convertToICS(globres);
 			var calname = $("#calname").val();
 			download(calname + '.ics', p);
 			$("#success").html("<p class='mainheading'><b>Thanks for using the calendar generator. Your calendar has been downloaded.</b></p>");
 			$("#review").html("<a style='text-decoration: none;' href='gen.html'><button class='btn btn-lg btn-info center-block'>Back</button></a><br>");
 		});
-		$("#back").click(function(){
+		$(".back").click(function(){
 			if(customcount == 0){
 				$("#review").hide();
 				$("#round1").show();
@@ -126,15 +126,40 @@
 				}
 			}
 		});
+		$("#countryall").click(function(){
+			$("#selectAllCountries").prop("checked", true);
+			$("#selectAllCountries").trigger("change");
+		});
+		$("#countrynone").click(function(){
+			$("#selectAllCountries").prop("checked", false);
+			$("#selectAllCountries").trigger("change");
+		});
 		
 		//select all holidays for holiday select
 		$("#selectAllHolidays").change(function() {
 			if($("#selectAllHolidays").prop("checked")){
-				$("#preview").html(convertToTable(globres, true));
+				globres = includeGlobres(globres, true);
+				$("#preview").html(convertToTable(globres));
 			}else{
-				$("#preview").html(convertToTable(globres, false));
+				globres = includeGlobres(globres, false);
+				$("#preview").html(convertToTable(globres));
 			}
 		});
+		$(".holidayall").click(function(){
+			$("#selectAllHolidays").prop("checked", true);
+			$("#selectAllHolidays").trigger("change");
+		});
+		$(".holidaynone").click(function(){
+			$("#selectAllHolidays").prop("checked", false);
+			$("#selectAllHolidays").trigger("change");
+		});
+		
+		function includeGlobres(obj, bool){
+			for(var i = 0; i < obj.num; i++){
+				obj.holidays[i].include = bool;
+			}
+			return obj;
+		}
 		
 		function getRndChecked(){
 			var rndchecked = new Array(rndcount);	
@@ -186,9 +211,10 @@
 
 
 <div id="header" class="jumbotron text-center header designcolor" style="height: 100px;"id="header">  
-  <h2 class="mainheading headerh" style="color:#fff;margin-top: 0;">Calendar Generator</h2>
-
+	<h2 class="mainheading headerh" style="color:#fff;margin-top: 0;">Calendar Generator</h2>
 </div>
+
+
 
 <div class="container"><!-- Error -->
 	<div class="row">
@@ -215,7 +241,7 @@
 			<p class="maintext"><b>Set calendar name:</b><br>
 			<form name="calnameform">
 			
-				<input  type="text" ng-model="calname" name="calname" id="calname" ng-pattern="/^[A-Za-z0-9\s]+$/" required>
+				<input title="Define the calendar name (shown as filename and in outlook als calendar title)" type="text" ng-model="calname" name="calname" id="calname" ng-pattern="/^[A-Za-z0-9\s]+$/" required>
 				<span ng-show="!calnameform.calname.$valid"><img class="iconsmall" src="resized/invalid.png"></span>
 				<span ng-show="calnameform.calname.$valid"><img class="iconsmall" src="resized/valid.png"></span>
 			
@@ -229,8 +255,9 @@
 	<div id="countryselect">
 		<!-- Filley by automated process -->
 	</div>
-	<p class="maintext" style="margin-bottom: 10px;"><input style='cursor: pointer;' type="checkbox" id="selectAllCountries"><b> Select / Unselect all</b></p>
-	<p class="maintext" style="margin-bottom: 40px;"><input style='cursor: pointer;' type="checkbox" id="showAll"><b> Show more Software AG locations</b></p>
+	<p class="maintext hidden" style="margin-bottom: 10px;"><input title="Use this to select / unselect all locations at once." style='cursor: pointer;' type="checkbox" id="selectAllCountries"><b> Select / Unselect all</b></p>
+	<p class="maintext" style="margin-bottom: 10px;"><b>Select:</b> <a style="cursor: pointer;" id="countryall"><b>All</b></a>, <a style="cursor: pointer;" id="countrynone"><b>None</b></a>
+	<p class="maintext" style="margin-bottom: 40px;"><input title="Expands the table and shows non RnD locations of Software AG" style='cursor: pointer;' type="checkbox" id="showAll"><b> Show more Software AG locations</b></p>
 	
 	
 	<p class="maintext"><b>Select Date Range:</b><br></p>
@@ -238,13 +265,12 @@
 	<div class="row" style="margin-bottom:40px;">
 		<div class="col-sm-12" ng-show="requesttype == 'area'">
 			<p class="maintext">
-				Start / End date in ISO-8601 10 digit format YYYY-MM-DD:
 				<form name="area">
-					<input type="text" ng-model="datestart" name="datestart" id="datestart" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
+					<input title="Interval start date in ISO-8601 format YYYY-MM-DD" type="text" ng-model="datestart" name="datestart" id="datestart" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
 					<span ng-show="area.datestart.$error.pattern || area.datestart.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 					<span ng-show="!area.datestart.$error.pattern && !area.datestart.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
 					
-					<input type="text" ng-model="dateend" name="dateend" id="dateend" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
+					<input title="Interval end date in ISO-8601 format YYYY-MM-DD" type="text" ng-model="dateend" name="dateend" id="dateend" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" required>
 					<span ng-show="area.dateend.$error.pattern || area.dateend.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 					<span ng-show="!area.dateend.$error.pattern && !area.dateend.$error.required"><img class="iconsmall" src="resized/valid.png"></span>
 					
@@ -257,11 +283,11 @@
 	
 	<div class="row">
 		
-		<div class="col-sm-2" style="margin-top: 10px;"><a href="gen.html"><button class="btn btn-info">Reset</button></a></div>
+		<div class="col-sm-2" style="margin-top: 10px;"><a href="gen.html"><button title="Resets the input form, start creating a new calendar." class="btn btn-info"><span class="glyphicon glyphicon-repeat"></span> Reset</button></a></div>
 		
 		<div class="col-sm-4"><img class="center-block" style="width: 5em; height: 5em;" src="resized/loading.gif" id="loadanimation"></div>
 		
-		<div class="col-sm-3" style="margin-top: 10px;"><p class="maintext"><button ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" class='btn btn-warning pull-right' style='width:200px;' id='previewbutton'>Preview</button></p></div>
+		<div class="col-sm-3" style="margin-top: 10px;"><p class="maintext"><button title="Preview the calendar: add custom holidays, uncheck wrong holidays and edit holidays." ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" class='btn btn-warning pull-right' style='width:200px;' id='previewbutton'><span class="glyphicon glyphicon-th-list"></span> Preview</button></p></div>
 		
 		<div class="col-sm-3">
 			<p class="maintext">
@@ -276,7 +302,7 @@
 				<input class="hidden" type="text" name="responsetype" value="json">
 				
 				<!-- Submit button -->
-				<button class="btn btn-default pull-right" style="width:200px;" ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" type="submit">Download</button>
+				<button title="Direct download of calendar without review." class="btn btn-primary pull-right" style="width:200px;" ng-disabled="(requesttype == 'area' && !area.$valid) || !calnameform.$valid" type="submit"><span class="glyphicon glyphicon-download-alt"></span> Download</button>
 				
 			</form>
 			
@@ -287,25 +313,44 @@
 
 <div class="container well" id="review">
 	
-	<p class="maintext" style="margin-bottom: 10px;"><input style='cursor: pointer;' type="checkbox" id="selectAllHolidays" checked><b> Select / Unselect all</b></p>
+
+	<p class="maintext hidden" style="margin-bottom: 10px;"><input title="Select / unselect all holidays at once." style='cursor: pointer;' type="checkbox" id="selectAllHolidays" checked><b> Select / Unselect all</b></p>
+	<p class="maintext" style="margin-bottom: 10px;"><b>Select:</b> <a style="cursor: pointer;" class="holidayall"><b>All</b></a>, <a style="cursor: pointer;" class="holidaynone"><b>None</b></a>
+	
+	<div class="row" style="margin-bottom:40px;" id="previewmenubottom">
+		
+		<div class="col-sm-6">
+			<button title="Go back to previous page." class='btn btn-info back' style='font-size: 1em;'><span class='glyphicon glyphicon-backward'></span> Back</button>
+		</div>
+		<div class="col-sm-3">
+			<!-- Modal trigger -->
+			<button title="Add a custom holiday to the calendar." type="button" style="width:200px;" class="btn btn-warning pull-right" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-plus"></span> Add holiday</button>
+		</div>
+		<div class="col-sm-3">
+			<button title="Download calendar to pc." ng-disabled="!calnameform.$valid" class='btn btn-primary pull-right download' style='width: 200px;'><span class="glyphicon glyphicon-download-alt"></span> Download</button>
+		</div>
+	</div>
 
 	<!-- For previewing the calendar, is filled by js function -->
 	<div id="preview">
 	</div>
 	
-	<div class="row" style="margin-top:40px;" id="previewmenubottom">
+	<p class="maintext" style="margin-bottom: 10px;"><b>Select:</b> <a style="cursor: pointer;" class="holidayall"><b>All</b></a>, <a style="cursor: pointer;" class="holidaynone"><b>None</b></a>
+	<div class="row" style="margin-bottom:40px;" id="previewmenutop">
 		
 		<div class="col-sm-6">
-			<button title="Go back to previous page." class='btn btn-info' style='font-size: 1em;' id='back'><span class='glyphicon glyphicon-backward'></span> Back</button>
-		</div>
-		<div class="col-sm-3">
-			<button title="Download calendar to pc." ng-disabled="!calnameform.$valid" class='btn btn-success pull-right' style='width: 200px;' id='download'>Download</button>
+			<button title="Go back to previous page." class='btn btn-info back' style='font-size: 1em;'><span class='glyphicon glyphicon-backward'></span> Back</button>
 		</div>
 		<div class="col-sm-3">
 			<!-- Modal trigger -->
-			<button title="Add a custom holiday to the calendar." type="button" style="width:200px;" class="btn btn-warning pull-right" data-toggle="modal" data-target="#addModal">Add holiday</button>
+			<button title="Add a custom holiday to the calendar." type="button" style="width:200px;" class="btn btn-warning pull-right" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-plus"></span> Add holiday</button>
+		</div>
+		<div class="col-sm-3">
+			<button title="Download calendar to pc." ng-disabled="!calnameform.$valid" class='btn btn-primary pull-right download' style='width: 200px;'><span class="glyphicon glyphicon-download-alt"></span> Download</button>
 		</div>
 	</div>
+
+
 	
 	<div class="modal fade" id="addModal" role="dialog">
 	<div class="modal-dialog">
@@ -321,32 +366,37 @@
 				<p class="maintext">
 					<form id="addholiday" name="addholiday">
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language."><b>Org. Name:</b></a></div><div class="col-sm-9"><input type="text" ng-model="addname" name="addname" id="addname" required>
+						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language."><b>Org. Name:</b></a></div><div class="col-sm-9"><input title="Name in original language." type="text" ng-model="addname" name="addname" id="addname" required>
 						<span ng-show="addholiday.addname.$error.required && !addholiday.addname.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!addholiday.addname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english. This name will be shown as calendar event title."><b>Eng. Name:</b></a></div><div class="col-sm-9"><input type="text" ng-model="addtname" name="addtname" id="addtname" required>
+						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english. This name will be shown as calendar event title."><b>Eng. Name:</b></a></div><div class="col-sm-9"><input title="Name of holiday in english. This name will be shown as calendar event title." type="text" ng-model="addtname" name="addtname" id="addtname" required>
 						<span ng-show="addholiday.addtname.$error.required && !addholiday.addtname.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!addholiday.addtname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed. I. e: 'Nationwide' or 'California only'."><b>Region:</b></a></div><div class="col-sm-9"><input type="text" ng-model="addregion" name="addregion" id="addregion" required>
+						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed. I. e: 'Nationwide' or 'California only'."><b>Region:</b></a></div><div class="col-sm-9"><input title="Region where holiday is observed." type="text" ng-model="addregion" name="addregion" id="addregion" required>
 						<span ng-show="addholiday.addregion.$error.required && !addholiday.addregion.$pristine"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!addholiday.addregion.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD"><b>Date:</b></a></div><div class="col-sm-9"><input type="text" ng-model="adddate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="adddate" id="adddate" required>
+						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD"><b>Date:</b></a></div><div class="col-sm-9"><input title="Date of holiday in ISO-8601 format: YYYY-MM-DD" type="text" ng-model="adddate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="adddate" id="adddate" required>
 						<span ng-show="addholiday.adddate.$error.pattern || addholiday.adddate.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!addholiday.adddate.$error.pattern && !addholiday.adddate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
-						<!-- Holiday Add submit button -->
-						<button ng-disabled="!addholiday.$valid" class="btn btn-warning center-block" style="width:200px;" type="submit">Save</button>
 					</form>
 				</p>
+			</div>
+			
+			<div class="modal-footer">
+				<!-- Holiday Add submit button -->
+						<button title="Adds the new holiday and closes the window." ng-disabled="!addholiday.$valid" class="btn btn-success center-block" style="display:inline-block;width:200px;" id="addsubmit"><span class="glyphicon glyphicon-floppy-disk"></span> Save & close</button>
+				<!-- Clear Button -->
+				<button title="Resets this form." id="addclear" style="display: inline-block" class="btn btn-warning btn-xs center-block"><span class="glyphicon glyphicon-erase"></span> Clear</button>
 			</div>
 	</div>
 	</div>
@@ -369,32 +419,45 @@
 						<input type="text" id="editid" name="editid" class="hidden">
 					
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language."><b>Org. Name:</b></a></div><div class="col-sm-9"><input type="text" ng-model="editname" name="editname" id="editname" required>
+						<div class="col-sm-3"><a data-toggle="tooltipname" title="Name in original language."><b>Org. Name:</b></a></div><div class="col-sm-9"><input title="Name in original language." type="text" ng-model="editname" name="editname" id="editname" required>
 						<span ng-show="editholiday.editname.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.editname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english. This name will be shown as calendar event title."><b>Eng. Name:</b></a></div><div class="col-sm-9"><input type="text" ng-model="edittname" name="edittname" id="edittname" required>
+						<div class="col-sm-3"><a data-toggle="tooltiptname" title="Name of holiday in english. This name will be shown as calendar event title."><b>Eng. Name:</b></a></div><div class="col-sm-9"><input title="Name of holiday in english. This name will be shown as calendar event title." type="text" ng-model="edittname" name="edittname" id="edittname" required>
 						<span ng-show="editholiday.edittname.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.edittname.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed. 'Nationwide' or 'California only'."><b>Region:</b></a></div><div class="col-sm-9"><input type="text" ng-model="editregion" name="editregion" id="editregion" required>
+						<div class="col-sm-3"><a data-toggle="tooltipregion" title="Region where holiday is observed. 'Nationwide' or 'California only'."><b>Region:</b></a></div><div class="col-sm-9"><input title="Region where holiday is observed."type="text" ng-model="editregion" name="editregion" id="editregion" required>
 						<span ng-show="editholiday.editregion.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.editregion.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
 						
 						<div class="row">
-						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD"><b>Date:</b></a></div><div class="col-sm-9"><input type="text" ng-model="editdate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="editdate" id="editdate" required>
+						<div class="col-sm-3"><a data-toggle="tooltipdate" title="Date of holiday in ISO-8601 format: YYYY-MM-DD"><b>Date:</b></a></div><div class="col-sm-9"><input title="Date of holiday in ISO-8601 format: YYYY-MM-DD" type="text" ng-model="editdate" ng-pattern="/^(\d{4}\-\d\d-\d\d)?$/" name="editdate" id="editdate" required>
 						<span ng-show="editholiday.editdate.$error.pattern || editholiday.editdate.$error.required"><img class="iconsmall" src="resized/invalid.png"></span>
 						<span ng-show="!editholiday.editdate.$error.pattern && !editholiday.editdate.$error.required"><img class="iconsmall" src="resized/valid.png"></span></div>
 						</div><br>
-						<!-- Holiday Add submit button -->
-						<button ng-disabled="!editholiday.$valid" class="btn btn-warning center-block" style="width:200px;" type="submit">Save & close</button>
+						
 					</form>
+					
+						
+						
 				</p>
+			</div>
+			
+			<div class="modal-footer">
+				<!-- Clear Button -->
+				<button title="Resets this form." id="editreset" style="display: inline-block" class="btn btn-info btn-xs pull-left"><span class="glyphicon glyphicon-repeat"></span> Reset</button>
+				<!-- Holiday Add submit button -->
+						<button title="Saves the edits and closes the window." ng-disabled="!editholiday.$valid" class="btn btn-success center-block" id="editsubmit" style="width:200px;display:inline-block;"><span class="glyphicon glyphicon-floppy-disk"></span> Save & Close</button>
+				<!-- Clear Button -->
+				<button title="Resets this form." id="editclear" style="display: inline-block" class="btn btn-warning btn-xs center-block"><span class="glyphicon glyphicon-erase"></span> Clear</button>
+				<!-- Delete Holiday Button -->
+				<button title="Deletes this holiday from list completly." id="editdelete" style="display: inline-block" class="btn btn-danger btn-xs center-block"><span class='glyphicon glyphicon-trash'></span> Delete</button>
 			</div>
 	</div>
 	</div>
@@ -410,12 +473,12 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<button title="Close" type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Warning</h4>
 			</div>
 			<div class="modal-body">
 				<p class="maintext">Going back deletes all custom holidays and changes. Are you sure you want to proceed?</p><br>
-				<button class='btn btn-danger center-block' style='width:200px;' id='backsure'><span class='glyphicon glyphicon-backward'></span> Yes</button>
+				<button title="Goes back to start page." class='btn btn-danger center-block' style='width:200px;' id='backsure'><span class='glyphicon glyphicon-backward'></span> Yes</button>
 			</div>
 		</div>
 	</div>
